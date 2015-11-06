@@ -193,7 +193,7 @@ jQuery(document).ready(function($){
       	mapTypeControl: false,
       	streetViewControl: false,
       	mapTypeId: google.maps.MapTypeId.ROADMAP,
-      	scrollwheel: false,
+      	scrollwheel: true,
       	styles: style,
     }
     //inizialize the map

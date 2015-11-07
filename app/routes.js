@@ -25,12 +25,28 @@ module.exports = function(app) {
 	// route to handle all angular requests
 
 	app.get('/', function(req, res) {
-	    console.log("Main Page as been loading ...");
+	    console.log("Main Page is loading ...");
 		res.sendfile('./public/views/index.html');
 	});
     app.get('/user', function(req, res) {
         console.log("User Page as been loading ...");
         res.sendfile('./public/views/user.html');
     });
+
+	app.get('/index.html', function(req, res) {
+    	    console.log("Main Page is loading ...");
+    		res.sendfile('./public/views/index.html');
+    	});
+
+	app.get('/single', function(req, res) {
+    	    console.log("listing page is loading ...");
+    		res.sendfile('./public/views/single.html');
+    	});
+
+    app.get('/single.html', function(req, res) {
+        	    console.log("listing page is loading ...");
+        		res.sendfile('./public/views/single.html');
+        	});
+
 
 };

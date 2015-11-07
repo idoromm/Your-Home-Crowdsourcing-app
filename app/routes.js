@@ -2,21 +2,32 @@ var User = require('./models/user');
 
 module.exports = function(app) {
 
-    
+
     app.get('/api/users', function(req, res) {
-        console.log("Generation users list");
-            // use mongoose to get all nerds in the database
+            // use mongoose to get all users in the database
             User.find(function(err, users) {
-                console.log("Generation users list");
-                // if there is an error retrieving, send the error. 
+                // if there is an error retrieving, send the error.
                                 // nothing after res.send(err) will execute
                 if (err)
                     res.send(err);
-
+				console.log(users);
                 res.json(users); // return all nerds in JSON format
             });
         });
-    
+
+	app.post('/api/users', function(req, res) {
+
+        var name = req.body.name;
+		var user=new User({"name":name});
+		user.save(function(err) {
+			if (err) throw err;
+
+			console.log(user+ ' has been saved successfully!');
+        res.json(user);
+        });
+    });
+
+
 	// server routes ===========================================================
 	// handle things like api calls
 	// authentication routes
@@ -32,21 +43,8 @@ module.exports = function(app) {
         console.log("User Page as been loading ...");
         res.sendfile('./public/views/user.html');
     });
-
-	app.get('/index.html', function(req, res) {
-    	    console.log("Main Page is loading ...");
-    		res.sendfile('./public/views/index.html');
-    	});
-
 	app.get('/single', function(req, res) {
     	    console.log("listing page is loading ...");
     		res.sendfile('./public/views/single.html');
     	});
-
-    app.get('/single.html', function(req, res) {
-        	    console.log("listing page is loading ...");
-        		res.sendfile('./public/views/single.html');
-        	});
-
-
 };

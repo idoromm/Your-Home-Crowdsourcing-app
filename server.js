@@ -2,15 +2,22 @@ var express = require("express");
 var path    = require("path");
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
+var mongoose = require('mongoose');
 var app     = express();
 
+mongoose.connect('mongodb://localhost/test');
 
+var db = mongoose.connection;
 
-var db = require('./config/db');
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function (callback) {
+  console.log("Login to db ... ")
+});
 
 var port = process.env.PORT || 3000; 
 
-
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); 
 
 // parse application/vnd.api+json as json
@@ -39,9 +46,3 @@ console.log("Running at Port " + port);
 // expose app           
 exports = module.exports = app; 
 
-
-
-//app.get('/',function(req,res){
-//  res.sendFile(path.join(__dirname+'/index.html'));
-//  //__dirname : It will resolve to your project folder.
-//});

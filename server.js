@@ -5,8 +5,9 @@ var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var app     = express();
 
-mongoose.connect('mongodb://localhost/test');
+//mongoose.connect('mongodb://localhost/test');
 
+mongoose.connect('mongodb://admin:0@ds047474.mongolab.com:47474/crowdsourcing');
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));

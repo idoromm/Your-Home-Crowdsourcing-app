@@ -1,21 +1,41 @@
-var express = require("express");
-var path    = require("path");
-var bodyParser     = require('body-parser');
-var methodOverride = require('method-override');
-var mongoose = require('mongoose');
-var app     = express();
 
-//mongoose.connect('mongodb://localhost/test');
+//app set up ========================================================================
+var express         = require("express");
+var path            = require("path");
+var bodyParser      = require('body-parser');
+var methodOverride  = require('method-override');
+var mongoose        = require('mongoose');
+var app             = express(); //express faramwork
 
+//passportJs set up ==================================
+
+var passport		= require('passport');
+var flash			= require('connect-flash');
+var session			= require('express-session');
+var morgan			= require('morgan');
+var cookieParser	= require('cookie-parser');
+
+//Port Config ========================================================================
+var port = process.env.PORT || 3000; //bind to port 3000
+
+
+//DB config ==========================================================================
 mongoose.connect('mongodb://admin:0@ds047474.mongolab.com:47474/crowdsourcing');
 var db = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'connection error:'));
+//print error to console if there error
+db.on('error', console.error.bind(console, 'connection error:')); 
+
+//print first time db opened
 db.once('open', function (callback) {
   console.log("Login to db ... ")
 });
 
-var port = process.env.PORT || 3000; 
+
+//app config ===========================================================================
+
+// pass passport for configuration
+require('./config/passport')(passport);
 
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,22 +48,44 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 // override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
-app.use(methodOverride('X-HTTP-Method-Override')); 
+app.use(methodOverride('X-HTTP-Method-Override'));
+
+
 // set the static files location /public/img will be /img for users
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-require('./app/routes')(app);
-
-
+// log every request to the console
+app.use(morgan('dev'));
 
 
 
+//passportJs set up ==========================================
 
+// read cookies (needed for auth)
+app.use(cookieParser());
+
+// use connect-flash for flash messages stored in session
+app.use(flash());
+
+// session secret
+app.use(session({ secret: 'ilovescotchscotchyscotchscotch' }));
+ 
+app.use(passport.initialize());
+
+// persistent login sessions
+app.use(passport.session());
+
+
+//set up routes(handle hhtp request)==========================
+
+// load our routes and pass in our app and fully configured passport
+require('./app/routes')(app,passport);
+
+
+//launch =======================================================
 app.listen(port);
-
 console.log("Running at Port " + port);
+
 // expose app           
 exports = module.exports = app; 
 

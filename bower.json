@@ -1,11 +1,28 @@
 {
-    "name": "starter-node-angular",
-    "version": "1.0.0",
-    "dependencies": {
-        "bootstrap": "latest",
-        "font-awesome": "latest",
-        "animate.css": "latest",
-        "angular": "latest",
-        "angular-route": "latest"   
-    }
+  "name": "starter-node-angular",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "latest",
+    "font-awesome": "latest",
+    "animate.css": "latest",
+    "angular": "latest",
+    "angular-route": "latest",
+    "angular-modal-service": "~0.6.9"
+  },
+  "homepage": "https://github.com/idoromm/Apt-Crowdsourcing",
+  "authors": [
+    "julyay <julyay@wix.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/libs",
+    "test",
+    "tests"
+  ]
 }

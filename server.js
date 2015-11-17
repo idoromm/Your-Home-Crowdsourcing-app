@@ -28,7 +28,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 //print first time db opened
 db.once('open', function (callback) {
-  console.log("Login to db ... ")
+  console.log("Loging in to the DB...")
 });
 
 
@@ -84,7 +84,7 @@ require('./app/routes')(app,passport);
 
 //launch =======================================================
 app.listen(port);
-console.log("Running at Port " + port);
+console.log("Running on Port " + port);
 
 // expose app           
 exports = module.exports = app; 

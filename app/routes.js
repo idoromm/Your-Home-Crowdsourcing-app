@@ -38,12 +38,17 @@ module.exports = function (app, passport) {
     });
 
 
+
     // server routes ===========================================================
     // handle things like api calls
 
     // frontend routes =========================================================
     // route to handle all angular requests
 
+        app.get('/users', function (req, res) {
+                console.log("users page is loading ...");
+                res.sendfile('./public/views/users.html');
+        });
 
     //=====================================================
     // Home Page (welcome page for unrecognized users)

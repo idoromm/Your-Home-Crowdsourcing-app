@@ -1,4 +1,5 @@
-//var User = require('./models/user');
+var User = require('./models/user');
+var Listing = require('./models/listing');
 
 module.exports = function (app, passport) {
 
@@ -37,13 +38,34 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.get('/api/listings', function (req, res) {
+            // use mongoose to get all listings in the database
+            Listing.find(function (err, listings) {
+                // if there is an error retrieving, send the error.
+                // nothing after res.send(err) will execute
+                if (err)
+                    res.send(err);
+                console.log(listings);
+                res.json(listings); // return all nerds in JSON format
+            });
+        });
+
+    app.post('/api/listings', function (req, res) {
+            var beds = req.body.beds;
+            var listing = new Listing({"beds": beds});
+            listing.save(function (err) {
+                if (err) throw err;
+
+                console.log(listing + ' has been saved successfully!');
+                res.json(listing);
+            });
+        });
 
     // server routes ===========================================================
     // handle things like api calls
 
     // frontend routes =========================================================
     // route to handle all angular requests
-
 
     //=====================================================
     // Home Page (welcome page for unrecognized users)

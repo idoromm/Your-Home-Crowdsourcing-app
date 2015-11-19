@@ -1,18 +1,15 @@
 // load the things we need
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
+var Schema = mongoose.Schema;
 
 // define the schema for our user model
-var listingSchema = mongoose.Schema({
-
-    local           : {
+var listingSchema = new Schema({
         beds        : Number,
         baths       : Number,
         buildArea   : Number,
         plotArea    : Number,
         renovated   : Boolean,
-        Price       : Number
-    }
+        Price       : { type: Number, required: true}
 });
 
 // checking if password is valid

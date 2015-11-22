@@ -161,12 +161,6 @@ module.exports = function (app, passport) {
         res.sendfile('./public/views/single.html');
     });
 
-    app.get('/new', function (req, res) {
-        console.log("new post is loading ...");
-        res.sendfile('./public/views/new.html');
-    });
-
-
 }; //end export
 
 

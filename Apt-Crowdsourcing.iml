@@ -6,12 +6,5 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Apt-Crowdsourcing node_modules" level="project" />
-    <orderEntry type="library" name="angular" level="application" />
-    <orderEntry type="library" name="ui-bootstrap-tpls-0.7.0" level="application" />
-    <orderEntry type="library" name="bootstrap" level="application" />
-    <orderEntry type="library" name="jquery" level="application" />
-    <orderEntry type="library" name="ui-bootstrap-tpls-0.14.3" level="application" />
-    <orderEntry type="library" name="angular-animate" level="application" />
-    <orderEntry type="library" name="angular-messages" level="application" />
   </component>
 </module>

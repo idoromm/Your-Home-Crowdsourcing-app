@@ -7,6 +7,8 @@ var methodOverride  = require('method-override');
 var mongoose        = require('mongoose');
 var app             = express(); // express framework
 var Disqus          = require('disqus'); // comments framework
+var favicon         = require('express-favicon'); // favicon service
+
 
 //passportJs set up ==================================
 
@@ -53,6 +55,9 @@ db.once('open', function (callback) {
 // pass passport for configuration
 require('./config/passport')(passport);
 
+// favicon usage
+app.use(favicon('./public/images/favicon.png'));
+
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); 
@@ -90,7 +95,6 @@ app.use(passport.initialize());
 
 // persistent login sessions
 app.use(passport.session());
-
 
 //set up routes(handle hhtp request)==========================
 

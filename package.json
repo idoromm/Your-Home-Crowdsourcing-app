@@ -2,24 +2,22 @@
   "name": "CrowdSourcing",
   "version": "0.0.2",
   "dependencies": {
-
-    "express": "^4.11.0",
-    "mongoose": "~3.8.1",
-    "body-parser": "~1.4.2",
-    "method-override": "~2.0.2",
-
-    "passport" : "~0.1.17",
-    "passport-local" : "~0.1.6",
-    "passport-facebook" : "~1.0.2",
-    "passport-twitter" : "~1.0.2",
-    "passport-google-oauth" : "~0.1.5",
-    "connect-flash" : "~0.1.1",
     "bcrypt-nodejs": "latest",
-    "morgan": "~1.0.0",
+    "body-parser": "~1.4.2",
+    "connect-flash": "~0.1.1",
     "cookie-parser": "~1.0.0",
+    "disqus": "~0.1.0",
+    "ejs": "~0.8.5",
+    "express": "^4.11.0",
+    "express-favicon": "^1.0.1",
     "express-session": "~1.0.0",
-    "ejs" : "~0.8.5",
-    "disqus" : "~0.1.0"
-
+    "method-override": "~2.0.2",
+    "mongoose": "~3.8.1",
+    "morgan": "~1.0.0",
+    "passport": "~0.1.17",
+    "passport-facebook": "~1.0.2",
+    "passport-google-oauth": "~0.1.5",
+    "passport-local": "~0.1.6",
+    "passport-twitter": "~1.0.2"
   }
 }

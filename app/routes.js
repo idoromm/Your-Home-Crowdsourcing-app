@@ -76,21 +76,21 @@ module.exports = function (app, passport) {
     app.get('/', isLoggedIn, function (req, res) {
         console.log("Main Page is loading ...");
 
-        res.sendfile('./public/views/main-page.html');
+        res.sendfile('./public/views/index.html');
     });
 
     //main page for users that are unrecognized
     app.get('/welcome', function (req, res) {
-        console.log("Main Page is loading ...");
-
+        if (req.user) {
+            res.redirect('/');
+        }
+        console.log("Welcome Page is loading ...");
+        
+        //prevent caching to prevent from pressing back button and return to welcome page after log in
+        res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
         res.sendfile('./public/views/welcome.html');
     });
 
-    app.get('/enter', function (req, res) {
-        console.log("log-in/sign-up page is loading ...");
-
-        res.render('enter.ejs');
-    });
 
 
     //======================================================
@@ -110,6 +110,35 @@ module.exports = function (app, passport) {
         failureRedirect: '/login', // redirect back to the signup page if there is an error
         failureFlash: true			// allow flash messages
     }));
+    
+    // =====================================================
+    // FACEBOOK Login
+    // =====================================================
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+    
+    // handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+        successRedirect : '/',
+        failureRedirect : '/'
+    }));
+    
+    
+    // ====================================================
+    // GOOGLE ROUTES 
+    // ====================================================
+    // send to google to do the authentication
+    // profile gets us their basic information including their name
+    // email gets their emails
+    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+    
+    // the callback after google has authenticated the user
+    app.get('/auth/google/callback',
+            passport.authenticate('google', {
+        successRedirect : '/',
+        failureRedirect : '/'
+    }));
+
 
 
     //======================================================
@@ -160,6 +189,12 @@ module.exports = function (app, passport) {
         console.log("listing page is loading ...");
         res.sendfile('./public/views/single.html');
     });
+
+    app.get('/new', function (req, res) {
+        console.log("new post is loading ...");
+        res.sendfile('./public/views/new.html');
+    });
+
 
 }; //end export
 

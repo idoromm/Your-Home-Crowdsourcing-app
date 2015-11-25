@@ -4606,8 +4606,9 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
     float: left;
     height: 50px;
     padding: 15px 15px;
-    font-size: 18px;
-    line-height: 20px
+    font-size: 15px;
+    line-height: 20px;
+    font-weight:bold;
 }
 
 .navbar-brand:focus, .navbar-brand:hover {
@@ -4975,7 +4976,8 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
 }
 
 .navbar-inverse .navbar-nav > li > a {
-    color: #9d9d9d
+    color: #9d9d9d;
+    font-weight:bold;
 }
 
 .navbar-inverse .navbar-nav > li > a:focus, .navbar-inverse .navbar-nav > li > a:hover {

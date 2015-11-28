@@ -6,6 +6,7 @@
     font-family: 'Oxygen-Regular';
     src:url(../fonts/Oxygen-Regular.ttf) format('truetype');
 }
+
 html,body{
 	background:#fff;
 	font-size: 100%;
@@ -533,6 +534,8 @@ a.mask {
   overflow: hidden;
   display: block;
 }
+
+
 /*--services--*/
 .service-top h3{
 	text-align:center;
@@ -615,7 +618,6 @@ a.mask {
 	font-size: 1.7em;
 	display: block;
 }
-
 /* Effect 8 */
 .ser-grid .hi-icon {
 	background: rgba(255,255,255,0.1);
@@ -693,6 +695,7 @@ a.mask {
 		opacity: 0;
 	}
 }
+
 /*--phone--*/
 .phone-text h4{
 	color:#000;
@@ -751,7 +754,6 @@ p.cost {
   color: #000;
 }
 .col-md1 span{
-	background: url(../images/star1.png) 0px 0px no-repeat;
 	display: block;
 	width:40px;
 	height: 40px;
@@ -775,6 +777,7 @@ a.more{
 a.more:hover{
 	color:#fff;
 }
+
 .project-top {
   	padding: 2em 0 0;
 }
@@ -798,6 +801,7 @@ a.more:hover{
   	padding: 5em 0;
     background-color: #F7F7F7;
 }
+
 /*--//project--*/
 /*--middle--*/
 .content-middle {
@@ -1769,6 +1773,9 @@ a.in-box:hover {
 }
 /*--//single--*/
 /*--buy-single--*/
+.flagIcon{
+	border: none;
+}
 .map-buy-single1 {
   border: 1px solid #D5D5D5;
   padding: 1em;
@@ -2263,13 +2270,6 @@ font-family: 'Montserrat-Regular';
 }
 .us-choose {
   padding: 2em 0 0;
-}
-.about-bottom{
-	background: url(../images/at1.jpg) no-repeat center;
-	width:100%;
-	min-height: 300px;
-	background-size: cover;
-	padding: 5em 0;
 }
 .bottom-about h4{
 	color: #27da93;
@@ -4525,7 +4525,7 @@ p.para-in {
 .blog-top p {
   padding: 0.8em 0 0;
   font-size: 0.875em;
-    padding: 0.5em 0;
+	padding: 0.5em 0;
 }
 .links {
   margin: 1em 0;
@@ -4983,4 +4983,5 @@ a.more {
   padding: 0.3em 0.7em;
   margin: 0.5em 0 0;
 }
+
 }

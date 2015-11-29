@@ -85,7 +85,7 @@ module.exports = function (app, passport) {
     app.get('/', isLoggedIn, function (req, res) {
         console.log("Main Page is loading ...");
 
-        res.sendfile('./public/views/index.html');
+        res.sendfile('./public/views/main-page.html');
     });
 
     //main page for users that are unrecognized

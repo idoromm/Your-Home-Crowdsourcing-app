@@ -2,41 +2,50 @@ var User = require('./models/user');
 var Listing = require('./models/listing');
 
 module.exports = function (app, passport) {
+	
+	//===================================================
+	//DB api
+	//*****Comment by Lior*****
+	// next 2 functions are not needed. passport sets all  users
+	//and transfer
+	//users in the following way: req.user
+	//please add here all details you need from user to
+	//add to sign up form:
+	//1. add name form for sign up. - Done
+	//===================================================
+	
+	app.get('/api/user', isLoggedIn, function (req, res) {
+		
+		var fsd = res.user['facebook'];
 
-    //===================================================
-    //DB api
-    //*****Comment by Lior*****
-    // next 2 functions are not needed. passport sets all  users
-    //and transfer
-    //users in the following way: req.user
-    //please add here all details you need from user to
-    //add to sign up form:
-    //1. add name form for sign up.
-    //===================================================
-
-    app.get('/api/users', function (req, res) {
-        // use mongoose to get all users in the database
-        User.find(function (err, users) {
-            // if there is an error retrieving, send the error.
-            // nothing after res.send(err) will execute
-            if (err)
-                res.send(err);
-            console.log(users);
-            res.json(users); // return all nerds in JSON format
-        });
-    });
-
-    app.post('/api/users', function (req, res) {
-
-        var name = req.body.name;
-        var user = new User({"name": name});
-        user.save(function (err) {
-            if (err) throw err;
-
-            console.log(user + ' has been saved successfully!');
-            res.json(user);
-        });
-    });
+		//didnt find better way to make it work
+		var userStr = JSON.stringify(req.user);
+		var userJson = JSON.parse(userStr);
+			
+		//return name
+		if (userJson.facebook) {
+			res.send(userJson.facebook.firstName);
+		} else if (userJson.google) {
+			
+			User.findOne({ 'google.email' : userJson.google.email }, function (err, user) {
+				if (err)
+					return done(err);
+				
+				if (user) {
+					var userStr = JSON.stringify(user.google);
+					var userJson = JSON.parse(userStr);
+					if (userJson.firstName) {
+						//old users (Us)
+						res.send(userJson.firstName);
+					} else {
+						res.send(userJson.name);
+					}
+				}
+			});
+		} else {
+			res.send(userJson.local.name);
+		}				
+	});
 
     app.get('/api/listings', function (req, res) {
             // use mongoose to get all listings in the database
@@ -76,21 +85,21 @@ module.exports = function (app, passport) {
     app.get('/', isLoggedIn, function (req, res) {
         console.log("Main Page is loading ...");
 
-        res.sendfile('./public/views/main-page.html');
+        res.sendfile('./public/views/index.html');
     });
 
     //main page for users that are unrecognized
     app.get('/welcome', function (req, res) {
-        console.log("Main Page is loading ...");
-
+        if (req.user) {
+            res.redirect('/');
+        }
+        console.log("Welcome Page is loading ...");
+        
+        //prevent caching to prevent from pressing back button and return to welcome page after log in
+        res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
         res.sendfile('./public/views/welcome.html');
     });
 
-    app.get('/enter', function (req, res) {
-        console.log("log-in/sign-up page is loading ...");
-
-        res.render('enter.ejs');
-    });
 
 
     //======================================================
@@ -110,6 +119,35 @@ module.exports = function (app, passport) {
         failureRedirect: '/login', // redirect back to the signup page if there is an error
         failureFlash: true			// allow flash messages
     }));
+    
+    // =====================================================
+    // FACEBOOK Login
+    // =====================================================
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+    
+    // handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+        successRedirect : '/',
+        failureRedirect : '/'
+    }));
+    
+    
+    // ====================================================
+    // GOOGLE ROUTES 
+    // ====================================================
+    // send to google to do the authentication
+    // profile gets us their basic information including their name
+    // email gets their emails
+    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+    
+    // the callback after google has authenticated the user
+    app.get('/auth/google/callback',
+            passport.authenticate('google', {
+        successRedirect : '/',
+        failureRedirect : '/'
+    }));
+
 
 
     //======================================================

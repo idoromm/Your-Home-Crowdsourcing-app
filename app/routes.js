@@ -99,7 +99,7 @@ module.exports = function (app, passport) {
         res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
         res.sendfile('./public/views/welcome.html');
     });
-
+	
 
 
     //======================================================
@@ -110,13 +110,13 @@ module.exports = function (app, passport) {
     app.get('/login', function (req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', {message: req.flash('loginMessage')});
+        res.render('Signup.ejs' ,{ message: req.flash('loginMessage') });
     });
 
     // process the login form
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/',		// redirect to the secure profile section
-        failureRedirect: '/login', // redirect back to the signup page if there is an error
+	app.post('/login', passport.authenticate('local-login', {
+        successRedirect: '/',		// redirect to the home page
+        failureRedirect: '/login', // redirect back to the login page if there is an error
         failureFlash: true			// allow flash messages
     }));
     

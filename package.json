@@ -11,6 +11,8 @@
     "express": "^4.11.0",
     "express-favicon": "^1.0.1",
     "express-session": "~1.0.0",
+    "json-parser": "^1.1.5",
+    "jsonparser": "^0.2.0",
     "method-override": "~2.0.2",
     "mongoose": "~3.8.1",
     "morgan": "~1.0.0",

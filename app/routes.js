@@ -1,6 +1,7 @@
+var bodyParser = require('body-parser');
 var User = require('./models/user');
 var Listing = require('./models/listing');
-
+var jsonParser = bodyParser.json();
 module.exports = function (app, passport) {
 	
 	//===================================================
@@ -45,28 +46,19 @@ module.exports = function (app, passport) {
 		}				
 	});
 
-    app.get('/api/listings', function (req, res) {
-            // use mongoose to get all listings in the database
-            Listing.find(function (err, listings) {
-                // if there is an error retrieving, send the error.
-                // nothing after res.send(err) will execute
-                if (err)
-                    res.send(err);
-                console.log(listings);
-                res.json(listings); // return all nerds in JSON format
-            });
-        });
+    /* using REST api for manipulating listings */
+    app.get('/api/single/:id', function(req,res){
+        // get that data from the db
+        res.json({rooms: '5', sqm: '222'});
+    });
 
-    app.post('/api/listings', function (req, res) {
-            var beds = req.body.beds;
-            var listing = new Listing({"beds": beds});
-            listing.save(function (err) {
-                if (err) throw err;
+    app.post('/api/single', jsonParser, function(req,res){
+        // save listing to the db
+    });
 
-                console.log(listing + ' has been saved successfully!');
-                res.json(listing);
-            });
-        });
+    app.delete('/api/single/:listingnumber', jsonParser, function(req,res){
+        // delete from the db
+    });
 
     // server routes ===========================================================
     // handle things like api calls
@@ -186,6 +178,7 @@ module.exports = function (app, passport) {
         req.logout();
         res.redirect('/');
     });
+
 
 
     //======================================================

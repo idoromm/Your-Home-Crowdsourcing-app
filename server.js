@@ -56,7 +56,7 @@ db.once('open', function (callback) {
 require('./config/passport')(passport);
 
 // favicon usage
-app.use(favicon('./public/images/favicon.png'));
+app.use(favicon('./public/images/favicon.ico'));
 
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -107,5 +107,5 @@ app.listen(port);
 console.log("Running on Port " + port);
 
 // expose app           
-exports = module.exports = app; 
+exports = module.exports = app;
 

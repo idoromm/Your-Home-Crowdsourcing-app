@@ -1774,6 +1774,8 @@ a.in-box:hover {
 /*--//single--*/
 /*--buy-single--*/
 .flagIcon{
+	position: relative;
+	left: 20px;
 	border: none;
 }
 .map-buy-single1 {

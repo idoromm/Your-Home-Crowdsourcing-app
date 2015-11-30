@@ -1,4 +1,4 @@
-<html ng-app="app">
+<html ng-app="listingPage">
 <head>
     <title>Your Home</title>
   <!--  <script data-require="angular.js@*" data-semver="2.0.0-alpha.45" src="https://code.angularjs.org/2.0.0-alpha.45/angular2.js"></script>
@@ -32,21 +32,21 @@
 
 
 </head>
-<body ng-app="app" ng-controller="ListingCtrl as listing">
+<body ng-controller="ListingCtrl as listing">
 <!--header-->
 <div class="header">
     <div class="container">
         <!--logo-->
         <div class="logo">
-            <h1><a href="welcome">{{listing.title}}</a></h1>
+            <h1><a href="welcome">{{listing.yourhome}}</a></h1>
         </div>
         <!--//logo-->
         <div class="top-nav">
-            <ul class="right-icons">
-                <!--   <li><span ><i class="glyphicon glyphicon-phone"> </i>0528464301</span></li> -->
+            <!--<ul class="right-icons">
+                <li><span ><i class="glyphicon glyphicon-phone"> </i>0528464301</span></li>
                 <li><a href="enter"><i class="glyphicon glyphicon-user"> </i>Login</a></li>
             </ul>
-
+            -->
             <div class="clearfix"></div>
             <!---pop-up-box---->
 
@@ -100,18 +100,8 @@
             <div class=" buying-top">
                 <div class="flexslider">
                     <ul class="slides">
-
-                        <li data-thumb="images/ss.jpg">
-                            <img src="images/ss.jpg"/>
-                        </li>
-                        <li data-thumb="images/ss1.jpg">
-                            <img src="images/ss1.jpg"/>
-                        </li>
-                        <li data-thumb="images/ss2.jpg">
-                            <img src="images/ss2.jpg"/>
-                        </li>
-                        <li data-thumb="images/ss3.jpg">
-                            <img src="images/ss3.jpg"/>
+                        <li data-thumb="{{image}}" ng-repeat="image in images track by $index">
+                            <img ng-src="{{image}}"/>
                         </li>
                     </ul>
                 </div>

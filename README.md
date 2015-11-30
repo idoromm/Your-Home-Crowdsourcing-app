@@ -4,7 +4,7 @@ A project for Computer Science Workshop course in TAU. Members: Ido, Kobi, Julya
 In order to run the web app: 
 
 1. Download the repository
-2. $ npm install -d
+2. $ npm install
 3. $ node server
 
-Finally, navigate via your favorite browser to http://localhost:3000/ 
+Finally, navigate via your favorite browser (chrome is recommended) to http://localhost:3000/ 

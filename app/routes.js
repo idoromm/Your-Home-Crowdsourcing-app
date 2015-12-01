@@ -18,7 +18,9 @@ module.exports = function (app, passport) {
 
 
 	app.get('/api/user', isLoggedIn, function (req, res) {
-		
+
+
+
 		var fsd = res.user['facebook'];
 
 		//didnt find better way to make it work
@@ -197,10 +199,10 @@ module.exports = function (app, passport) {
     //Apartment listing
     //======================================================
 
-    app.get('/single', function (req, res) {
-        console.log("listing page is loading ...");
-        res.sendfile('./public/views/single.html');
-    });
+    //app.get('/single', function (req, res) {
+    //    console.log("listing page is loading ...");
+    //    res.sendfile('./public/views/single.html');
+    //});
 
     app.get('/new', function (req, res) {
         console.log("new post is loading ...");

@@ -19,10 +19,10 @@
 
     var app = angular.module("Crowdsourcing", []);
 
-    var ListingController = function($scope, $http) {
+    var ListingController = function($scope,listingService) {
 
         var onListingComplete = function(response) {
-            $scope.listing = response.data;
+            $scope.listing = response;
         };
 
         var onError = function(reason) {
@@ -30,16 +30,11 @@
         };
 
 
-        $http.get("http://localhost:3000/api/listing/Rashi/10/13")
+        listingService.getListing("/api/listing/Rashi/10/13")
             .then(onListingComplete, onError);
-
-
-        $scope.message = "Hello, Angular!";
-
-
     };
 
-    app.controller("ListingController", ["$scope", "$http", ListingController]);
+    app.controller("ListingController", ["$scope","listingService", ListingController]);
 
 }());
 

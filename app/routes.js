@@ -13,7 +13,10 @@ module.exports = function (app, passport) {
 	//add to sign up form:
 	//1. add name form for sign up. - Done
 	//===================================================
-	
+
+
+
+
 	app.get('/api/user', isLoggedIn, function (req, res) {
 		
 		var fsd = res.user['facebook'];
@@ -21,16 +24,16 @@ module.exports = function (app, passport) {
 		//didnt find better way to make it work
 		var userStr = JSON.stringify(req.user);
 		var userJson = JSON.parse(userStr);
-			
+
 		//return name
 		if (userJson.facebook) {
 			res.send(userJson.facebook.firstName);
 		} else if (userJson.google) {
-			
+
 			User.findOne({ 'google.email' : userJson.google.email }, function (err, user) {
 				if (err)
 					return done(err);
-				
+
 				if (user) {
 					var userStr = JSON.stringify(user.google);
 					var userJson = JSON.parse(userStr);
@@ -204,8 +207,49 @@ module.exports = function (app, passport) {
         res.sendfile('./public/views/new.html');
     });
 
+    app.get('/api/user/:email',function(req,res){
+        User.findOne({$or: [
+            {"local.email": req.params.email},
+            {"facebook.email": req.params.email},
+            {"google.email": req.params.email}
+        ]}, function(err,user){
+            res.json(user);
+        });
+    });
+
+    app.get('/api/listing/:street/:buildingNumber/:apartmentNumber',function(req,res){
+        console.log("Listing API");
+        Listing.findOne(
+            {"street":req.params.street,
+            "buildingNumber":req.params.buildingNumber,
+            "apartmentNumber":req.params.apartmentNumber}
+        , function(err,listing){
+            //if (err) { return next(err); }
+            console.log("Listing: "+listing);
+            res.json(listing);
+        });
+    });
+
+    app.get('/api/listings',function(req,res,next){
+        Listing.find({}, function(err,listings){
+            if (err) { return next(err); }
+            res.json(listings);
+        });
+    });
+
+    app.get('/testAngular5', function (req, res) {
+        console.log("new post is loading ...");
+        res.sendfile('./public/views/testAngular5/index.html');
+    });
+
+    app.get('/testAngular3', function (req, res) {
+        console.log("new post is loading ...");
+        res.sendfile('./public/views/testAngular3/index.html');
+    });
+
 
 }; //end export
+
 
 
 // route middleware to make sure a user is logged in

@@ -57,7 +57,7 @@ db.once('open', function (callback) {
 require('./config/passport')(passport);
 
 // favicon usage
-app.use(favicon('./public/images/favicon.ico'));
+app.use(favicon('./public/images/favicon.png'));
 
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));

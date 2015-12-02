@@ -38,6 +38,7 @@ disqus.request('posts/list', { forum : 'idoson'}, function(data) {
 });
 
 //DB config ==========================================================================
+
 mongoose.connect('mongodb://admin:0@ds047474.mongolab.com:47474/crowdsourcing');
 var db = mongoose.connection;
 
@@ -56,7 +57,7 @@ db.once('open', function (callback) {
 require('./config/passport')(passport);
 
 // favicon usage
-app.use(favicon('./public/images/favicon.ico'));
+app.use(favicon('./public/images/favicon.png'));
 
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -109,3 +110,4 @@ console.log("Running on Port " + port);
 // expose app           
 exports = module.exports = app;
 
+//mongoose.connect('mongodb://localhost:27017/test');

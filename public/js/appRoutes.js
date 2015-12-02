@@ -16,7 +16,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 
         .when('/single/:listingnumber', {
             templateUrl: 'views/single.html',
-            controller: 'ListingController'
+            controller: 'ListingCtrl'
         })
 
         .otherwise({redirectTo: '/'});

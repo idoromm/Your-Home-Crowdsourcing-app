@@ -199,10 +199,10 @@ module.exports = function (app, passport) {
     //Apartment listing
     //======================================================
 
-    //app.get('/single', function (req, res) {
-    //    console.log("listing page is loading ...");
-    //    res.sendfile('./public/views/single.html');
-    //});
+    app.get('/single', function (req, res) {
+        console.log("listing page is loading ...");
+        res.sendfile('./public/views/single.html');
+    });
 
     app.get('/new', function (req, res) {
         console.log("new post is loading ...");

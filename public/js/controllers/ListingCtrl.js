@@ -1,56 +1,32 @@
-/**
- * Created by Ido on 28/11/2015.
- */
+(function() {
 
-(function () {
-    angular.module('listingPage', []).controller('ListingCtrl', function ($scope) {
+    var app = angular.module("Crowdsourcing", []);
 
-        $scope.images = {
-            src1: 'images/ss.jpg',
-            src2: 'images/ss1.jpg',
-            src3: 'images/ss2.jpg',
-            src4: 'images/ss3.jpg'
+    var ListingController = function($scope,listingService) {
+
+        var onListingComplete = function(response) {
+            $scope.listing = response;
         };
-        /*    $scope.id = $routeParams.id;
-         $http.get('data.json').success(function (data) {
-         $scope.mainData = data[$scope.id].images;
-         });
 
-         */
-
-        /*    $http.get('/api/user').success(function (response) {
-         $scope.User = response;
-         });
-         */
-
-        var vm = this;
-        vm.yourhome = 'YOUR HOME';
+        var onError = function(reason) {
+            $scope.error = "Could not fetch the user";
+        };
 
 
-        var time = 5000; // time is in milliseconds
-        setTimeout(function () {
-            sweetAlert({
-                title: "Is this room furnished?",
-                imageUrl: "images/ss1.jpg",
-                imageSize: '500x500',
-                showCancelButton: true,
-                cancelButtonText: "No",
-                confirmButtonColor: "#00ff00", // green
-                confirmButtonText: "Yes",
-                closeOnConfirm: false,
-            },
-                function(isConfirm) {
-                if (isConfirm) {
-                    sweetAlert("Thanks!", "Your input will help others", "success");
-                   // submitToDatabase(userWhoPerformed, question/listingNumber/count++)
-                }
-                else {
-                    sweetAlert("Thanks!", "Your input will help others", "success");
-                    // submitToDatabase(userWhoPerformed, question/listingNumber/count--)
-                }
-            });
-        }, time);
+        listingService.getListing("/api/listing/Rashi/10/13")
+            .then(onListingComplete, onError);
+    };
 
+    app.controller("ListingController", ["$scope","listingService", ListingController]);
 
-    });
 }());
+
+
+
+
+
+
+
+
+
+

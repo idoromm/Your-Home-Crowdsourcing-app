@@ -6,8 +6,22 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // define the schema for our user model
-var QuestionSchema = new Schema({
-    description     : String
+var questionSchema = new Schema({
+    question: {
+        type: String,
+        required: true,
+        ID: {
+            unique: true
+        }
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    },
+    apartmentID: {
+        type: String,
+    }
+
 });
 
 

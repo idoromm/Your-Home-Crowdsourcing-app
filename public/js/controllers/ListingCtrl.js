@@ -1,5 +1,4 @@
 (function() {
-
     var app = angular.module("Crowdsourcing", []);
 
     var ListingController = function($scope,listingService) {
@@ -20,12 +19,6 @@
     app.controller("ListingController", ["$scope","listingService", ListingController]);
 
 }());
-
-
-
-
-
-
 
 
 

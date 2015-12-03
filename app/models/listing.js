@@ -14,6 +14,11 @@ var listingSchema = new Schema({
         renovated       : Boolean,
         price           : Number,
         description     : String,
+
+        UsersAndQuestions: [{
+                userID: String,
+                questionID: Schema.Types.Mixed /* one user -> multiple questions asked possible */
+        }]
 });
 
 // checking if password is valid

@@ -38,6 +38,7 @@ disqus.request('posts/list', { forum : 'idoson'}, function(data) {
 });
 
 //DB config ==========================================================================
+
 mongoose.connect('mongodb://admin:0@ds047474.mongolab.com:47474/crowdsourcing');
 var db = mongoose.connection;
 
@@ -109,3 +110,4 @@ console.log("Running on Port " + port);
 // expose app           
 exports = module.exports = app;
 
+//mongoose.connect('mongodb://localhost:27017/test');

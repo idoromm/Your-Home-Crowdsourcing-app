@@ -1,8 +1,18 @@
+(function(){
 
-var app = angular.module('app', []);
+    var app = angular.module("Crowdsourcing", []);
 
-app.controller('NavCtrl', function ($scope, $http) {
-	$http.get('/api/user').success(function (response) {
-		$scope.User = response;
-	});
-});
+    app.config(function($routeProvider){
+        $routeProvider
+            .when("/single", {
+                templateUrl: "/views/single.html'",
+                controller: "ListingCtrl"
+            })
+            .when("/single/:street/:buildingNumber/:apartmentNumber", {
+                templateUrl: "/views/single.html'",
+                controller: "ListingCtrl"
+            })
+            .otherwise({redirectTo:"/"});
+    });
+
+}());

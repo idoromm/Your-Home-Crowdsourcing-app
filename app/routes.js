@@ -1,79 +1,77 @@
 var User = require('./models/user');
 var Listing = require('./models/listing');
+var Question = require('./models/question');
 
 module.exports = function (app, passport) {
 
-	//===================================================
-	//DB api
-	//*****Comment by Lior*****
-	// next 2 functions are not needed. passport sets all  users
-	//and transfer
-	//users in the following way: req.user
-	//please add here all details you need from user to
-	//add to sign up form:
-	//1. add name form for sign up. - Done
-	//===================================================
+    //===================================================
+    //DB api
+    //*****Comment by Lior*****
+    // next 2 functions are not needed. passport sets all  users
+    //and transfer
+    //users in the following way: req.user
+    //please add here all details you need from user to
+    //add to sign up form:
+    //1. add name form for sign up. - Done
+    //===================================================
 
 
+    app.get('/api/user', isLoggedIn, function (req, res) {
 
 
-	app.get('/api/user', isLoggedIn, function (req, res) {
+        var fsd = res.user['facebook'];
 
+        //didnt find better way to make it work
+        var userStr = JSON.stringify(req.user);
+        var userJson = JSON.parse(userStr);
 
+        //return name
+        if (userJson.facebook) {
+            res.send(userJson.facebook.firstName);
+        } else if (userJson.google) {
 
-		var fsd = res.user['facebook'];
+            User.findOne({'google.email': userJson.google.email}, function (err, user) {
+                if (err)
+                    return done(err);
 
-		//didnt find better way to make it work
-		var userStr = JSON.stringify(req.user);
-		var userJson = JSON.parse(userStr);
-
-		//return name
-		if (userJson.facebook) {
-			res.send(userJson.facebook.firstName);
-		} else if (userJson.google) {
-
-			User.findOne({ 'google.email' : userJson.google.email }, function (err, user) {
-				if (err)
-					return done(err);
-
-				if (user) {
-					var userStr = JSON.stringify(user.google);
-					var userJson = JSON.parse(userStr);
-					if (userJson.firstName) {
-						//old users (Us)
-						res.send(userJson.firstName);
-					} else {
-						res.send(userJson.name);
-					}
-				}
-			});
-		} else {
-			res.send(userJson.local.name);
-		}
-	});
+                if (user) {
+                    var userStr = JSON.stringify(user.google);
+                    var userJson = JSON.parse(userStr);
+                    if (userJson.firstName) {
+                        //old users (Us)
+                        res.send(userJson.firstName);
+                    } else {
+                        res.send(userJson.name);
+                    }
+                }
+            });
+        } else {
+            res.send(userJson.local.name);
+        }
+    });
 
     app.get('/api/listings', function (req, res) {
-            // use mongoose to get all listings in the database
-            Listing.find(function (err, listings) {
-                // if there is an error retrieving, send the error.
-                // nothing after res.send(err) will execute
-                if (err)
-                    res.send(err);
-                console.log(listings);
-                res.json(listings); // return all nerds in JSON format
-            });
+        // use mongoose to get all listings in the database
+        Listing.find(function (err, listings) {
+            // if there is an error retrieving, send the error.
+            // nothing after res.send(err) will execute
+            if (err)
+                res.send(err);
+            console.log(listings);
+            res.json(listings); // return all nerds in JSON format
         });
+    });
 
     app.post('/api/listings', function (req, res) {
-            var beds = req.body.beds;
-            var listing = new Listing({"beds": beds});
-            listing.save(function (err) {
-                if (err) throw err;
+        var beds = req.body.beds;
+        var listing = new Listing({"beds": beds});
+        listing.save(function (err) {
+            if (err) throw err;
 
-                console.log(listing + ' has been saved successfully!');
-                res.json(listing);
-            });
+            console.log(listing + ' has been saved successfully!');
+            res.json(listing);
         });
+    });
 
     // server routes ===========================================================
     // handle things like api calls
@@ -106,7 +104,6 @@ module.exports = function (app, passport) {
     });
 
 
-
     //======================================================
     //Login(login form for local login(not facebook,google))
     //======================================================
@@ -115,11 +112,11 @@ module.exports = function (app, passport) {
     app.get('/login', function (req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('Signup.ejs' ,{ message: req.flash('loginMessage') });
+        res.render('Signup.ejs', {message: req.flash('loginMessage')});
     });
 
     // process the login form
-	app.post('/login', passport.authenticate('local-login', {
+    app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/',		// redirect to the home page
         failureRedirect: '/login', // redirect back to the login page if there is an error
         failureFlash: true			// allow flash messages
@@ -128,14 +125,14 @@ module.exports = function (app, passport) {
     // =====================================================
     // FACEBOOK Login
     // =====================================================
-    app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
 
     // handle the callback after facebook has authenticated the user
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
-        successRedirect : '/',
-        failureRedirect : '/'
-    }));
+            successRedirect: '/',
+            failureRedirect: '/'
+        }));
 
 
     // ====================================================
@@ -144,15 +141,14 @@ module.exports = function (app, passport) {
     // send to google to do the authentication
     // profile gets us their basic information including their name
     // email gets their emails
-    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+    app.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
 
     // the callback after google has authenticated the user
     app.get('/auth/google/callback',
-            passport.authenticate('google', {
-        successRedirect : '/',
-        failureRedirect : '/'
-    }));
-
+        passport.authenticate('google', {
+            successRedirect: '/',
+            failureRedirect: '/'
+        }));
 
 
     //======================================================
@@ -209,32 +205,61 @@ module.exports = function (app, passport) {
         res.sendfile('./public/views/new.html');
     });
 
-    app.get('/api/user/:email',function(req,res){
-        User.findOne({$or: [
-            {"local.email": req.params.email},
-            {"facebook.email": req.params.email},
-            {"google.email": req.params.email}
-        ]}, function(err,user){
+    app.get('/api/user/:email', function (req, res) {
+        User.findOne({
+            $or: [
+                {"local.email": req.params.email},
+                {"facebook.email": req.params.email},
+                {"google.email": req.params.email}
+            ]
+        }, function (err, user) {
             res.json(user);
         });
     });
 
-    app.get('/api/listing/:street/:buildingNumber/:apartmentNumber',function(req,res){
+    app.get('/api/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {
         console.log("Listing API");
         Listing.findOne(
-            {"street":req.params.street,
-            "buildingNumber":req.params.buildingNumber,
-            "apartmentNumber":req.params.apartmentNumber}
-        , function(err,listing){
-            //if (err) { return next(err); }
-            console.log("Listing: "+listing);
-            res.json(listing);
+            {
+                "street": req.params.street,
+                "buildingNumber": req.params.buildingNumber,
+                "apartmentNumber": req.params.apartmentNumber
+            }
+            , function (err, listing) {
+                //if (err) { return next(err); }
+                console.log("Listing: " + listing);
+                res.json(listing);
+            });
+    });
+
+    app.get('/api/questions/:description', function (req, res) {
+        console.log("Question API");
+
+        Question.findOne(
+            {
+                "description": req.params.description
+            }
+            , function (err, question) {
+                console.log("Question: " + question);
+                res.json(question);
+            });
+    });
+
+    app.post('/api/questions', function (req, res) {
+        var description = req.body.description;
+        var question = new models.Question({description: description});
+        question.save(function (err, question) {
+            if (err) return handleError(err);
+            res.json({description: question.description});
         });
     });
 
-    app.get('/api/listings',function(req,res,next){
-        Listing.find({}, function(err,listings){
-            if (err) { return next(err); }
+
+    app.get('/api/listings', function (req, res, next) {
+        Listing.find({}, function (err, listings) {
+            if (err) {
+                return next(err);
+            }
             res.json(listings);
         });
     });
@@ -251,7 +276,6 @@ module.exports = function (app, passport) {
 
 
 }; //end export
-
 
 
 // route middleware to make sure a user is logged in

@@ -109,5 +109,3 @@ console.log("Running on Port " + port);
 
 // expose app           
 exports = module.exports = app;
-
-//mongoose.connect('mongodb://localhost:27017/test');

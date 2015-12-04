@@ -5,8 +5,13 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// define the schema for our user model
+
 var questionSchema = new Schema({
+    description: String
+});
+
+// define the schema for our user model
+/*var questionSchema = new Schema({
     question: {
         type: String,
         required: true,
@@ -21,10 +26,10 @@ var questionSchema = new Schema({
     apartmentID: {
         type: String,
     }
+}); */
 
-});
 
-
+//exports.Question = mongoose.model('Question', questionSchema);
 // create the model for users and expose it to our app
 module.exports = mongoose.model('Question', questionSchema);
 

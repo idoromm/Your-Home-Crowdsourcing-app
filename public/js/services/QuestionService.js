@@ -4,7 +4,7 @@ function reportListing() {
 }
 
 var myPix = new Array("images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg");
-function choosePic() {
+function chooseRandomPic() {
     /* randomly selects a picture of the listing to prompt the user with when he enters */
     var randomNum = Math.floor(Math.random() * myPix.length);
     var picSelected = myPix[randomNum];
@@ -16,7 +16,7 @@ function alertPrompt() {
     setTimeout(function () {
         sweetAlert({
                 title: "Is this room furnished?",
-                imageUrl: choosePic(),
+                imageUrl: chooseRandomPic(),
                 imageSize: '600x600',
                 showCancelButton: true,
                 cancelButtonText: "No",
@@ -37,7 +37,7 @@ function alertPrompt() {
             });
     }, 5000); // 5 seconds
 }
-/*
+
 (function () {
     var questionService = function ($http) {
         var getQuestion = function (url) {
@@ -58,4 +58,4 @@ function alertPrompt() {
 
 }());
 
-*/
+

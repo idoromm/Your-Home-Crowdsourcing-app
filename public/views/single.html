@@ -7,7 +7,7 @@
     <script src="js/jquery.min.js"></script>
     <!-- Custom Theme files -->
     <!--menu-->
-    <script src="js/scripts.js"></script>
+    <script src="js/imagesPromptingHandler"></script>
     <script src="js/app.js"></script>
     <script src="js/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
@@ -182,7 +182,7 @@
 </div>
 <!--//header-->
 <!---->
-<img class="flagIcon" id="flag" src="images/red_flag_icon.jpg" background-color=transparent onclick="raiseAlert()" />
+<img class="flagIcon" id="flag" src="images/red_flag_icon.jpg" background-color=transparent onclick="reportListing()" />
 <div class="container">
 
     <div class="buy-single-single">
@@ -239,13 +239,13 @@
                 </div>
                 <div class="clearfix"> </div>
             </div>
-            <div class="map-buy-single">
-                <h4>Neighborhood Info</h4>
-                <div class="map-buy-single1">
-                    <iframe src="https://www.google.com/maps/embed/v1/place?q=HaYarkon+30,+Tel+Aviv-Yafo,+Israel&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>
+            <!--<div class="map-buy-single">-->
+            <!--<h4>Neighborhood Info</h4>-->
+            <!--<div class="map-buy-single1">-->
+            <!--<iframe src="https://www.google.com/maps/embed/v1/place?q=HaYarkon+30,+Tel+Aviv-Yafo,+Israel&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>-->
 
-                </div>
-            </div>
+            <!--</div>-->
+            <!--</div>-->
 
             <!-- this is the video if we want to use it -->
             <!--     <div class="video-pre">
@@ -317,6 +317,32 @@
     </div>
 </div>
 
+<div class="container">
+    <div class="future">
+        <div class="content-bottom-in">
+            <div id="disqus_thread"></div>
+            <script>
+                /**
+                 * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                 * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+                 */
+                /*
+                 var disqus_config = function () {
+                 this.page.url = localhost:3000/single; // Replace PAGE_URL with your page's canonical URL variable
+                 //this.page.identifier = "this page identifier"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                 };
+                 */
+                (function() { // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    s.src = '//idoson.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments.</a></noscript>
+        </div>
+    </div>
+</div>
 <!---->
 <div class="container">
     <div class="future">
@@ -408,32 +434,7 @@
 
 </div>
 
-<div class="container">
-    <div class="future">
-        <div class="content-bottom-in">
-            <div id="disqus_thread"></div>
-            <script>
-                /**
-                 * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-                 * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-                 */
-                /*
-                 var disqus_config = function () {
-                 this.page.url = localhost:3000/single; // Replace PAGE_URL with your page's canonical URL variable
-                 //this.page.identifier = "this page identifier"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-                 };
-                 */
-                (function() { // DON'T EDIT BELOW THIS LINE
-                    var d = document, s = d.createElement('script');
-                    s.src = '//idoson.disqus.com/embed.js';
-                    s.setAttribute('data-timestamp', +new Date());
-                    (d.head || d.body).appendChild(s);
-                })();
-            </script>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments.</a></noscript>
-        </div>
-    </div>
-</div>
+
 <!--footer-->
 <div class="footer">
     <!--

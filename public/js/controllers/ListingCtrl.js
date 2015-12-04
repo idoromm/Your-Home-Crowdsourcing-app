@@ -8,7 +8,7 @@
         };
 
         var onError = function(reason) {
-            $scope.error = "Could not fetch the user";
+            $scope.error = "Could not fetch the listing";
         };
 
 

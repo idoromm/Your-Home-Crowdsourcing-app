@@ -2,24 +2,29 @@
 <html ng-app="Crowdsourcing">
 <head>
     <title>Your Home</title>
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all"/>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
     <!-- Custom Theme files -->
     <!--menu-->
-    <script src="js/imagesPromptingHandler"></script>
+    <script src="js/imagesPromptingHandler.js"></script>
     <script src="js/app.js"></script>
     <script src="js/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
     <link href="css/styles.css" rel="stylesheet">
     <!--//menu-->
     <!--theme-style-->
-    <link href="css/style2.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/style2.css" rel="stylesheet" type="text/css" media="all"/>
     <!--//theme-style-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Your Home Responsive web page" />
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="Your Home Responsive web page"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
 
     <script data-require="angular.js@*" data-semver="1.3.0-beta.5"
             src="https://code.angularjs.org/1.3.0-beta.5/angular.js">
@@ -29,7 +34,6 @@
     <script src="js/services/ListingService.js"></script>
 
 
-
 </head>
 <body ng-controller="ListingController">
 <!--header-->
@@ -37,12 +41,12 @@
     <div class="container-fluid">
         <nav class="pull">
             <ul>
-                <li><a  href="index.html">Home</a></li>
-                <li><a  href="about.html">About Us</a></li>
-                <li><a  href="blog.html">Blog</a></li>
-                <li><a  href="terms.html">Terms</a></li>
-                <li><a  href="privacy.html">Privacy</a></li>
-                <li><a  href="contact.html">Contact</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="terms.html">Terms</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
     </div>
@@ -58,10 +62,10 @@
         <div class="top-nav">
             <ul class="right-icons">
                 <!--   <li><span ><i class="glyphicon glyphicon-phone"> </i>0528464301</span></li> -->
-                <li><a  href="enter"><i class="glyphicon glyphicon-user"> </i>Login</a></li>
+                <li><a href="enter"><i class="glyphicon glyphicon-user"> </i>Login</a></li>
             </ul>
 
-            <div class="clearfix"> </div>
+            <div class="clearfix"></div>
             <!---pop-up-box---->
 
             <link href="css/popuo-box.css" rel="stylesheet" type="text/css" media="all"/>
@@ -78,30 +82,46 @@
                             <div class="clearfix"></div>
                         </ul>
                         <div class="resp-tabs-container">
-                            <h2 class="resp-accordion resp-tab-active" role="tab" aria-controls="tab_item-0"><span class="resp-arrow"></span>All Homes</h2><div class="tab-1 resp-tab-content resp-tab-content-active" aria-labelledby="tab_item-0" style="display:block">
-                            <div class="facts">
-                                <div class="login">
-                                    <input type="text" value="Search Address, Neighborhood, City or Zip" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search Address, Neighborhood, City or Zip';}">
-                                    <input type="submit" value="">
+                            <h2 class="resp-accordion resp-tab-active" role="tab" aria-controls="tab_item-0"><span
+                                    class="resp-arrow"></span>All Homes</h2>
+
+                            <div class="tab-1 resp-tab-content resp-tab-content-active" aria-labelledby="tab_item-0"
+                                 style="display:block">
+                                <div class="facts">
+                                    <div class="login">
+                                        <input type="text" value="Search Address, Neighborhood, City or Zip"
+                                               onfocus="this.value = '';"
+                                               onblur="if (this.value == '') {this.value = 'Search Address, Neighborhood, City or Zip';}">
+                                        <input type="submit" value="">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <h2 class="resp-accordion" role="tab" aria-controls="tab_item-1"><span class="resp-arrow"></span>For Sale</h2><div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
-                            <div class="facts">
-                                <div class="login">
-                                    <input type="text" value="Search Address, Neighborhood, City or Zip" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search Address, Neighborhood, City or Zip';}">
-                                    <input type="submit" value="">
+                            <h2 class="resp-accordion" role="tab" aria-controls="tab_item-1"><span
+                                    class="resp-arrow"></span>For Sale</h2>
+
+                            <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
+                                <div class="facts">
+                                    <div class="login">
+                                        <input type="text" value="Search Address, Neighborhood, City or Zip"
+                                               onfocus="this.value = '';"
+                                               onblur="if (this.value == '') {this.value = 'Search Address, Neighborhood, City or Zip';}">
+                                        <input type="submit" value="">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <h2 class="resp-accordion" role="tab" aria-controls="tab_item-2"><span class="resp-arrow"></span>For Rent</h2><div class="tab-1 resp-tab-content" aria-labelledby="tab_item-2">
-                            <div class="facts">
-                                <div class="login">
-                                    <input type="text" value="Search Address, Neighborhood, City or Zip" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search Address, Neighborhood, City or Zip';}">
-                                    <input type="submit" value="">
+                            <h2 class="resp-accordion" role="tab" aria-controls="tab_item-2"><span
+                                    class="resp-arrow"></span>For Rent</h2>
+
+                            <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-2">
+                                <div class="facts">
+                                    <div class="login">
+                                        <input type="text" value="Search Address, Neighborhood, City or Zip"
+                                               onfocus="this.value = '';"
+                                               onblur="if (this.value == '') {this.value = 'Search Address, Neighborhood, City or Zip';}">
+                                        <input type="submit" value="">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                     <script src="js/easyResponsiveTabs.js" type="text/javascript"></script>
@@ -117,7 +137,7 @@
                 </div>
             </div>
             <script>
-                $(document).ready(function() {
+                $(document).ready(function () {
                     $('.popup-with-zoom-anim').magnificPopup({
                         type: 'inline',
                         fixedContentPos: false,
@@ -134,7 +154,7 @@
 
 
         </div>
-        <div class="clearfix"> </div>
+        <div class="clearfix"></div>
     </div>
 </div>
 <!--//-->
@@ -157,22 +177,22 @@
                   </li>
               </ul>
           </div> -->
-        <div class="clearfix"> </div>
+        <div class="clearfix"></div>
         <!--initiate accordion-->
         <script type="text/javascript">
-            $(function() {
+            $(function () {
                 var menu_ul = $('.menu > li > ul'),
-                        menu_a  = $('.menu > li > a');
+                        menu_a = $('.menu > li > a');
                 menu_ul.hide();
-                menu_a.click(function(e) {
+                menu_a.click(function (e) {
                     e.preventDefault();
-                    if(!$(this).hasClass('active')) {
+                    if (!$(this).hasClass('active')) {
                         menu_a.removeClass('active');
                         menu_ul.filter(':visible').slideUp('normal');
-                        $(this).addClass('active').next().stop(true,true).slideDown('normal');
+                        $(this).addClass('active').next().stop(true, true).slideDown('normal');
                     } else {
                         $(this).removeClass('active');
-                        $(this).next().stop(true,true).slideUp('normal');
+                        $(this).next().stop(true, true).slideUp('normal');
                     }
                 });
             });
@@ -182,7 +202,8 @@
 </div>
 <!--//header-->
 <!---->
-<img class="flagIcon" id="flag" src="images/red_flag_icon.jpg" background-color=transparent onclick="reportListing()" />
+<img class="flagIcon" id="flag" src="images/red_flag_icon.jpg" background-color=transparent onclick="reportListing()"/>
+
 <div class="container">
 
     <div class="buy-single-single">
@@ -193,26 +214,26 @@
                 <div class="flexslider">
                     <ul class="slides">
                         <li data-thumb="images/ss.jpg">
-                            <img src="images/ss.jpg" />
+                            <img src="images/ss.jpg"/>
                         </li>
                         <li data-thumb="images/ss1.jpg">
-                            <img src="images/ss1.jpg" />
+                            <img src="images/ss1.jpg"/>
                         </li>
                         <li data-thumb="images/ss2.jpg">
-                            <img src="images/ss2.jpg" />
+                            <img src="images/ss2.jpg"/>
                         </li>
                         <li data-thumb="images/ss3.jpg">
-                            <img src="images/ss3.jpg" />
+                            <img src="images/ss3.jpg"/>
                         </li>
                     </ul>
                 </div>
                 <!-- FlexSlider -->
                 <script defer src="js/jquery.flexslider.js"></script>
-                <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen" />
+                <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen"/>
 
                 <script>
                     // Can also be used with $(document).ready()
-                    $(window).load(function() {
+                    $(window).load(function () {
                         $('.flexslider').flexslider({
                             animation: "slide",
                             controlNav: "thumbnails"
@@ -223,29 +244,44 @@
             <div class="buy-sin-single">
                 <div class="col-sm-5 middle-side immediate">
                     <h4>Entry: Immediate</h4>
+
                     <p><span class="bath">Number of beds </span>: <span class="one">{{listing.beds}}</span></p>
-                    <p>  <span class="bath1">Number of baths </span>:<span class="two">{{listing.baths}}</span></p>
+
+                    <p><span class="bath1">Number of baths </span>:<span class="two">{{listing.baths}}</span></p>
+
                     <p><span class="bath2">Built-up Area</span>:<span class="two">{{listing.buildArea}}</span></p>
+
                     <p><span class="bath3">Plot Area </span>:<span class="two"> {{listing.plotArea}}</span></p>
+
                     <p><span class="bath4">Renovated</span>:<span class="two">{{listing.renovated}}</span></p>
+
                     <p><span class="bath5">Price </span>:<span class="two"> {{listing.price}}</span></p>
+
                     <div class="right-side">
                     </div>
                 </div>
                 <div class="col-sm-7 buy-sin">
                     <h4>Description</h4>
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature</p>
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC </p>
-                </div>
-                <div class="clearfix"> </div>
-            </div>
-            <!--<div class="map-buy-single">-->
-            <!--<h4>Neighborhood Info</h4>-->
-            <!--<div class="map-buy-single1">-->
-            <!--<iframe src="https://www.google.com/maps/embed/v1/place?q=HaYarkon+30,+Tel+Aviv-Yafo,+Israel&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>-->
 
-            <!--</div>-->
-            <!--</div>-->
+                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
+                        classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a
+                        Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin
+                        words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in
+                        classical literature</p>
+
+                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
+                        classical Latin literature from 45 BC </p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="map-buy-single">
+                <h4>Neighborhood Info</h4>
+
+                <div class="map-buy-single1">
+                    <iframe src="https://www.google.com/maps/embed/v1/place?q=HaYarkon+30,+Tel+Aviv-Yafo,+Israel&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe>
+
+                </div>
+            </div>
 
             <!-- this is the video if we want to use it -->
             <!--     <div class="video-pre">
@@ -255,11 +291,10 @@
         </div>
 
 
-
-
         <div class="col-md-3">
             <div class="single-box-right right-immediate">
                 <h4>Featured Apartments</h4>
+
                 <div class="single-box-img ">
                     <div class="box-img">
                         <a href="single"><img class="img-responsive" src="images/sl.jpg" alt=""></a>
@@ -268,7 +303,7 @@
                         <p><a href="single">Dizingof 147</a></p>
                         <a href="single" class="in-box">More Info</a>
                     </div>
-                    <div class="clearfix"> </div>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="single-box-img">
                     <div class="box-img">
@@ -278,7 +313,7 @@
                         <p><a href="single">Rashi 40</a></p>
                         <a href="single" class="in-box">More Info</a>
                     </div>
-                    <div class="clearfix"> </div>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="single-box-img">
                     <div class="box-img">
@@ -288,7 +323,7 @@
                         <p><a href="single">Nahmani 33</a></p>
                         <a href="single" class="in-box">More Info</a>
                     </div>
-                    <div class="clearfix"> </div>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="single-box-img">
                     <div class="box-img">
@@ -298,7 +333,7 @@
                         <p><a href="single">King George 6</a></p>
                         <a href="single" class="in-box">More Info</a>
                     </div>
-                    <div class="clearfix"> </div>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="single-box-img">
                     <div class="box-img">
@@ -308,13 +343,117 @@
                         <p><a href="single">Allenby 40</a></p>
                         <a href="single" class="in-box">More Info</a>
                     </div>
-                    <div class="clearfix"> </div>
+                    <div class="clearfix"></div>
                 </div>
             </div>
 
         </div>
-        <div class="clearfix"> </div>
+        <div class="clearfix"></div>
     </div>
+</div>
+
+<!---->
+<div class="container">
+    <div class="future">
+        <h3>People also viewed</h3>
+
+        <div class="content-bottom-in">
+            <ul id="flexiselDemo1">
+                <li>
+                    <div class="project-fur">
+                        <a href="single"><img class="img-responsive" src="images/pi.jpg" alt=""/> </a>
+
+                        <div class="fur">
+                            <div class="fur1">
+                                <span class="fur-money">4800NIS </span>
+                                <h6 class="fur-name"><a href="single">Rotchild 10</a></h6>
+                                <span>Tel-Aviv</span>
+                            </div>
+                            <div class="fur2">
+                                <span>4 Rooms</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="project-fur">
+                        <a href="single"><img class="img-responsive" src="images/pi1.jpg" alt=""/> </a>
+
+                        <div class="fur">
+                            <div class="fur1">
+                                <span class="fur-money">6000NIS </span>
+                                <h6 class="fur-name"><a href="single">Bar Kochva</a></h6>
+                                <span>Hertzelia</span>
+                            </div>
+                            <div class="fur2">
+                                <span>5 Rooms</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="project-fur">
+                        <a href="single"><img class="img-responsive" src="images/pi2.jpg" alt=""/> </a>
+
+                        <div class="fur">
+                            <div class="fur1">
+                                <span class="fur-money">1800NIS </span>
+                                <h6 class="fur-name"><a href="single">Amarello</a></h6>
+                                <span>Lod</span>
+                            </div>
+                            <div class="fur2">
+                                <span>1 Room</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="project-fur">
+                        <a href="single"><img class="img-responsive" src="images/pi3.jpg" alt=""/> </a>
+
+                        <div class="fur">
+                            <div class="fur1">
+                                <span class="fur-money">12000NIS </span>
+                                <h6 class="fur-name"><a href="single">Sderot Hen</a></h6>
+                                <span>Tel-Aviv</span>
+                            </div>
+                            <div class="fur2">
+                                <span>4 Rooms</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <script type="text/javascript">
+                $(window).load(function () {
+                    $("#flexiselDemo1").flexisel({
+                        visibleItems: 4,
+                        animationSpeed: 1000,
+                        autoPlay: true,
+                        autoPlaySpeed: 3000,
+                        pauseOnHover: true,
+                        enableResponsiveBreakpoints: true,
+                        responsiveBreakpoints: {
+                            portrait: {
+                                changePoint: 480,
+                                visibleItems: 1
+                            },
+                            landscape: {
+                                changePoint: 640,
+                                visibleItems: 2
+                            },
+                            tablet: {
+                                changePoint: 768,
+                                visibleItems: 3
+                            }
+                        }
+                    });
+                });
+            </script>
+            <script type="text/javascript" src="js/jquery.flexisel.js"></script>
+        </div>
+    </div>
+
 </div>
 
 <div class="container">
@@ -332,109 +471,18 @@
                  //this.page.identifier = "this page identifier"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
                  };
                  */
-                (function() { // DON'T EDIT BELOW THIS LINE
+                (function () { // DON'T EDIT BELOW THIS LINE
                     var d = document, s = d.createElement('script');
                     s.src = '//idoson.disqus.com/embed.js';
                     s.setAttribute('data-timestamp', +new Date());
                     (d.head || d.body).appendChild(s);
                 })();
             </script>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments.</a></noscript>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments.</a>
+            </noscript>
         </div>
     </div>
 </div>
-<!---->
-<div class="container">
-    <div class="future">
-        <h3 >People also viewed</h3>
-        <div class="content-bottom-in">
-            <ul id="flexiselDemo1">
-                <li><div class="project-fur">
-                    <a href="single" ><img class="img-responsive" src="images/pi.jpg" alt="" />	</a>
-                    <div class="fur">
-                        <div class="fur1">
-                            <span class="fur-money">4800NIS </span>
-                            <h6 class="fur-name"><a href="single">Rotchild 10</a></h6>
-                            <span>Tel-Aviv</span>
-                        </div>
-                        <div class="fur2">
-                            <span>4 Rooms</span>
-                        </div>
-                    </div>
-                </div></li>
-                <li><div class="project-fur">
-                    <a href="single" ><img class="img-responsive" src="images/pi1.jpg" alt="" />	</a>
-                    <div class="fur">
-                        <div class="fur1">
-                            <span class="fur-money">6000NIS </span>
-                            <h6 class="fur-name"><a href="single">Bar Kochva</a></h6>
-                            <span>Hertzelia</span>
-                        </div>
-                        <div class="fur2">
-                            <span>5 Rooms</span>
-                        </div>
-                    </div>
-                </div></li>
-                <li><div class="project-fur">
-                    <a href="single" ><img class="img-responsive" src="images/pi2.jpg" alt="" />	</a>
-                    <div class="fur">
-                        <div class="fur1">
-                            <span class="fur-money">1800NIS </span>
-                            <h6 class="fur-name"><a href="single">Amarello</a></h6>
-                            <span>Lod</span>
-                        </div>
-                        <div class="fur2">
-                            <span>1 Room</span>
-                        </div>
-                    </div>
-                </div></li>
-                <li><div class="project-fur">
-                    <a href="single" ><img class="img-responsive" src="images/pi3.jpg" alt="" />	</a>
-                    <div class="fur">
-                        <div class="fur1">
-                            <span class="fur-money">12000NIS </span>
-                            <h6 class="fur-name"><a href="single">Sderot Hen</a></h6>
-                            <span>Tel-Aviv</span>
-                        </div>
-                        <div class="fur2">
-                            <span>4 Rooms</span>
-                        </div>
-                    </div>
-                </div></li>
-            </ul>
-            <script type="text/javascript">
-                $(window).load(function() {
-                    $("#flexiselDemo1").flexisel({
-                        visibleItems: 4,
-                        animationSpeed: 1000,
-                        autoPlay: true,
-                        autoPlaySpeed: 3000,
-                        pauseOnHover: true,
-                        enableResponsiveBreakpoints: true,
-                        responsiveBreakpoints: {
-                            portrait: {
-                                changePoint:480,
-                                visibleItems: 1
-                            },
-                            landscape: {
-                                changePoint:640,
-                                visibleItems: 2
-                            },
-                            tablet: {
-                                changePoint:768,
-                                visibleItems: 3
-                            }
-                        }
-                    });
-                });
-            </script>
-            <script type="text/javascript" src="js/jquery.flexisel.js"></script>
-        </div>
-    </div>
-
-</div>
-
-
 <!--footer-->
 <div class="footer">
     <!--
@@ -500,9 +548,10 @@
                 <h2><a href="index.html">Your Home</a></h2>
             </div>
             <div class="col-md-8 footer-class">
-                <p >© Your Home. All Rights Reserved | Design by  <a href="https://github.com/idoromm/Apt-Crowdsourcing" target="_blank">Ido, Kobi, Julya, Lior</a> </p>
+                <p>© Your Home. All Rights Reserved | Design by <a href="https://github.com/idoromm/Apt-Crowdsourcing"
+                                                                   target="_blank">Ido, Kobi, Julya, Lior</a></p>
             </div>
-            <div class="clearfix"> </div>
+            <div class="clearfix"></div>
         </div>
     </div>
 </div>

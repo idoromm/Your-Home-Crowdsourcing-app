@@ -1,4 +1,4 @@
-(function(){
+/*(function(){
 
     var app = angular.module("Crowdsourcing", []);
 
@@ -16,3 +16,4 @@
     });
 
 }());
+*/

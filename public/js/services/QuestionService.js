@@ -37,7 +37,7 @@ function alertPrompt() {
             });
     }, 5000); // 5 seconds
 }
-
+/*
 (function () {
     var questionService = function ($http) {
         var getQuestion = function (url) {
@@ -57,3 +57,5 @@ function alertPrompt() {
     module.factory("QuestionService", questionService);
 
 }());
+
+*/

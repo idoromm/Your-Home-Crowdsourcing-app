@@ -1,8 +1,10 @@
 /**
  * Created by Ido on 04/12/2015.
  */
+
+/*
 (function() {
-    var app = angular.module("Crowdsourcing", []);
+    var app1 = angular.module("Crowdsourcing", []);
 
     var QuestionController = function($scope,questionService) {
 
@@ -18,6 +20,8 @@
             .then(onQuestionComplete, onError);
     };
 
-    app.controller("QuestionController", ["$scope","questionService", QuestionController]);
+    app1.controller("QuestionController", ["$scope","questionService", QuestionController]);
 
 }());
+
+    */

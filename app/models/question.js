@@ -8,6 +8,7 @@ var Schema = mongoose.Schema;
 
 var questionSchema = new Schema({
     description: String
+
 });
 
 // define the schema for our user model

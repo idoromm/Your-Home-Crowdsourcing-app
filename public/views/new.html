@@ -1,165 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="app">
 <head>
-    <title>Add new review</title>
+    <title></title>
     <meta charset="utf-8">
-    <style>
-        body {
-            padding-top: 10px;
-            padding-left: 10px;
-        }
-    </style>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="//code.angularjs.org/1.4.0/angular.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="libs/angular/angular.min.js"></script>
+    <script src="libs/angular-route/angular-route.min.js"></script>
+    <script src="js/ui-bootstrap-tpls.min.js"></script>
     <script src="js/app.js"></script>
-
+    <script src="js/controllers/reviewCtrl.js"></script>
+    <script src="js/directives/reviewDirective.js"></script>
+    <script src="js/directives/validationDirective.js"></script>
+    <script src="js/services/reviewService.js"></script>
 </head>
-<body ng-app="validationApp" ng-controller="mainController">
 
-<!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-info btn-lg" id="myBtn" data-toggle="modal" data-target="#myModal">
-    <span class="glyphicon glyphicon-plus"></span>
-</button>
+<body class="container">
+<h1>Start Page</h1>
 
-<!-- Modal -->
-<div class="modal fade" id="myModalStatic" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add New Review</h3>
-            </div>
-            <div class="modal-body">
-                <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
+<div ng-view></div>
 
-                    <!-- ADDRESS -->
-                    <div class="form-group"
-                         ng-class="{'has-error': userForm.address.$touched && userForm.address.$invalid}">
-                        <label>Address</label>
-                        <input type="text" name="address" class="form-control" ng-model="address" required>
-                    </div>
-                    <div class="help-block" ng-messages="userForm.address.$error" ng-if="userForm.address.$touched">
-                        <p ng-message="required">Address is required.</p>
-                    </div>
-
-                    <!-- PRICE -->
-                    <div class="form-group"
-                         ng-class="{'has-error': userForm.price.$touched && userForm.price.$invalid}">
-                        <label>Price</label>
-                        <input type="number" name="price" class="form-control" ng-model="price" min="0" required>
-                    </div>
-                    <div class="help-block" ng-messages="userForm.price.$error" ng-if="userForm.price.$touched">
-                        <p ng-message="required">Price is required.</p>
-                    </div>
-
-                    <!-- ROOMS -->
-                    <div class="form-group">
-                        <label>Number Of Rooms</label>
-
-                        <div>
-                            <label class="radio-inline"><input type="radio" name="rooms">1 </label>
-                            <label class="radio-inline"><input type="radio" name="rooms">1.5 </label>
-                            <label class="radio-inline"><input type="radio" name="rooms">2 </label>
-                            <label class="radio-inline"><input type="radio" name="rooms">2.5 </label>
-                            <label class="radio-inline"><input type="radio" name="rooms">3 </label>
-                            <label class="radio-inline"><input type="radio" name="rooms">3.5 </label>
-                            <label class="radio-inline"><input type="radio" name="rooms">4 </label>
-                            <label class="radio-inline"><input type="radio" name="rooms">5 </label>
-
-                        </div>
-
-                        <!-- SIZE -->
-                        <div class="form-group">
-                            <label>Size (sqm)</label>
-                            <input type="number" name="size" class="form-control" ng-model="size">
-                        </div>
-
-                        <!-- DESCIPTION -->
-                        <div class="form-group">
-                            <label>Description and additional info</label>
-                            <input type="text" name="description" class="form-control" ng-model="description">
-                        </div>
-
-                        <!-- IMAGES -->
-                        <div class="form-group">
-                            <label>Images (recommended)</label>
-                            <input type="file" file-upload multiple/>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" ng-click="submit()">OK</button>
-                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-<script>
-    $(document).ready(function () {
-        $("#myBtn").click(function () {
-            $("#myModalStatic").modal({backdrop: "static"});
-        });
-    });
-</script>
-
-<script>
-    angular.module('Form', ['ui.bootstrap']);
-    var ModalDemoCtrl = function ($scope, $modal, $log) {
-
-
-        $scope.open = function () {
-
-            var modalInstance = $modal.open({
-                templateUrl: 'myModalContent.html',
-                controller: ModalInstanceCtrl,
-
-            });
-
-
-        };
-    };
-
-    var ModalInstanceCtrl = function ($scope, $modalInstance) {
-
-        $scope.submit = function () {
-
-            alert($scope.Form.$dirty);
-        };
-
-        $scope.ok = function () {
-            $modalInstance.close();
-        };
-
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
-    };
-</script>
-
-<script>
-    app.directive('fileUpload', function () {
-        return {
-            scope: true,        //create a new scope
-            link: function (scope, el, attrs) {
-                el.bind('change', function (event) {
-                    var files = event.target.files;
-                    //iterate files since 'multiple' may be specified on the element
-                    for (var i = 0; i < files.length; i++) {
-                        //emit event upward
-                        scope.$emit("fileSelected", {file: files[i]});
-                    }
-                });
-            }
-        };
-    });
-</script>
 </body>
 </html>

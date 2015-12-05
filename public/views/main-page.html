@@ -1,4 +1,4 @@
-﻿﻿<!doctype html>
+﻿<!doctype html>
 <html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
@@ -23,167 +23,77 @@
     <link rel="stylesheet" href="css/custom.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <!--<script src="js/controllers/MainCtrl.js"></script>-->
-    <!--<script src="js/controllers/UserCtrl.js"></script>-->
-    <!--<script src="js/services/UsersService.js"></script>-->
-    <!--<script src="js/appRoutes.js"></script>-->
-    <script src="js/app.js"></script>
 
-    <!--<script>-->
-        <!--function myFunction() {-->
-            <!--sweetAlert("Oops...", "Something went wrong!", "error");-->
-        <!--}-->
-    <!--</script>-->
+
+    <script src="js/app.js"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="js/ui-bootstrap-tpls.min.js"></script>
+    <script src="js/controllers/reviewCtrl.js"></script>
+    <script src="js/directives/reviewDirective.js"></script>
+    <script src="js/directives/validationDirective.js"></script>
+    <script src="js/services/reviewService.js"></script>
+
 </head>
 
-<body ng-app="sampleApp" ng-controller="UserController">
+<body>
 
-
-
-    <div>
-        <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top topnav" role="navigation">
-            <div class="container topnav">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand topnav" href="/">{{message}}, {{User}}</a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="\about">About</a>
-                        </li>
-                        <li>
-                            <a href="\profile">Profile</a>
-                        </li>
-                        <li>
-                            <a href="\logout">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
+<div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top topnav" role="navigation">
+        <div class="container topnav">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand topnav" href="/">{{message}}, {{User}}</a>
             </div>
-            <!-- /.container -->
-        </nav>
-
-    </div>
-
-
-    <div>
-        <!-- Button HTML (to Trigger Modal) -->
-        <button type="button" class="btn btn-lg btn-primary" id="myBtn" data-toggle="modal" data-target="#myModal">
-            <span class="glyphicon glyphicon-plus"></span>
-        </button>
-        <!--<button onclick="myFunction()">Try it</button>-->
-        <!--<script>-->
-        <!--function myFunction() {-->
-            <!--sweetAlert("Oops...", "Something went wrong!", "error");-->
-        <!--}-->
-        <!--</script>-->
-    </div>
-    <!-- MODAL -->
-    <div class="bs">
-        <div id="myModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h2 class="modal-title">Add New Review</h2>
-                    </div>
-                    <div class="modal-body">
-                        <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
-
-                            <!-- ADDRESS -->
-                            <div class="form-group"
-                                 ng-class="{'has-error': userForm.address.$touched && userForm.address.$invalid}">
-                                <label>Address</label>
-                                <input type="text" name="address" class="form-control" ng-model="address" required>
-                            </div>
-                            <div class="help-block" ng-messages="userForm.address.$error"
-                                 ng-if="userForm.address.$touched">
-                                <p ng-message="required">Address is required.</p>
-                            </div>
-
-                            <!-- PRICE -->
-                            <div class="form-group"
-                                 ng-class="{'has-error': userForm.price.$touched && userForm.price.$invalid}">
-                                <label>Price</label>
-                                <input type="number" name="price" class="form-control" ng-model="price" min="0"
-                                       required>
-                            </div>
-                            <div class="help-block" ng-messages="userForm.price.$error"
-                                 ng-if="userForm.price.$touched">
-                                <p ng-message="required">Price is required.</p>
-                            </div>
-
-                            <!-- ROOMS -->
-                            <div class="form-group">
-                                <label>Number Of Rooms</label>
-
-                                <div>
-                                    <label class="radio-inline"><input type="radio" name="rooms">1 </label>
-                                    <label class="radio-inline"><input type="radio" name="rooms">1.5 </label>
-                                    <label class="radio-inline"><input type="radio" name="rooms">2 </label>
-                                    <label class="radio-inline"><input type="radio" name="rooms">2.5 </label>
-                                    <label class="radio-inline"><input type="radio" name="rooms">3 </label>
-                                    <label class="radio-inline"><input type="radio" name="rooms">3.5 </label>
-                                    <label class="radio-inline"><input type="radio" name="rooms">4 </label>
-                                    <label class="radio-inline"><input type="radio" name="rooms">5 </label>
-
-                                </div>
-                            </div>
-                            <!-- SIZE -->
-                            <div class="form-group">
-                                <label>Size (sqm)</label>
-                                <input type="number" name="size" class="form-control" ng-model="size">
-                            </div>
-
-                            <!-- DESCIPTION -->
-                            <div class="form-group">
-                                <label>Description and additional info</label>
-                                <input type="text" name="description" class="form-control" ng-model="description">
-                            </div>
-
-                            <!-- IMAGES -->
-                            <div class="form-group">
-                                <label>Images (recommended)</label>
-                                <input type="file" file-upload multiple />
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="\about">About</a>
+                    </li>
+                    <li>
+                        <a href="\profile">Profile</a>
+                    </li>
+                    <li>
+                        <a href="\logout">Log Out</a>
+                    </li>
+                    <li ng-app="app">
+                        <div ng-view></div>
+                    </li>
+                </ul>
             </div>
+            <!-- /.navbar-collapse -->
         </div>
-    </div>
+        <!-- /.container -->
+    </nav>
+</div>
 
+<br/>
+<br/>
 
-    <input id="searchTextField" class="controls" type="text"
-           placeholder="Search for an address or place">
+<input id="searchTextField" class="controls" type="text"
+       placeholder="Search for an address or place">
 
+<!--<input id="searchTextField" type="text" size="50">-->
 
-    <!--<input id="searchTextField" type="text" size="50">-->
+<section id="cd-google-map">
+    <div id="google-container"></div>
+    <div id="cd-zoom-in"></div>
+    <div id="cd-zoom-out"></div>
+</section>
 
-    <section id="cd-google-map">
-        <div id="google-container"></div>
-        <div id="cd-zoom-in"></div>
-        <div id="cd-zoom-out"></div>
-    </section>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAl8UrwCupLjkdVfx_IXugrryC8ES32Cz8&language=iw&?v=3.exp&sensor=false&libraries=places"></script>
+<script src="js/main.js"></script>
+<!-- Resource jQuery -->
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAl8UrwCupLjkdVfx_IXugrryC8ES32Cz8&language=iw&?v=3.exp&sensor=false&libraries=places"></script>
-    <script src="js/main.js"></script> <!-- Resource jQuery -->
-
-
+</div>
 </body>
 </html>

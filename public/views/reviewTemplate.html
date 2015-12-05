@@ -1,0 +1,132 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title">Add New Review</h3>
+    </div>
+
+    <div class="modal-body">
+        <form name="reviewForm" novalidate role="form">
+
+            <div class="form-group" show-errors>
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" class="form-control"
+                       ng-model="editableReview.address"
+                       ng-required=true>
+                <span class="help-block hide">Address is required</span>
+            </div>
+
+            <div class="form-group" show-errors>
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" class="form-control"
+                       ng-model="editableReview.price"
+                       min="0" ng-required=true>
+                <span class="help-block hide">Price is required</span>
+            </div>
+
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select name="number" id="type" class="form-control" ng-model="editableReview.type">
+                    <option>Apartment</option>
+                    <option>House</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-2">
+                    <label for="floor">Floor</label>
+                    <input type="number" id="floor" name="floor" class="form-control"
+                           ng-model="editableReview.floor"
+                           min="0">
+                </div>
+
+                <div class="col-xs-2">
+                    <label for="floors">out of</label>
+                    <input type="number" id="floors" name="floors" class="form-control"
+                           ng-model="editableReview.floors"
+                           min=0">
+                </div>
+            </div>
+            <br/><br/><br/><br/>
+
+            <div class="form-group">
+                <label>Number Of Rooms</label>
+
+                <div>
+                    <label class="radio-inline"><input type="radio" name="rooms" value="1"
+                                                       ng-model="editableReview.rooms">1
+                    </label>
+                    <label class="radio-inline"><input type="radio" name="rooms" value="1.5"
+                                                       ng-model="editableReview.rooms">1.5
+                    </label>
+                    <label class="radio-inline"><input type="radio" name="rooms" value="2"
+                                                       ng-model="editableReview.rooms">2
+                    </label>
+                    <label class="radio-inline"><input type="radio" name="rooms" value="2.5"
+                                                       ng-model="editableReview.rooms">2.5
+                    </label>
+                    <label class="radio-inline"><input type="radio" name="rooms" value="3"
+                                                       ng-model="editableReview.rooms">3
+                    </label>
+                    <label class="radio-inline"><input type="radio" name="rooms" value="3.5"
+                                                       ng-model="editableReview.rooms">3.5
+                    </label>
+                    <label class="radio-inline"><input type="radio" name="rooms" value="4"
+                                                       ng-model="editableReview.rooms">4
+                    </label>
+                    <label class="radio-inline"><input type="radio" name="rooms" value="4.5"
+                                                       ng-model="editableReview.rooms">5
+                    </label>
+
+                </div>
+            </div>
+            <!-- SIZE -->
+            <div class="form-group">
+                <label>Size (sqm)</label>
+                <input type="number" name="size" class="form-control" ng-model="editableReview.size">
+            </div>
+
+            <div class="form-group"><label>Additional Info</label>
+
+                <div class="checkbox col-sm-offset-1">
+                    <labal><input type="checkbox" value="elevator" ng-model="editableReview.elevator"/>Elevator
+                        in
+                        Building
+                    </labal>
+                </div>
+                <div class="checkbox col-sm-offset-1">
+                    <labal><input type="checkbox" value="airConditioning"
+                                  ng-model="editableReview.airConditioning"/>Air
+                        Conditioning
+                    </labal>
+                </div>
+                <div class="checkbox col-sm-offset-1">
+                    <labal><input type="checkbox" value="balcony" ng-model="editableReview.balcony"/>Balcony
+                    </labal>
+                </div>
+
+                <div class="checkbox col-sm-offset-1">
+                    <labal><input type="checkbox" value="boiler" ng-model="editableReview.boiler"/>Solar water
+                        heater
+                    </labal>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description and additional info</label>
+                <textarea name="description" id="description" class="form-control" rows="2" cols="40"
+                          ng-model="editableReview.description"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Images (recommended)</label>
+                <input type="file" file-upload multiple/>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-sm-offset-6">
+            <input type="button" class="btn btn-default" value="Cancel" ng-click="cancelForm()"/>
+            <input type="submit" class="btn btn-primary" value="Submit" ng-click="submitForm()"/>
+        </div>
+    </div>
+</div>

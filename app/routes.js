@@ -18,9 +18,6 @@ module.exports = function (app, passport) {
 
     app.get('/api/user', isLoggedIn, function (req, res) {
 
-
-        var fsd = res.user['facebook'];
-
         //didnt find better way to make it work
         var userStr = JSON.stringify(req.user);
         var userJson = JSON.parse(userStr);

@@ -7,7 +7,7 @@ var methodOverride  = require('method-override');
 var mongoose        = require('mongoose');
 var app             = express(); // express framework
 var Disqus          = require('disqus'); // comments framework
-var favicon         = require('express-favicon'); // favicon service
+var favicon         = require('express-favicon'); // favicon
 
 
 //passportJs set up ==================================
@@ -21,21 +21,24 @@ var cookieParser	= require('cookie-parser');
 //Port Config ========================================================================
 var port = process.env.PORT || 3000; //bind to port 3000
 
-// Disqus config
-var disqus = new Disqus({
-    api_secret : 'blceyt4mjocdtWmGh1F1W1pAgOvvKTIPJWL4aGC1uVkk5MMsc1r9tOMap6DQEhaT',
-    api_key : 'FuFbTSoKxKoAwzl4G8SPs9gvZG2D9X17E0Di6YzxJpcAR7h3mXnIoWXWceoN1WOz',
-    access_token : '87902e92c5d9425fa4be2a9663378c4d'
-});
 
-disqus.request('posts/list', { forum : 'idoson'}, function(data) {
-    if (data.error) {
-        console.log('Something went wrong...');
-    } else {
-      //  console.log(data);
-      ;
-    }
-});
+// TODO: Lior: When you wish to work with Disqus uncomment this
+
+//// Disqus config
+//var disqus = new Disqus({
+//    api_secret : 'blceyt4mjocdtWmGh1F1W1pAgOvvKTIPJWL4aGC1uVkk5MMsc1r9tOMap6DQEhaT',
+//    api_key : 'FuFbTSoKxKoAwzl4G8SPs9gvZG2D9X17E0Di6YzxJpcAR7h3mXnIoWXWceoN1WOz',
+//    access_token : '87902e92c5d9425fa4be2a9663378c4d'
+//});
+//
+//disqus.request('posts/list', { forum : 'idoson'}, function(data) {
+//    if (data.error) {
+//        console.log('Something went wrong...');
+//    } else {
+//      //  console.log(data);
+//      ;
+//    }
+//});
 
 //DB config ==========================================================================
 

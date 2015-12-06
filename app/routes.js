@@ -232,20 +232,6 @@ module.exports = function (app, passport) {
             });
     });
 
- /*   app.get('/api/questions/:description', function (req, res) {
-        console.log("Question API");
-
-        Question.findOne(
-            {
-                "description": req.params.description
-            }
-            , function (err, question) {
-                console.log("Question: " + question);
-                res.json(question);
-            });
-    }); */
-
-
     /* gets a question with id = _id */
     app.get('/api/questions/:_id', function (req, res) {
         console.log("Question API");

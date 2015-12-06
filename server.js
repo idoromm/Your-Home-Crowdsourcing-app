@@ -18,6 +18,8 @@ var session			= require('express-session');
 var morgan			= require('morgan');
 var cookieParser	= require('cookie-parser');
 
+
+
 //Port Config ========================================================================
 var port = process.env.PORT || 3000; //bind to port 3000
 
@@ -63,11 +65,11 @@ require('./config/passport')(passport);
 app.use(favicon('./public/images/favicon.ico'));
 
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true, limit: '20mb' }));
+app.use(bodyParser.json({ limit: '20mb' }));
 
 // parse application/vnd.api+json as json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' })); 
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true })); 

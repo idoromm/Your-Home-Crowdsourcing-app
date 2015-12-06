@@ -21,7 +21,12 @@ var userSchema = mongoose.Schema({
         token        : String,
 		firstName    : String,
 		familyName	 : String
-    },
+	},
+	reputation		 : {
+		type: Number,
+		default: 0
+	}
+	
 
  /*   ApartmentsAndQuestions: [{
         apartmentID: String,

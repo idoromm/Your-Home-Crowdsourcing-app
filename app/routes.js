@@ -16,7 +16,7 @@ module.exports = function (app, passport) {
     //===================================================
 
 
-    app.get('/api/user', isLoggedIn, function (req, res) {
+    app.get('/api/userName', isLoggedIn, function (req, res) {
 
         //didnt find better way to make it work
         var userStr = JSON.stringify(req.user);
@@ -45,7 +45,17 @@ module.exports = function (app, passport) {
         } else {
             res.send(userJson.local.name);
         }
-    });
+	});
+	
+	app.get('/api/user', function (req, res) {
+		if (req.user) {
+			res.json(req.user);
+		} else {
+			res.json("");
+		}
+
+	});
+
 
     app.get('/api/listings', function (req, res) {
         // use mongoose to get all listings in the database

@@ -1,7 +1,6 @@
 // load all the things we need
 var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var TwitterStrategy  = require('passport-twitter').Strategy;
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 
 // load up the user model
@@ -98,7 +97,7 @@ module.exports = function(passport) {
                         var newUser				= new User();
 						newUser.local.name		= req.body.name;
                         newUser.local.email		= email;
-                        newUser.local.password	= newUser.generateHash(password);
+						newUser.local.password = newUser.generateHash(password);
 
                         newUser.save(function(err) {
                             if (err)
@@ -149,7 +148,7 @@ module.exports = function(passport) {
         clientID        : configAuth.facebookAuth.clientID,
         clientSecret    : configAuth.facebookAuth.clientSecret,
         callbackURL     : configAuth.facebookAuth.callbackURL,
-        profileFields   : ['gender', 'first_name', 'last_name','displayName'], 
+        profileFields   : ['gender','email', 'first_name', 'last_name','displayName'], 
 
     },
     function(req, token, refreshToken, profile, done) {
@@ -171,6 +170,7 @@ module.exports = function(passport) {
                             user.facebook.token = token;
 							user.facebook.firstName = profile.name.givenName;
 							user.facebook.familyName = profile.name.familyName;
+
                             if (profile.emails != undefined) {
                                 user.facebook.email = (profile.emails[0].value || '').toLowerCase();
                             } else {
@@ -192,8 +192,10 @@ module.exports = function(passport) {
 
                         newUser.facebook.id     = profile.id;
                         newUser.facebook.token  = token;
-						user.facebook.firstName = profile.name.givenName;
-						user.facebook.familyName = profile.name.familyName;
+						newUser.facebook.firstName = profile.name.givenName;
+						newUser.facebook.familyName = profile.name.familyName;
+						
+
                         if (profile.emails != undefined) {
                             newUser.facebook.email  = (profile.emails[0].value || '').toLowerCase();
                         } else {

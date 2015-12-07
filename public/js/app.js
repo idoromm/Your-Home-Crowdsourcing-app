@@ -31,7 +31,6 @@ app.controller('NavCtrl', function ($scope, $http, $modal) {
 		}
 	});
 
-
 	$scope.addNewReview = function () {
 		$modal.open({
 			templateUrl: 'views/reviewTemplate.html',
@@ -39,7 +38,5 @@ app.controller('NavCtrl', function ($scope, $http, $modal) {
 			backdrop: 'static'
 		});
 	};
-
-
 });
 

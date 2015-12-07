@@ -15,6 +15,7 @@ var listingSchema = new Schema({
         renovated       : Boolean,
         price           : Number,
         description     : String,
+        flagCount       : Number,
         pictures        : [imageSchema]
 });
 

@@ -56,6 +56,15 @@ module.exports = function (app, passport) {
 
 	});
 
+    app.get('/api/getrandomquestion', function (req, res) {
+        if (req.params.description) {
+            res.json(req.description);
+        } else {
+            res.json("");
+        }
+
+    });
+
 
     app.get('/api/listings', function (req, res) {
         // use mongoose to get all listings in the database

@@ -68,6 +68,8 @@ app.use(favicon('./public/images/favicon.ico'));
 app.use(bodyParser.urlencoded({ extended: true, limit: '20mb' }));
 app.use(bodyParser.json({ limit: '20mb' }));
 
+global.__base = __dirname + '/';
+
 // parse application/vnd.api+json as json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 

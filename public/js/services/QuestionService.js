@@ -39,7 +39,7 @@ var self = module.exports = {
 	},
 
 	getRandomQestion: function (res) {
-		Question.find({}, { '_id': 1 }, function (err, data) {
+		Question.find({}, { '_id': 1 }).lean().exec(function(err,data) {
 			if (err) {
 				console.log(err);
 				res.send("");

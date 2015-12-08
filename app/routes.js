@@ -1,6 +1,7 @@
 var User = require('./models/user');
 var Listing = require('./models/listing');
 var Question = require('./models/question');
+var QuestionService = require('../public/js/services/QuestionService');
 
 module.exports = function (app, passport) {
 
@@ -56,13 +57,20 @@ module.exports = function (app, passport) {
 
 	});
 
-    app.get('/api/getrandomquestion', function (req, res) {
+  /*  app.get('/api/getrandomquestion', function (req, res) {
         if (req.params.description) {
             res.json(req.description);
         } else {
             res.json("");
         }
 
+    }); */
+
+    app.get('/api/getrandomquestion', function (req, res) {
+        QuestionService.getRandomQuestion(function(questions){
+            res.json(questions);
+            //res.send(questions);
+        });
     });
 
 

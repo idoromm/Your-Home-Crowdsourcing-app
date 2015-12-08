@@ -1,5 +1,5 @@
-
-
+var Question = require(__base + 'app/models/question');
+var async = require('async');
 
 function reportListing() {
     sweetAlert("Thank you!", "This listing has been reported", "success");
@@ -15,10 +15,9 @@ function chooseRandomPic() {
 }
 
 var numberOfItemsToFind = 3;
-
 Question.find({}, { '_id': 1}, function(err, data){
     if (err) res.send(err);
-    var arr = shuffle.(data.slice(0));
+    var arr = shuffle(data.slice(0));
     arr.splice(numberOfItemsToFind, arr.length - numberOfItemsToFind);
     var return_arr = [];
     async.each(arr, function(item, callback){
@@ -29,10 +28,28 @@ Question.find({}, { '_id': 1}, function(err, data){
             callback();
         });
     }, function(err){
-        res.json(return_arr);
+       // res.json(return_arr[0]);
     });
 });
 
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex ;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
 
 /* usage of SweetAlert to display a random image to the user after 5 seconds */
 function alertPrompt() {

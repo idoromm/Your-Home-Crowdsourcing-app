@@ -14,7 +14,7 @@ app.controller('reviewCtrl',
 
         $scope.editableReview = angular.copy($scope.review);
 
-        $scope.submitForm = function (desc) {
+        $scope.submitForm = function () {
 
             $scope.$broadcast('show-errors-event');
 

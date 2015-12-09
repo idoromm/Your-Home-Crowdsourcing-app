@@ -1,5 +1,15 @@
 app.controller('reviewCtrl',
     function reviewCtrl($scope, $modalInstance, reviewService) {
+
+        var onListingComplete = function(response) {
+            swal("Your listing has been submited!", "Thank you for your time!", "success")
+            //$scope.listing = response;
+        };
+
+        var onError = function(reason) {
+            //$scope.error = "Could not fetch the listing";
+        };
+
         $scope.review = reviewService.review;
 
         $scope.editableReview = angular.copy($scope.review);
@@ -11,7 +21,10 @@ app.controller('reviewCtrl',
             if ($scope.reviewForm.$invalid)
                 return;
 
-            reviewService.insertReview($scope.editableReview);
+            reviewService.insertReview($scope.editableReview)
+                .then(onListingComplete,onError);
+
+
 
             $scope.review = angular.copy($scope.editableReview);
             $modalInstance.close();

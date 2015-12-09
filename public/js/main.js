@@ -4,6 +4,22 @@ jQuery(document).ready(function($){
 		longitude = 34.775082,
 		map_zoom = 15;
 
+
+	$.ajax({
+		url: '/api/getrandomquestion',
+		type: 'GET',
+		success: function(data) {
+			//called when successful
+			console.log(data);
+		},
+		error: function(e) {
+			//called when there is an error
+			//console.log(e.message);
+		}
+	});
+
+
+
 	//google map custom marker icon - .png fallback for IE11
 	var is_internetExplorer11= navigator.userAgent.toLowerCase().indexOf('trident') > -1;
 	var marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
@@ -198,13 +214,28 @@ jQuery(document).ready(function($){
     }
     //inizialize the map
 	var map = new google.maps.Map(document.getElementById('google-container'), map_options);
-	//add a custom marker to the map				
-	var marker = new google.maps.Marker({
-	  	position: new google.maps.LatLng(latitude, longitude),
-	    map: map,
-	    visible: true,
-	 	icon: marker_url,
-	});
+
+
+	addMarker(latitude,longitude,true);
+
+	function addMarker(latitude,longitude,isListing){
+		var marker_url;
+		if(isListing){
+			marker_url=( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
+		}
+		else {
+			marker_url=( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg'; //TODO change it to blue/black
+		}
+
+		var marker = new google.maps.Marker({
+			position: new google.maps.LatLng(latitude, longitude),
+			map: map,
+			visible: true,
+			icon: marker_url,
+		});
+
+	}
+
 
 	//add custom buttons for the zoom-in/zoom-out on the map
 	function CustomZoomControl(controlDiv, map) {
@@ -230,11 +261,15 @@ jQuery(document).ready(function($){
   	map.controls[google.maps.ControlPosition.LEFT_TOP].push(zoomControlDiv);
 	google.maps.event.addDomListener(window, 'load', function initialize() {
 
-		var input = document.getElementById('searchTextField');
-		map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+		var searchTextField = document.getElementById('searchTextField');
+		var addNewReviewButton = document.getElementById('addNewReviewButton');
 
-		console.log("input: "+input);
-		var autocomplete = new google.maps.places.Autocomplete(input);
+		map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchTextField);
+		map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(addNewReviewButton);
+
+
+
+		var autocomplete = new google.maps.places.Autocomplete(addNewReviewButton);
 
 
 		var infowindow = new google.maps.InfoWindow();

@@ -21,7 +21,7 @@ var listingSchema = new Schema({
         price           : Number,
         description     : String,
         flagCount       : Number,
-        owner           : userSchema,
+        owner           : [userSchema],
         pictures        : [imageSchema]
 });
 

@@ -10,13 +10,12 @@ var self = module.exports = {
 
 	},
 	
-	myPix: new Array("images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"),
+	myPix: ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"],
 	
 	chooseRandomPic: function () {
 		/* randomly selects a picture of the listing to prompt the user with when he enters */
 		var randomNum = Math.floor(Math.random() * myPix.length);
-		var picSelected = myPix[randomNum];
-		return picSelected;
+		return myPix[randomNum];
 	},
 	
 	shuffle: function (array) {
@@ -38,7 +37,7 @@ var self = module.exports = {
 		return array;
 	},
 
-	getRandomQestion: function (res) {
+	getRandomQuestion: function (res) {
 		Question.find({}, { '_id': 1 }).lean().exec(function(err,data) {
 			if (err) {
 				console.log(err);
@@ -69,8 +68,9 @@ var self = module.exports = {
 	alertPrompt: function () {
 		setTimeout(function () {
 			sweetAlert({
-				title: "Is this room furnished?",
-				imageUrl: chooseRandomPic(),
+			//	title: "Is this room furnished?",
+                title: self.getRandomQuestion,
+				imageUrl: self.chooseRandomPic,
 				imageSize: '600x600',
 				showCancelButton: true,
 				cancelButtonText: "No",

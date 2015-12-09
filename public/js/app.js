@@ -16,7 +16,7 @@ app.controller('NavCtrl', function ($scope, $http, $modal) {
 	$http.get('/api/user').success(function (user) {
 						
 		$scope.points = user.reputation;
-		$scope.message = 'hello';
+		$scope.message = 'Hi';
 		
 		if (user.facebook) {
 			$scope.User = user.facebook.firstName;

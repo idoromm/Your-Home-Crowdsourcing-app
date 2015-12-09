@@ -8,14 +8,17 @@ var listingSchema = new Schema({
         street          : String,
         buildingNumber  : Number,
         apartmentNumber : Number,
-        beds            : Number,
-        baths           : Number,
-        buildArea       : Number,
-        plotArea        : Number,
+        type            : String,
+        floor           : Number,
+        outOfFloors     : Number,
+        numberOfRooms   : Number,
+        size            : Number,
         renovated       : Boolean,
+        elevator        : Boolean,
+        airConditioning : Boolean,
+        balcony         : Boolean,
         price           : Number,
         description     : String,
-        flagCount       : Number,
         pictures        : [imageSchema]
 });
 

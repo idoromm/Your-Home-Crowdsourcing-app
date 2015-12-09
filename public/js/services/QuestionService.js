@@ -1,9 +1,6 @@
 
-
-
 function reportListing() {
     sweetAlert("Thank you!", "This listing has been reported", "success");
-
 }
 
 var myPix = new Array("images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg");
@@ -13,26 +10,6 @@ function chooseRandomPic() {
     var picSelected = myPix[randomNum];
     return picSelected;
 }
-
-var numberOfItemsToFind = 3;
-
-Question.find({}, { '_id': 1}, function(err, data){
-    if (err) res.send(err);
-    var arr = shuffle.(data.slice(0));
-    arr.splice(numberOfItemsToFind, arr.length - numberOfItemsToFind);
-    var return_arr = [];
-    async.each(arr, function(item, callback){
-        Question.findById(item._id, function(err, data){
-            if (err) res.send(err);
-            return_arr.push(data);
-
-            callback();
-        });
-    }, function(err){
-        res.json(return_arr);
-    });
-});
-
 
 /* usage of SweetAlert to display a random image to the user after 5 seconds */
 function alertPrompt() {
@@ -61,24 +38,24 @@ function alertPrompt() {
     }, 5000); // 5 seconds
 }
 
-//(function () {
-//    var questionService = function ($http) {
-//        var getQuestion = function (url) {
-//            return $http.get("http://localhost:3000" + url)
-//                .then(function (response) {
-//                    return response.data;
-//                });
-//        };
-//
-//        return {
-//            getQuestion: getQuestion
-//        };
-//
-//    };
-//
-//    var module = angular.module("Crowdsourcing");
-//    module.factory("QuestionService", questionService);
-//
-//}());
+(function () {
+    var questionService = function ($http) {
+        var getQuestion = function (url) {
+            return $http.get("http://localhost:3000" + url)
+                .then(function (response) {
+                    return response.data;
+                });
+        };
+
+        return {
+            getQuestion: getQuestion
+        };
+
+    };
+
+    var module = angular.module("Crowdsourcing");
+    module.factory("QuestionService", questionService);
+
+}());
 
 

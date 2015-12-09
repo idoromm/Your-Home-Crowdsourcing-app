@@ -5,6 +5,7 @@ jQuery(document).ready(function($){
 		map_zoom = 15;
 
 
+
 	$.ajax({
 		url: '/api/getrandomquestion',
 		type: 'GET',
@@ -17,7 +18,6 @@ jQuery(document).ready(function($){
 			//console.log(e.message);
 		}
 	});
-
 
 
 	//google map custom marker icon - .png fallback for IE11
@@ -214,9 +214,9 @@ jQuery(document).ready(function($){
     }
     //inizialize the map
 	var map = new google.maps.Map(document.getElementById('google-container'), map_options);
+	//add a custom marker to the map				
 
 
-	addMarker(latitude,longitude,true);
 
 	function addMarker(latitude,longitude,isListing){
 		var marker_url;
@@ -235,7 +235,15 @@ jQuery(document).ready(function($){
 		});
 
 	}
+	addMarker(latitude,longitude,true);
 
+
+	//var marker = new google.maps.Marker({
+	//  	position: new google.maps.LatLng(latitude, longitude),
+	//    map: map,
+	//    visible: true,
+	// 	icon: marker_url,
+	//});
 
 	//add custom buttons for the zoom-in/zoom-out on the map
 	function CustomZoomControl(controlDiv, map) {
@@ -262,14 +270,18 @@ jQuery(document).ready(function($){
 	google.maps.event.addDomListener(window, 'load', function initialize() {
 
 		var searchTextField = document.getElementById('searchTextField');
-		var addNewReviewButton = document.getElementById('addNewReviewButton');
-
 		map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchTextField);
+
+		var addNewReviewButton = document.getElementById('addNewReviewButton');
 		map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(addNewReviewButton);
 
 
+		var googleMapsAddressForm = document.getElementById('googleMapsAddressForm');
+		var autocompleteForm = new google.maps.places.Autocomplete(googleMapsAddressForm);
 
-		var autocomplete = new google.maps.places.Autocomplete(addNewReviewButton);
+
+		console.log("input: "+searchTextField);
+		var autocompleteMap = new google.maps.places.Autocomplete(searchTextField);
 
 
 		var infowindow = new google.maps.InfoWindow();
@@ -279,10 +291,10 @@ jQuery(document).ready(function($){
 		});
 
 
-		autocomplete.addListener('place_changed', function() {
+		autocompleteMap.addListener('place_changed', function() {
 			infowindow.close();
 			marker.setVisible(false);
-			var place = autocomplete.getPlace();
+			var place = autocompleteMap.getPlace();
 			if (!place.geometry) {
 				window.alert("Autocomplete's returned place contains no geometry");
 				return;

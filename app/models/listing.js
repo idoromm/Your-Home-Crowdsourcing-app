@@ -19,6 +19,7 @@ var listingSchema = new Schema({
         balcony         : Boolean,
         price           : Number,
         description     : String,
+        flagCount       : Number,
         pictures        : [imageSchema]
 });
 

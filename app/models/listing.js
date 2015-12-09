@@ -1,6 +1,7 @@
 // load the things we need
 var mongoose = require('mongoose');
 var imageSchema = require('./image');
+var userSchema = require('./user')
 var Schema = mongoose.Schema;
 
 // define the schema for our user model
@@ -20,6 +21,7 @@ var listingSchema = new Schema({
         price           : Number,
         description     : String,
         flagCount       : Number,
+        owner           : userSchema,
         pictures        : [imageSchema]
 });
 

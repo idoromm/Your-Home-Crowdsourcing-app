@@ -57,7 +57,7 @@ module.exports = function (app, passport) {
     });
 
     app.get('/api/getrandomquestion', function (req, res) {
-		QuestionService.getRandomQestion(res);
+		QuestionService.getRandomQuestion(res);
     });
 
 

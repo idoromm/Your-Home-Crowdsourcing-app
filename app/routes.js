@@ -1,5 +1,6 @@
 var User = require('./models/user');
 var Listing = require('./models/listing');
+var Question = require('./models/question');
 var QuestionService = require('../public/js/services/QuestionService');
 
 module.exports = function (app, passport) {
@@ -56,10 +57,42 @@ module.exports = function (app, passport) {
 
     });
 
+
+    /* gets a question with id = _id */
+    app.get('/api/questions/:_id', function (req, res) {
+        console.log("Question API");
+        Question.find(
+            {"_id": req.params._id}
+            , function (err, question) {
+                console.log("Question: " + question);
+                res.json(question[0]);
+            });
+    });
+
+    /* add a new question with description in url */
+    app.post('/api/questions', function (req, res) {
+        var description = req.body.description;
+        var question = new Question({description: description});
+        question.save(function (err, question) {
+            if (err) return handleError(err);
+            res.json({description: question.description});
+        });
+    });
+
+    /* get an array of ALL the questions in the database */
+    app.get('/api/questions', function (req, res) {
+        Question.find(function (err, questions) {
+            if (err)
+                res.send(err);
+            console.log(questions);
+            res.json(questions);
+        });
+    });
+
+
     app.get('/api/getrandomquestion', function (req, res) {
 		QuestionService.getRandomQuestion(res);
     });
-
 
         app.get('/api/listings', function (req, res) {
             // use mongoose to get all listings in the database
@@ -241,38 +274,6 @@ module.exports = function (app, passport) {
                     console.log("Listing: " + listing);
                     res.json(listing);
                 });
-        });
-
-        /* gets a question with id = _id */
-        app.get('/api/questions/:_id', function (req, res) {
-            console.log("Question API");
-
-            Question.find(
-                {"_id": req.params._id}
-                , function (err, question) {
-                    console.log("Question: " + question);
-                    res.json(question);
-                });
-        });
-
-        /* add a new question with description in url */
-        app.post('/api/questions', function (req, res) {
-            var description = req.body.description;
-            var question = new Question({description: description});
-            question.save(function (err, question) {
-                if (err) return handleError(err);
-                res.json({description: question.description});
-            });
-        });
-
-        /* get an array of ALL the questions in the database */
-        app.get('/api/questions', function (req, res) {
-            Question.find(function (err, questions) {
-                if (err)
-                    res.send(err);
-                console.log(questions);
-                res.json(questions);
-            });
         });
 
         app.get('/api/listings', function (req, res, next) {

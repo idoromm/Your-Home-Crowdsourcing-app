@@ -30,7 +30,7 @@ var userSchema = mongoose.Schema({
 
  /*   ApartmentsAndQuestions: [{
         apartmentID: String,
-        questionID: Schema.Types.Mixed
+        questionID: [String]
     }] */
 });
 

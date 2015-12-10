@@ -21,7 +21,10 @@ var listingSchema = new Schema({
         price           : Number,
         description     : String,
         flagCount       : Number,
-        owner           : [userSchema],
+        owner           :{
+                type: Schema.ObjectId,
+                ref: 'User'
+        },
         pictures        : [imageSchema]
 });
 

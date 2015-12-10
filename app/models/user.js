@@ -26,7 +26,6 @@ var userSchema = mongoose.Schema({
 		type: Number,
 		default: 0
 	}
-	
 
  /*   ApartmentsAndQuestions: [{
         apartmentID: String,

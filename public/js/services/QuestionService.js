@@ -12,10 +12,12 @@ var self = module.exports = {
 	
 	myPix: ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"],
 	
-	chooseRandomPic: function () {
+	chooseRandomPic: function (res) {
 		/* randomly selects a picture of the listing to prompt the user with when he enters */
 		var randomNum = Math.floor(Math.random() * myPix.length);
-		return myPix[randomNum];
+		
+		//sending the string instead json currently
+		res.send(myPix[randomNum]);
 	},
 	
 	shuffle: function (array) {

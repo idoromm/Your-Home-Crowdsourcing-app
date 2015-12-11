@@ -6,18 +6,18 @@ jQuery(document).ready(function($){
 
 
 
-	$.ajax({
-		url: '/api/getrandomquestion',
-		type: 'GET',
-		success: function(data) {
-			//called when successful
-			console.log(data);
-		},
-		error: function(e) {
-			//called when there is an error
-			//console.log(e.message);
-		}
-	});
+//	$.ajax({
+//		url: '/api/getrandomquestion',
+//		type: 'GET',
+//		success: function(data) {
+//			//called when successful
+//			console.log(data);
+//		},
+//		error: function(e) {
+//			//called when there is an error
+//			//console.log(e.message);
+//		}
+//	});
 
 
 	//google map custom marker icon - .png fallback for IE11

@@ -1,5 +1,5 @@
 var app = angular.module('Crowdsourcing', ['ngRoute'], function ($locationProvider) {
-	//neccery to get the current url
+	/* necessary to get the current url */
 	$locationProvider.html5Mode(true);
 });
 
@@ -9,7 +9,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
 	//get current url to get relevant listing
 	//returns relative path => /listing/
 	var path = $location.path();
-	
+
 	
 	//request from server
 	$http.get("/api" + path).then(
@@ -27,7 +27,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
 
 
 	var alertPrompt = function () {
-		var title = ""
+		var title = "";
 		var pic = "";
 		
 		//get title
@@ -36,16 +36,23 @@ app.controller('ListingController', function ($scope, $location, $http) {
 		});
 		
 		//get picture
-		$http.get('/api/geteandompic').success(function (picture) {
-			//should be chanched to json 
+		$http.get('/api/:street/:buildingNumber/:apartmentNumber/getrandompic').success(function (picture) {
+			//should be changed to JSON format
 			pic = picture;
 		});
-		
+
+		function chooseRandomPic(){
+			var myPix = ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"];
+			var randomNum = Math.floor(Math.random() * myPix.length);
+			return myPix[randomNum];
+		}
+
 		setTimeout(function () {
 			sweetAlert({
 				//	title: "Is this room furnished?",
 				title: title,
-				imageUrl: pic,
+			//	imageUrl: pic,
+				imageUrl: chooseRandomPic(),
 				imageSize: '600x600',
 				showCancelButton: true,
 				cancelButtonText: "No",
@@ -67,10 +74,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
 		}, 5000); // 5 seconds
 		
 	};
-
-
 	alertPrompt();
-
 });
 
 

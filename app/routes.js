@@ -94,7 +94,7 @@ module.exports = function (app, passport) {
 		QuestionHandler.getRandomQuestion(res);
 	});
 	
-	app.get('/api/geteandompic', function (req, res) {
+	app.get('/api/getrandompic', function (req, res) {
 		QuestionHandler.chooseRandomPic(res);
 	});
 

@@ -9,14 +9,13 @@ var self = module.exports = {
 		sweetAlert("Thank you!", "This listing has been reported", "success");
 
 	},
-	
-	myPix: ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"],
-	
-	chooseRandomPic: function () {
-		/* randomly selects a picture of the listing to prompt the user with when he enters */
-		var randomNum = Math.floor(Math.random() * myPix.length);
-		return myPix[randomNum];
-	},
+
+	//chooseRandomPic: function () {
+	//	/* randomly selects a picture of the listing to prompt the user with when he enters */
+	//	myPix = ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"];
+	//	var randomNum = Math.floor(Math.random() * myPix.length);
+	//	return myPix[randomNum];
+	//},
 	
 	shuffle: function (array) {
 		var currentIndex = array.length, temporaryValue, randomIndex;
@@ -42,7 +41,7 @@ var self = module.exports = {
 			if (err) {
 				console.log(err);
 				res.send("");
-			};
+			}
 			var arr = self.shuffle(data.slice(0));
 			arr.splice(self.numberOfItemsToFind, arr.length - self.numberOfItemsToFind);
 			var return_arr = [];
@@ -61,6 +60,5 @@ var self = module.exports = {
 			});
 		});
 	}
-	
-
 }; //end moudle export
+

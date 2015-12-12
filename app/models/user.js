@@ -2,7 +2,6 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
-var Schema = mongoose.Schema;
 // define the schema for our user model
 var userSchema = mongoose.Schema({
 
@@ -30,7 +29,7 @@ var userSchema = mongoose.Schema({
     /* every entry in the array is an apartment ID and the questionsIDs (array) of the questions that the user ALREADY answered in that *specific* apartment */
     ApartmentsAndQuestions: [{
         apartmentID : String,
-        questionsIDs:[String]
+        questionsIDs: [String]
     }]
 });
 

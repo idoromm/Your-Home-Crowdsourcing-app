@@ -1,6 +1,5 @@
 // load the things we need
 var mongoose = require('mongoose');
-var imageSchema = require('./image');
 var Schema = mongoose.Schema;
 
 // define the schema for our user model

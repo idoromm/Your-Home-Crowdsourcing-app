@@ -5,10 +5,10 @@ var self = module.exports = {
 	
 	numberOfItemsToFind: 3,
 	
-	reportListing: function () {
-		sweetAlert("Thank you!", "This listing has been reported", "success");
-
-	},
+	//reportListing: function () {
+	//	sweetAlert("Thank you!", "This listing has been reported", "success");
+    //
+	//},
 
 	//chooseRandomPic: function () {
 	//	/* randomly selects a picture of the listing to prompt the user with when he enters */

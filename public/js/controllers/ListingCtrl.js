@@ -5,12 +5,19 @@ var app = angular.module('Crowdsourcing', ['ngRoute'], function ($locationProvid
 
 app.controller('ListingController', function ($scope, $location, $http) {
 	
-	
 	//get current url to get relevant listing
 	//returns relative path => /listing/
 	var path = $location.path();
+	$scope.hide = false;
+	$scope.reportListing = function() {
+		$http.get("/api/listing/:street/:buildingNumber/:apartmentNumber").success(function (apartment){
+			//var count = apartment.flagCount;
+			sweetAlert("Thank you!", "This listing has been reported", "success");
+			//$scope.listing.flagCount.push($scope.listing.flagCount+1);
+			$scope.hide = true;
+		});
+	};
 
-	
 	//request from server
 	$http.get("/api" + path).then(
 		function success(listing_info){
@@ -25,7 +32,6 @@ app.controller('ListingController', function ($scope, $location, $http) {
 		});
 
 
-
 	var alertPrompt = function () {
 		var title = "";
 		var pic = "";
@@ -36,7 +42,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
 		});
 		
 		//get picture
-		$http.get('/api/:street/:buildingNumber/:apartmentNumber/getrandompic').success(function (picture) {
+		$http.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getrandompic').success(function (picture) {
 			//should be changed to JSON format
 			pic = picture;
 		});

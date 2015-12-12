@@ -183,7 +183,7 @@
     </div>
 </div>
 <!--//header-->
-        <img class="flagIcon" id="flag" src="../../../images/red_flag_icon.jpg" background-color=transparent onclick="reportListing()"/>
+        <img class="flagIcon" id="flag" src="../../../images/red_flag_icon.jpg" background-color=transparent ng-hide="hide" ng-click="reportListing()"/>
 <!---->
 
 <div class="container">
@@ -227,7 +227,7 @@
                 <div class="col-sm-5 middle-side immediate">
                     <h4>Entry: Immediate</h4>
 
-                    <p><span class="bath">Number of beds </span>: <span class="one">{{listing.beds}}</span></p>
+                    <p><span class="bath">Number of beds </span>: <span class="one">{{listing.beds}}<!--  {{listing.flagCount}} --></span></p>
 
                     <p><span class="bath1">Number of baths </span>:<span class="two">{{listing.baths}}</span></p>
 
@@ -243,16 +243,16 @@
                     </div>
                 </div>
                 <div class="col-sm-7 buy-sin">
-                    <h4>Description</h4>
-
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
+                    <h4>Description and notes</h4>
+                        <p>{{listing.description}}</p>
+              <!--      <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
                         classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a
                         Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin
                         words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in
-                        classical literature</p>
+                        classical literature</p> -->
 
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
-                        classical Latin literature from 45 BC </p>
+            <!--        <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
+                        classical Latin literature from 45 BC </p> -->
                 </div>
                 <div class="clearfix"></div>
             </div>

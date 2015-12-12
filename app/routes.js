@@ -242,7 +242,7 @@ module.exports = function (app, passport) {
     //======================================================
     //Apartment listing
 	//======================================================
-	
+
 	app.get('/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {
 		res.sendfile('./public/views/single.html');
 		});
@@ -267,6 +267,20 @@ module.exports = function (app, passport) {
         }, function (err, user) {
             res.json(user);
         });
+    });
+
+    app.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getFlagCount', function(req,res){
+        console.log("getting flag count now");
+        Listing.findOne(
+            {
+                "street": req.params.street,
+                "buildingNumber": req.params.buildingNumber,
+                "apartmentNumber": req.params.apartmentNumber
+            }
+            , function(err, listing) {
+                console.log("Flag count=" + listing.flagCount)
+                res.json(listing.flagCount);
+            });
     });
 
     app.get('/api/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {

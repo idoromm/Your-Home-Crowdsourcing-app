@@ -1,6 +1,6 @@
 // load the things we need
 var mongoose = require('mongoose');
-var image = require('./image');
+var imageSchema = require('./image');
 var Schema = mongoose.Schema;
 
 // define the schema for our user model
@@ -21,10 +21,16 @@ var listingSchema = new Schema({
         description     : String,
         flagCount       : Number,
         ownerID         : String,
-        pictures        : {
-            type: Schema.ObjectId,
-            ref: 'image'
-        }
+        /* every entry in the array is a userID and the questionsIDs (array) of the questions that the user ALREADY answered in that *specific* apartment */
+        UsersAndQuestions: [{
+            userID: String,
+            questionID: [String]
+        }],
+        /* every image has a count of how many times the users answered YES or NO on it */
+        imagesAndCount: [{
+            imageID: String,
+            count: Number
+        }]
 });
 
 // create the model for users and expose it to our app

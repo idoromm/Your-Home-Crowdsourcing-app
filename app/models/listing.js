@@ -1,7 +1,7 @@
 // load the things we need
 var mongoose = require('mongoose');
-var imageSchema = require('./image');
-var userSchema = require('./user');
+var image = require('./image');
+var User = require('./user');
 var Schema = mongoose.Schema;
 
 // define the schema for our user model
@@ -25,7 +25,10 @@ var listingSchema = new Schema({
                 type: Schema.ObjectId,
                 ref: 'User'
         },
-        pictures        : [imageSchema]
+        pictures        : {
+            type: Schema.ObjectId,
+            ref: 'image'
+        }
 });
 
 // create the model for users and expose it to our app

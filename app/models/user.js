@@ -1,6 +1,8 @@
 // load the things we need
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
+var Listing = require('./listing');
+var Question = require('./question');
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
@@ -25,12 +27,18 @@ var userSchema = mongoose.Schema({
 	reputation		 : {
 		type: Number,
 		default: 0
-	}
-
- /*   ApartmentsAndQuestions: [{
-        apartmentID: String,
-        questionID: [String]
-    }] */
+	},
+    /* every entry in the array is an apartment schema and the questions (also a schema array) of the questions that the user ALREADY answered in that *specific* apartment */
+    ApartmentsAndQuestions: [{
+        apartment: {
+            type: Schema.ObjectId,
+            ref: 'Listing'
+        },
+        questions:[{
+            type: Schema.ObjectId,
+            ref: 'Question'
+        }]
+    }]
 });
 
 // generating a hash

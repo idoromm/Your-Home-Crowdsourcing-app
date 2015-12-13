@@ -2,6 +2,7 @@ var User = require('./models/user');
 var Listing = require('./models/listing');
 var Question = require('./models/question');
 var QuestionHandler = require('./QuestionHandler');
+var mongoose        = require('mongoose');
 
 module.exports = function (app, passport) {
 
@@ -79,6 +80,26 @@ module.exports = function (app, passport) {
         });
     });
 
+    /* increment flagCount of a certain listing by  1 */
+    app.put('/api/listing/:street/:buildingNumber/:apartmentNumber/incrementFlagCount', function (req, res) {
+        console.log("incrementing flag count now");
+
+        mongoose.model('Listing').findOneAndUpdate({
+                street: req.params.street,
+                buildingNumber: req.params.buildingNumber,
+                apartmentNumber: req.params.apartmentNumber
+            }, {$inc: {flagCount: 1}}
+            , function (err, listing) {
+                if (err) {
+                    res.send("There was a problem incrementing the flagCount of a listing: " + err);
+                }
+                else {
+                    console.log("Flag count after=" + listing.flagCount);
+                    res.json(listing.flagCount);
+                }
+            })
+    });
+
     /* get an array of ALL the questions in the database */
     app.get('/api/questions', function (req, res) {
         Question.find(function (err, questions) {
@@ -91,12 +112,12 @@ module.exports = function (app, passport) {
 
 
     app.get('/api/getrandomquestion', function (req, res) {
-		QuestionHandler.getRandomQuestion(res);
-	});
-	
-	app.get('/api/getrandompic', function (req, res) {
-		QuestionHandler.chooseRandomPic(res);
-	});
+        QuestionHandler.getRandomQuestion(res);
+    });
+
+    app.get('/api/getrandompic', function (req, res) {
+        QuestionHandler.chooseRandomPic(res);
+    });
 
     app.get('/api/listings', function (req, res) {
         // use mongoose to get all listings in the database
@@ -241,11 +262,11 @@ module.exports = function (app, passport) {
 
     //======================================================
     //Apartment listing
-	//======================================================
+    //======================================================
 
-	app.get('/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {
-		res.sendfile('./public/views/single.html');
-		});
+    app.get('/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {
+        res.sendfile('./public/views/single.html');
+    });
 
     app.get('/single', function (req, res) {
         console.log("listing page is loading ...");
@@ -269,7 +290,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getFlagCount', function(req,res){
+    app.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getFlagCount', function (req, res) {
         console.log("getting flag count now");
         Listing.findOne(
             {
@@ -277,8 +298,8 @@ module.exports = function (app, passport) {
                 "buildingNumber": req.params.buildingNumber,
                 "apartmentNumber": req.params.apartmentNumber
             }
-            , function(err, listing) {
-                console.log("Flag count=" + listing.flagCount)
+            , function (err, listing) {
+                console.log("Flag count=" + listing.flagCount);
                 res.json(listing.flagCount);
             });
     });

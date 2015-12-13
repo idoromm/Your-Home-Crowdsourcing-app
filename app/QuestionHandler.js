@@ -5,18 +5,6 @@ var self = module.exports = {
 	
 	numberOfItemsToFind: 3,
 	
-	//reportListing: function () {
-	//	sweetAlert("Thank you!", "This listing has been reported", "success");
-    //
-	//},
-
-	//chooseRandomPic: function () {
-	//	/* randomly selects a picture of the listing to prompt the user with when he enters */
-	//	myPix = ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"];
-	//	var randomNum = Math.floor(Math.random() * myPix.length);
-	//	return myPix[randomNum];
-	//},
-	
 	shuffle: function (array) {
 		var currentIndex = array.length, temporaryValue, randomIndex;
 		

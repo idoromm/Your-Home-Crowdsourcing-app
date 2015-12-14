@@ -10,6 +10,10 @@ app.controller('ListingController', function ($scope, $location, $http) {
     var path = $location.path();
     $scope.hide = false;
     $scope.reportListing = function () {
+        //if(user.reportedListingsIDs.contains(getListing()._id))
+        //{
+        //    sweetAlert("Sorry!", "You have already reported this listing", "error");
+        //}
         $http.put("/api" + path + "/incrementFlagCount").success(function () {
             //var count = apartment.flagCount;
             sweetAlert("Thank you!", "This listing has been reported", "success");

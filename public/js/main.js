@@ -210,8 +210,8 @@ jQuery(document).ready(function($){
       	streetViewControl: false,
       	mapTypeId: google.maps.MapTypeId.ROADMAP,
       	scrollwheel: true,
-      	styles: style,
-    }
+      	styles: style
+    };
     //inizialize the map
 	var map = new google.maps.Map(document.getElementById('google-container'), map_options);
 	//add a custom marker to the map				
@@ -231,7 +231,7 @@ jQuery(document).ready(function($){
 			position: new google.maps.LatLng(latitude, longitude),
 			map: map,
 			visible: true,
-			icon: marker_url,
+			icon: marker_url
 		});
 
 	}
@@ -329,9 +329,6 @@ jQuery(document).ready(function($){
 			infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
 			infowindow.open(map, marker);
 		});
-
-
-
 	});
 });
 

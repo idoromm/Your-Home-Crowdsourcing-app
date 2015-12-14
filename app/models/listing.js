@@ -1,5 +1,6 @@
 // load the things we need
 var mongoose = require('mongoose');
+var User = require('./user');
 var Schema = mongoose.Schema;
 
 // define the schema for our user model
@@ -19,7 +20,7 @@ var listingSchema = new Schema({
         price           : Number,
         description     : String,
         flagCount       : Number,
-        ownerID         : String,
+        owner           : User.schema,
         /* every entry in the array is a userID and the questionsIDs (array) of the questions that the user ALREADY answered in that *specific* apartment */
         UsersAndQuestions: [{
             userID: String,

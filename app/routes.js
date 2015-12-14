@@ -319,6 +319,7 @@ module.exports = function (app, passport) {
             });
     });
 
+
     app.get('/api/listings', function (req, res, next) {
         Listing.find({}, function (err, listings) {
             if (err) {

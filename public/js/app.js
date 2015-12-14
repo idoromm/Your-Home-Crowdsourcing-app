@@ -40,6 +40,12 @@ app.controller('NavCtrl', function ($scope, $http, $modal) {
 		});
 	};
 
-
+    $scope.askForReview = function () {
+        $modal.open({
+            templateUrl: 'views/askReviewTemplate.html',
+            controller: 'reviewCtrl',
+            backdrop: 'static'
+        });
+    };
 });
 

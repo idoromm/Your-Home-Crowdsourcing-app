@@ -62,8 +62,8 @@ app.controller('ListingController', function ($scope, $location, $http) {
             sweetAlert({
                     //	title: "Is this room furnished?",
                     title: title,
-                    //	imageUrl: pic,
-                    imageUrl: chooseRandomPic(),
+                    imageUrl: pic,
+                    //imageUrl: chooseRandomPic(),
                     imageSize: '600x600',
                     showCancelButton: true,
                     cancelButtonText: "No",

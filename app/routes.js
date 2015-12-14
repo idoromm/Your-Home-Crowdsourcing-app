@@ -48,16 +48,14 @@ module.exports = function (app, passport) {
             res.send(userJson.local.name);
         }
     });
-
+    /* TODO: Lior: what is this used for? */
     app.get('/api/user', function (req, res) {
         if (req.user) {
             res.json(req.user);
         } else {
             res.json("");
         }
-
     });
-
 
     /* gets a question with id = _id */
     app.get('/api/questions/:_id', function (req, res) {
@@ -83,7 +81,6 @@ module.exports = function (app, passport) {
     /* increment flagCount of a certain listing by  1 */
     app.put('/api/listing/:street/:buildingNumber/:apartmentNumber/incrementFlagCount', function (req, res) {
         console.log("incrementing flag count now");
-
         mongoose.model('Listing').findOneAndUpdate({
                 street: req.params.street,
                 buildingNumber: req.params.buildingNumber,

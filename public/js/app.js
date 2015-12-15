@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ui.bootstrap']);
+var app = angular.module('app', ['ngRoute', 'ui.bootstrap', 'ngMdIcons']);
 
 app.config(function ($routeProvider) {
 	$routeProvider
@@ -40,6 +40,12 @@ app.controller('NavCtrl', function ($scope, $http, $modal) {
 		});
 	};
 
-
+    $scope.askForReview = function () {
+        $modal.open({
+            templateUrl: 'views/askReviewTemplate.html',
+            controller: 'reviewCtrl',
+            backdrop: 'static'
+        });
+    };
 });
 

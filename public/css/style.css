@@ -61,7 +61,12 @@ header h1 {
   }
 }
 
+.empty {
+	height: 60px;
+}
+
 #cd-google-map {
+
   position: relative;
 }
 #cd-google-map address {

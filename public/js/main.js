@@ -265,12 +265,18 @@ jQuery(document).ready(function($){
 	var zoomControlDiv = document.createElement('div');
  	var zoomControl = new CustomZoomControl(zoomControlDiv, map);
 
-  	//insert the zoom div on the top left of the map
-  	map.controls[google.maps.ControlPosition.LEFT_TOP].push(zoomControlDiv);
+
 	google.maps.event.addDomListener(window, 'load', function initialize() {
+		
+		var emptyDiv = document.createElement('div');
+		emptyDiv.className = 'empty';
+		map.controls[google.maps.ControlPosition.LEFT_TOP].push(emptyDiv);
 
 		var searchTextField = document.getElementById('searchTextField');
-		map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchTextField);
+		map.controls[google.maps.ControlPosition.LEFT_TOP].push(searchTextField);
+
+  		//insert the zoom div on the top left of the map
+  		map.controls[google.maps.ControlPosition.LEFT_TOP].push(zoomControlDiv);
 
 		var addNewReviewButton = document.getElementById('addNewReviewButton');
 		map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(addNewReviewButton);

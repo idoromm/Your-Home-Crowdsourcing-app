@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ui.bootstrap', 'ngMdIcons']);
+var app = angular.module('app', ['ngAutocomplete','ngRoute', 'ui.bootstrap', 'ngMdIcons']);
 
 app.config(function ($routeProvider) {
 	$routeProvider

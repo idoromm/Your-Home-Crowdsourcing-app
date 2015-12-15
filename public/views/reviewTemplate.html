@@ -107,7 +107,7 @@
 
                 <div>
                     <div class="checkbox-inline">
-                        <labal><input type="checkbox" value="boiler" ng-model="editableReview.renovated"/>Renovated
+                        <labal><input type="checkbox" value="renovated" ng-model="editableReview.renovated"/>Renovated
                         </labal>
                     </div>
                     <div class="checkbox-inline">
@@ -135,7 +135,7 @@
 
             <div class="form-group">
                 <label>Images (recommended)</label>
-                <input type="file" file-upload multiple ng-model="editableReview.images"/>
+                <input type="file" name="images" id="images" file-upload multiple ng-model="editableReview.images"/>
 
             </div>
         </form>

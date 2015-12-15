@@ -95,7 +95,7 @@ module.exports = function(passport) {
 
                         // create the user
                         var newUser				= new User();
-						newUser.local.name		= req.body.name;
+						newUser.name		= req.body.name;
                         newUser.local.email		= email;
 						newUser.local.password = newUser.generateHash(password);
 
@@ -168,7 +168,7 @@ module.exports = function(passport) {
                         // if there is a user id already but no token (user was linked at one point and then removed)
                         if (!user.facebook.token) {
                             user.facebook.token = token;
-							user.facebook.firstName = profile.name.givenName;
+							user.name = profile.name.givenName;
 							user.facebook.familyName = profile.name.familyName;
 
                             if (profile.emails != undefined) {
@@ -192,7 +192,7 @@ module.exports = function(passport) {
 
                         newUser.facebook.id     = profile.id;
                         newUser.facebook.token  = token;
-						newUser.facebook.firstName = profile.name.givenName;
+						newUser.name			= profile.name.givenName;
 						newUser.facebook.familyName = profile.name.familyName;
 						
 
@@ -217,7 +217,7 @@ module.exports = function(passport) {
 
                 user.facebook.id    = profile.id;
                 user.facebook.token = token;
-				user.facebook.firstName = profile.name.givenName;
+				user.name			= profile.name.givenName;
 				user.facebook.familyName = profile.name.familyName;
                 user.facebook.email = (profile.emails[0].value || '').toLowerCase();
 
@@ -262,7 +262,7 @@ module.exports = function(passport) {
                         // if there is a user id already but no token (user was linked at one point and then removed)
                         if (!user.google.token) {
                             user.google.token = token;
-                            user.google.name  = profile.displayName;
+                            user.name  = profile.displayName;
                             user.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
 
                             user.save(function(err) {
@@ -279,7 +279,7 @@ module.exports = function(passport) {
 
                         newUser.google.id    = profile.id;
                         newUser.google.token = token;
-						newUser.google.firstName = profile.name.givenName;
+						newUser.name = profile.name.givenName;
 						newUser.google.familyName = profile.name.familyName;
                         newUser.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
 
@@ -298,7 +298,7 @@ module.exports = function(passport) {
 
                 user.google.id    = profile.id;
                 user.google.token = token;
-				newUser.google.firstName = profile.name.givenName;
+				newUser.name = profile.name.givenName;
 				newUser.google.familyName = profile.name.familyName;
                 user.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
 

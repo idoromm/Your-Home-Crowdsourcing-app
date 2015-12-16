@@ -319,11 +319,6 @@ jQuery(document).ready(function($){
 			marker.setPosition(place.geometry.location);
 			marker.setVisible(true);
 
-			marker.addListener('click', function(){
-				listingInfo.setContent('<br/'+'<div><strong>' +"   I am here!"+ '</strong><br>');
-				listingInfo.open(map, marker);
-			});
-
 			var address = '';
 			if (place.address_components) {
 				address = [
@@ -332,6 +327,13 @@ jQuery(document).ready(function($){
 					(place.address_components[2] && place.address_components[2].short_name || '')
 				].join(' ');
 			}
+
+			marker.addListener('click', function(){
+				listingInfo.setContent('<div><strong>' + place.name + '</strong><br>' + address + '<br>' + 'apt. number and floor');
+				listingInfo.open(map, marker);
+			});
+
+
 			//infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
 			//infowindow.open(map, marker);
 		});

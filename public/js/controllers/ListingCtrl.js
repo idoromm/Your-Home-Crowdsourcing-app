@@ -3,25 +3,32 @@ var app = angular.module('Crowdsourcing', ['ngRoute'], function ($locationProvid
     $locationProvider.html5Mode(true);
 });
 
+var indexOf = function (needle) {
+    if (typeof Array.prototype.indexOf === 'function') {
+        indexOf = Array.prototype.indexOf;
+    } else {
+        indexOf = function (needle) {
+            var i = -1, index = -1;
+
+            for (i = 0; i < this.length; i++) {
+                if (this[i] === needle) {
+                    index = i;
+                    break;
+                }
+            }
+
+            return index;
+        };
+    }
+
+    return indexOf.call(this, needle);
+};
+
 app.controller('ListingController', function ($scope, $location, $http) {
 
     //get current url to get relevant listing
     //returns relative path => /listing/
     var path = $location.path();
-    $scope.hide = false;
-    $scope.reportListing = function () {
-        //if(user.reportedListingsIDs.contains(getListing()._id))
-        //{
-        //    sweetAlert("Sorry!", "You have already reported this listing", "error");
-        //}
-        $http.put("/api" + path + "/incrementFlagCount").success(function () {
-            //var count = apartment.flagCount;
-            sweetAlert("Thank you!", "This listing has been reported", "success");
-            //$scope.listing.flagCount.push($scope.listing.flagCount+1);
-            $scope.hide = true;
-        });
-    };
-    $scope.hasReportedListing = true;
     //request from server
     $http.get("/api" + path).then(
         function success(listing_info) {
@@ -35,8 +42,9 @@ app.controller('ListingController', function ($scope, $location, $http) {
             // or server returns response with an error status.
             $scope.error = "Could not fetch the listing";
         });
-
-
+    $http.get("/api/user").success(function (data) {
+        $scope.currentUser = data;
+    });
     var alertPrompt = function () {
         var title = "";
         var pic = "";
@@ -85,6 +93,31 @@ app.controller('ListingController', function ($scope, $location, $http) {
         }, 5000); // 5 seconds
 
     };
+
+    $scope.hide = false;
+    $scope.reportListing = function () {
+
+        console.log($scope.listing);
+        console.log($scope.currentUser);
+
+        /* check if the user has reported this listing before */
+        if (indexOf.call($scope.listing.reportedUsersIDs, $scope.currentUser._id) > -1) {
+            sweetAlert("Error", "You have already reported this listing", "error");
+        }
+
+        /* the user has not reported this listing yet -> report it*/
+        else {
+            $http.put("/api" + path + "/incrementFlagCount").success(function () {
+                sweetAlert("Thank you!", "This listing has been reported", "success");
+                $scope.hide = true;
+            });
+
+            /* add this user to the reportUsers for this listing */
+            $http.put("/api" + path +"/addReportedUser/" + $scope.currentUser._id + "/" + $scope.listing._id);
+        }
+    };
+    // $scope.hasReportedListing = true;
+
     alertPrompt();
 });
 

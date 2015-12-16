@@ -4,8 +4,6 @@ jQuery(document).ready(function($){
 		longitude = 34.775082,
 		map_zoom = 15;
 
-
-
 //	$.ajax({
 //		url: '/api/getrandomquestion',
 //		type: 'GET',
@@ -18,7 +16,6 @@ jQuery(document).ready(function($){
 //			//console.log(e.message);
 //		}
 //	});
-
 
 	//google map custom marker icon - .png fallback for IE11
 	var is_internetExplorer11= navigator.userAgent.toLowerCase().indexOf('trident') > -1;
@@ -214,9 +211,7 @@ jQuery(document).ready(function($){
     };
     //inizialize the map
 	var map = new google.maps.Map(document.getElementById('google-container'), map_options);
-	//add a custom marker to the map				
-
-
+	//add a custom marker to the map
 
 	function addMarker(latitude,longitude,isListing){
 		var marker_url;
@@ -291,6 +286,7 @@ jQuery(document).ready(function($){
 
 
 		var infowindow = new google.maps.InfoWindow();
+		var listingInfo = new google.maps.InfoWindow();
 		var marker = new google.maps.Marker({
 			map: map,
 			anchorPoint: new google.maps.Point(0, -29)
@@ -323,6 +319,11 @@ jQuery(document).ready(function($){
 			marker.setPosition(place.geometry.location);
 			marker.setVisible(true);
 
+			marker.addListener('click', function(){
+				listingInfo.setContent('<br/'+'<div><strong>' +"   I am here!"+ '</strong><br>');
+				listingInfo.open(map, marker);
+			});
+
 			var address = '';
 			if (place.address_components) {
 				address = [
@@ -331,9 +332,8 @@ jQuery(document).ready(function($){
 					(place.address_components[2] && place.address_components[2].short_name || '')
 				].join(' ');
 			}
-
-			infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
-			infowindow.open(map, marker);
+			//infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+			//infowindow.open(map, marker);
 		});
 	});
 });

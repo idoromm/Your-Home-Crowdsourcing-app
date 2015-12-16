@@ -14,12 +14,18 @@ var listingSchema = new Schema({
         numberOfRooms   : Number,
         size            : Number,
         renovated       : Boolean,
+        crowd_renovated : Boolean,
+        crowd_windows   : Boolean,
+        crowd_light     : Boolean,
+        crowd_furnished : Boolean,
         elevator        : Boolean,
         airConditioning : Boolean,
         balcony         : Boolean,
         price           : Number,
         description     : String,
         flagCount       : Number,
+        /* every entry is the ID of a User that reported the listing */
+        reportedUsersIDs: [String],
         owner           : User.schema,
         /* every entry in the array is a userID and the questionsIDs (array) of the questions that the user ALREADY answered in that *specific* apartment */
         UsersAndQuestions: [{

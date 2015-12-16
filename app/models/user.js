@@ -7,7 +7,7 @@ var userSchema = mongoose.Schema({
 
     local            : {
         email        : String,
-		password     : String,
+		password     : String
     },
     facebook         : {
         id           : String,
@@ -24,8 +24,6 @@ var userSchema = mongoose.Schema({
 		default: 0
 	},
 	name			 : String,
-    /* we will keep all the id's of the listings that the user reported so he cannot report the same listing twice */
-    reportedListingsIDs : [String],
     /* every entry in the array is an apartment ID and the questionsIDs (array) of the questions that the user ALREADY answered in that *specific* apartment */
     ApartmentsAndQuestions: [{
         apartmentID : String,

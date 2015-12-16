@@ -2,7 +2,8 @@ var User = require('./models/user');
 var Listing = require('./models/listing');
 var Question = require('./models/question');
 var QuestionHandler = require('./QuestionHandler');
-var mongoose        = require('mongoose');
+var mongoose = require('mongoose');
+var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function (app, passport) {
 
@@ -93,6 +94,36 @@ module.exports = function (app, passport) {
                 else {
                     console.log("Flag count after=" + listing.flagCount);
                     res.json(listing.flagCount);
+                }
+            })
+    });
+
+    /* add current user ID to listing reporters */
+    app.put('/api/listing/:street/:buildingNumber/:apartmentNumber/addReportedUser/:userid/:listingid', function (req, res) {
+
+        //Listing.findOne(
+        //    {
+        //        "street": req.params.street,
+        //        "buildingNumber": req.params.buildingNumber,
+        //        "apartmentNumber": req.params.apartmentNumber
+        //    }
+        //    , function (err, listing) {
+        //        //if (err) { return next(err); }
+        //        listingToUpdate = listing;
+        //    });
+
+        console.log("adding reported user now");
+        var listingToUpdate = req.params.listingid;
+        var idToAdd = req.params.userid;
+        Listing.update({_id: ObjectId(listingToUpdate)},
+            {$addToSet: {reportedUsersIDs: ObjectId(idToAdd)}}
+            , function (err, listing) {
+                if (err) {
+                    res.send("There was a problem adding the reportedUserID to the listing" + err);
+                }
+                else {
+                    console.log("Success adding reportedUserID to listing!");
+                    res.json(listing);
                 }
             })
     });

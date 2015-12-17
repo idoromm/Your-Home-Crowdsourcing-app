@@ -29,8 +29,9 @@ var listingSchema = new Schema({
         owner           : User.schema,
         /* every entry in the array is a userID and the questionsIDs (array) of the questions that the user ALREADY answered in that *specific* apartment */
         UsersAndQuestions: [{
-            userID: String,
-            questionID: [String]
+            userID: { type: String, unique: true},
+            questionID: [String],
+            _id : false
         }],
         /* every image has a count of how many times the users answered YES or NO on it */
         imagesAndCount: [{

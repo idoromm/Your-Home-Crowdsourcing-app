@@ -114,7 +114,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
 
             /* add this user to the reportUsers for this listing */
             $http.put("/api" + path +"/addReportedUser/" + $scope.currentUser._id + "/" + $scope.listing._id);
-        }
+        } // TODO: user currently undefined because the call /api/getuser doesn't work - talk to Lior
     };
     // $scope.hasReportedListing = true;
 

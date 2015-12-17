@@ -100,18 +100,6 @@ module.exports = function (app, passport) {
 
     /* add current user ID to listing reporters */
     app.put('/api/listing/:street/:buildingNumber/:apartmentNumber/addReportedUser/:userid/:listingid', function (req, res) {
-
-        //Listing.findOne(
-        //    {
-        //        "street": req.params.street,
-        //        "buildingNumber": req.params.buildingNumber,
-        //        "apartmentNumber": req.params.apartmentNumber
-        //    }
-        //    , function (err, listing) {
-        //        //if (err) { return next(err); }
-        //        listingToUpdate = listing;
-        //    });
-
         console.log("adding reported user now");
         var listingToUpdate = req.params.listingid;
         var idToAdd = req.params.userid;
@@ -123,9 +111,40 @@ module.exports = function (app, passport) {
                 }
                 else {
                     console.log("Success adding reportedUserID to listing!");
-                    res.json(listing);
+                    //res.json(listing);
                 }
             })
+    });
+
+    app.put('/api/listing/:street/:buildingNumber/:apartmentNumber/addUserInput/:userid/:listingid/:questionid', function (req, res) {
+        console.log("adding user and question he answered to listing schema");
+        var listingToUpdate = req.params.listingid;
+        var idToAdd = req.params.userid;
+        var questionToAdd = req.params.questionid;
+        Listing.update({_id: ObjectId(listingToUpdate), 'UsersAndQuestions.userID': ObjectId(idToAdd)},
+            {"$addToSet": {"UsersAndQuestions.$.questionID": questionToAdd}}
+            , function (err, result) {
+                if(result.n === 0){
+                    //we haven't found document with the userId - idToAdd
+                    //we need to insert to UsersAndQuestions document with this user
+                    Listing.update({_id: ObjectId(listingToUpdate)},
+                        {$addToSet: {UsersAndQuestions: { userID: ObjectId(idToAdd), questionID: ObjectId(questionToAdd) } }},
+                        function(err, res){
+                            res.send("Success!");
+                        })
+                }
+            });
+        //Listing.update({_id: ObjectId(listingToUpdate)},
+        //    {$addToSet: {UsersAndQuestions: {userID: ObjectId(idToAdd), questionID: ObjectId(questionToAdd)}}}
+        //    , function (err, listing) {
+        //        if (err) {
+        //            res.send("There was a problem adding the user and question to the listing" + err);
+        //        }
+        //        else {
+        //            console.log("Success adding user and question to the listing!");
+        //            res.send("Success!");
+        //        }
+        //    })
     });
 
     /* get an array of ALL the questions in the database */

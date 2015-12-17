@@ -9,19 +9,51 @@
 
             <div class="form-group" show-errors>
                 <label for="googleMapsAddressForm">Address</label>
-                <input type="text" id="googleMapsAddressForm" name="address" class="form-control"
-                       ng-autocomplete="result1" details="details1" options="options1"
+                <input type="text" id="googleMapsAddressForm" name="address" class="form-control" ng-init=googleMapsFormDisable=true
+                       ng-autocomplete="googleMapsFormResult" details="googleMapsFormDetails" options="googleMapsFormOptions" placeholder="Enter location"
                        ng-required=true>
                 <span class="help-block hide">Address is required</span>
             </div>
 
             <div class="form-group" show-errors>
                 <div class="col-xs-3">
-                    <label for="apartmentNumber">Apt. Number</label>
-                    <input type="number" id="apartmentNumber" name="apartmentNumber" class="form-control"
+                    <label for="city">City</label>
+                        <input type="text" id="city"  name="city" class="form-control"
+                               ng-model="editableReview.city" placeholder={{googleMapsFormDetails.address_components[2]['long_name']}}
+                               ng-disabled=googleMapsFormDisable ng-required=true>
+                        <span class="help-block hide">City is required</span>
+                </div>
+            </div>
+
+            <div class="form-group" show-errors>
+                <div class="col-xs-3">
+                    <label for="street">Street</label>
+                    <input type="text" id="street"  name="street" class="form-control"
+                           ng-model="editableReview.street" placeholder={{googleMapsFormDetails.address_components[1]['long_name']}}
+                           ng-required=true>
+                    <span class="help-block hide">Street is required</span>
+                </div>
+            </div>
+
+
+
+            <div class="form-group" show-errors>
+                <div class="col-xs-3">
+                    <label for="street">Building Number</label>
+                    <input type="text" id="buildingNumber"  name="buildingNumber" class="form-control"
+                           ng-model="editableReview.buildingNumber" placeholder={{googleMapsFormDetails.address_components[0]['long_name']}}
+                           ng-required=true>
+                    <span class="help-block hide">Building Number is required</span>
+                </div>
+            </div>
+
+            <div class="form-group" show-errors>
+                <div class="col-xs-3">
+                    <label for="street">Apartment Number</label>
+                    <input type="text" id="apartmentNumber"  name="apartmentNumber" class="form-control"
                            ng-model="editableReview.apartmentNumber"
                            ng-required=true>
-                    <span class="help-block hide">Apartment number is required</span>
+                    <span class="help-block hide">Apartment Number is required</span>
                 </div>
             </div>
 

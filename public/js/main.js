@@ -287,9 +287,11 @@ jQuery(document).ready(function($){
 
 		var infowindow = new google.maps.InfoWindow();
 		var listingInfo = new google.maps.InfoWindow();
+
 		var marker = new google.maps.Marker({
 			map: map,
-			anchorPoint: new google.maps.Point(0, -29)
+			anchorPoint: new google.maps.Point(0, -29),
+			url:'views/single.html'
 		});
 
 
@@ -328,9 +330,17 @@ jQuery(document).ready(function($){
 				].join(' ');
 			}
 
-			marker.addListener('click', function(){
+			marker.addListener('mouseover', function(){
 				listingInfo.setContent('<div><strong>' + place.name + '</strong><br>' + address + '<br>' + 'apt. number and floor');
 				listingInfo.open(map, marker);
+			});
+
+			marker.addListener('mouseout', function(){
+				listingInfo.close();
+			});
+
+			marker.addListener('click', function(){
+				window.location.href = marker.url;
 			});
 
 

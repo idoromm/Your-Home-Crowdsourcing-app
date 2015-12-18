@@ -231,7 +231,8 @@ module.exports = function (app, passport) {
     });
 
     app.post('/api/listing', function (req, res) {
-        console.log("/api/listing" +req);
+        var latitude=req.body.latitude;
+        var longitude=req.body.longitude;
         var country=req.body.country;
         var city=req.body.city;
         var street=req.body.street;
@@ -250,9 +251,9 @@ module.exports = function (app, passport) {
         var description=req.body.description;
         //var pictures=req.body.pictures;
 
-        var listing = new Listing({"country":country,"city":city,"street":street,"buildingNumber":buildingNumber,"apartmentNumber":apartmentNumber,"type":type,"floor":floor,"outOfFloors":outOfFloors,"size":size,
+        var listing = new Listing({"latitude":latitude,"longitude":longitude,"country":country,"city":city,"street":street,"buildingNumber":buildingNumber,"apartmentNumber":apartmentNumber,"type":type,"floor":floor,"outOfFloors":outOfFloors,
+            "numberOfRooms":numberOfRooms,"size":size,
             "renovated":renovated,"elevator":elevator,"airConditioning":airConditioning,"balcony":balcony,"price":price,"description":description});
-        console.log("Listing: "+listing +" has been accepted");
         listing.save(function (err) {
             if (err) throw err;
 

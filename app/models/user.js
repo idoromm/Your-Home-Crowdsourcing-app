@@ -26,8 +26,9 @@ var userSchema = mongoose.Schema({
 	name			 : String,
     /* every entry in the array is an apartment ID and the questionsIDs (array) of the questions that the user ALREADY answered in that *specific* apartment */
     ApartmentsAndQuestions: [{
-        apartmentID : String,
-        questionsIDs: [String]
+        apartmentID : { type: String, unique: true},
+        questionID: [String],
+        _id : false
     }]
 });
 

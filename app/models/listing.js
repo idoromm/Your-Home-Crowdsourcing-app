@@ -36,7 +36,8 @@ var listingSchema = new Schema({
         /* every image has a count of how many times the users answered YES or NO on it */
         imagesAndCount: [{
             imageID: String,
-            count: Number
+            count: Number,
+            _id : false
         }]
 });
 

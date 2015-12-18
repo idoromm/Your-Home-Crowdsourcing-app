@@ -4,18 +4,18 @@ jQuery(document).ready(function($){
 		longitude = 34.775082,
 		map_zoom = 15;
 
-//	$.ajax({
-//		url: '/api/getrandomquestion',
-//		type: 'GET',
-//		success: function(data) {
-//			//called when successful
-//			console.log(data);
-//		},
-//		error: function(e) {
-//			//called when there is an error
-//			//console.log(e.message);
-//		}
-//	});
+	$.ajax({
+		url: '/api/listings',
+		type: 'GET',
+		success: function(data) {
+			fillListingOnMap(data);
+			console.log(data);
+		},
+		error: function(e) {
+			//called when there is an error
+			//console.log(e.message);
+		}
+	});
 
 	//google map custom marker icon - .png fallback for IE11
 	var is_internetExplorer11= navigator.userAgent.toLowerCase().indexOf('trident') > -1;
@@ -212,6 +212,16 @@ jQuery(document).ready(function($){
     //inizialize the map
 	var map = new google.maps.Map(document.getElementById('google-container'), map_options);
 	//add a custom marker to the map
+
+	function fillListingOnMap(data) {
+		for (i=0;i<data.length;i++){
+			var lat=data[i]["latitude"];
+			var lng=data[i]["longitude"];
+			if ( lat && lng){
+				addMarker(lat,lng,true);
+			}
+		}
+	}
 
 	function addMarker(latitude,longitude,isListing){
 		var marker_url;

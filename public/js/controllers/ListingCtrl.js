@@ -49,12 +49,11 @@ app.controller('ListingController', function ($scope, $location, $http) {
         var title = "";
         var pic = "";
         var questions = [];
-        var questionsUserAlreadyAnswered = [];
 
         //get title
-        //$http.get('/api/getrandomquestion').success(function (question) {
-        //    title = question.description;
-        //});
+        $http.get('/api/getrandomquestion').success(function (question) {
+            title = question.description;
+        });
 
         //get picture
         $http.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getrandompic').success(function (picture) {
@@ -62,26 +61,13 @@ app.controller('ListingController', function ($scope, $location, $http) {
             pic = picture;
         });
 
+        //function makeSureUserHavnentAnsweredThisQuestionAlready(){
+        //
+        //}
 
-        $http.get('/api/questions').success(function (qs) {
+        $http.get('/api/questions').success(function(qs){
             questions = qs;
         });
-
-        $http.get('/api/listing/getQuestionsOfUserInListing/' + $scope.currentUser._id + '/' + $scope.listing._id).success(function (userqs) {
-            questionsUserAlreadyAnswered = userqs;
-        });
-
-        function setQuestion() {
-            var q; // question we will eventually ask the user
-            for (q in questions) {
-                if (!(q._id in questionsUserAlreadyAnswered)) {
-                    /* the user has NOT answered this question yet -> so we can ask him now! */
-                    $scope.title = q.description;
-                }
-            }
-            // we have already asked this user ALL our questions in this specific listing
-        }
-        setQuestion();
 
         function chooseRandomPic() {
             var myPix = ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"];
@@ -136,7 +122,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
             });
 
             /* add this user to the reportUsers for this listing */
-            $http.put("/api" + path + "/addReportedUser/" + $scope.currentUser._id + "/" + $scope.listing._id);
+            $http.put("/api" + path +"/addReportedUser/" + $scope.currentUser._id + "/" + $scope.listing._id);
         } // TODO: user currently undefined because the call /api/getuser doesn't work - talk to Lior
     };
     // $scope.hasReportedListing = true;

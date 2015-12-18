@@ -5,6 +5,9 @@ var Schema = mongoose.Schema;
 
 // define the schema for our user model
 var listingSchema = new Schema({
+        latitude        : Number,
+        longitude       : Number,
+        country         : String,
         city            : String,
         street          : String,
         buildingNumber  : Number,

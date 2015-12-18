@@ -205,9 +205,29 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.post('/api/listings', function (req, res) {
-        var beds = req.body.beds;
-        var listing = new Listing({"beds": beds});
+    app.post('/api/listing', function (req, res) {
+        console.log("/api/listing" +req);
+        var country=req.body.country;
+        var city=req.body.city;
+        var street=req.body.street;
+        var buildingNumber=req.body.buildingNumber;
+        var apartmentNumber=req.body.apartmentNumber;
+        var type=req.body.type;
+        var floor=req.body.floor;
+        var outOfFloors=req.body.outOfFloors;
+        var numberOfRooms=req.body.rooms;
+        var size=req.body.size;
+        var renovated=req.body.renovated;
+        var elevator=req.body.elevator;
+        var airConditioning=req.body.airConditioning;
+        var balcony=req.body.balcony;
+        var price=req.body.price;
+        var description=req.body.description;
+        //var pictures=req.body.pictures;
+
+        var listing = new Listing({"country":country,"city":city,"street":street,"buildingNumber":buildingNumber,"apartmentNumber":apartmentNumber,"type":type,"floor":floor,"outOfFloors":outOfFloors,"size":size,
+            "renovated":renovated,"elevator":elevator,"airConditioning":airConditioning,"balcony":balcony,"price":price,"description":description});
+        console.log("Listing: "+listing +" has been accepted");
         listing.save(function (err) {
             if (err) throw err;
 

@@ -46,8 +46,8 @@ app.controller('ListingController', function ($scope, $location, $http) {
         $scope.currentUser = data;
     });
     var alertPrompt = function () {
-        var title = "";
-        var pic = "";
+       // var title = "";
+       // var pic = "";
         var questions = [];
         var questionsUserAlreadyAnswered = [];
 
@@ -59,7 +59,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
         //get picture
         $http.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getrandompic').success(function (picture) {
             //should be changed to JSON format
-            pic = picture;
+            $scope.pic = picture;
         });
 
 
@@ -77,6 +77,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
                 if (!(q._id in questionsUserAlreadyAnswered)) {
                     /* the user has NOT answered this question yet -> so we can ask him now! */
                     $scope.title = q.description;
+                    $scope.questionToAsk = q;
                 }
             }
             // we have already asked this user ALL our questions in this specific listing
@@ -92,8 +93,8 @@ app.controller('ListingController', function ($scope, $location, $http) {
         setTimeout(function () {
             sweetAlert({
                     //	title: "Is this room furnished?",
-                    title: title,
-                    imageUrl: pic,
+                    title: $scope.title,
+                    imageUrl: $scope.pic,
                     //imageUrl: chooseRandomPic(),
                     imageSize: '600x600',
                     showCancelButton: true,
@@ -104,13 +105,13 @@ app.controller('ListingController', function ($scope, $location, $http) {
                     closeOnCancel: false
                 },
                 function (isConfirm) {
+                    $http.put('/api/user/addListingAndQuestionToUser/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
+                    $http.put('/api/listing/addUserAndQuestionToListing/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
                     if (isConfirm) {
                         sweetAlert("Thanks!", "Your input will help others", "success");
-                        // submitToDatabase(userWhoPerformed, question/listingNumber/count++)
                     }
                     else {
                         sweetAlert("Thanks!", "Your input will help others", "success");
-                        // submitToDatabase(userWhoPerformed, question/listingNumber/count--)
                     }
                 });
         }, 5000); // 5 seconds
@@ -137,7 +138,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
 
             /* add this user to the reportUsers for this listing */
             $http.put("/api" + path + "/addReportedUser/" + $scope.currentUser._id + "/" + $scope.listing._id);
-        } // TODO: user currently undefined because the call /api/getuser doesn't work - talk to Lior
+        } // TODO: user currently undefined because the call /api/user doesn't work - talk to Lior
     };
     // $scope.hasReportedListing = true;
 

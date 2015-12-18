@@ -21,7 +21,7 @@ module.exports = function (app, passport) {
 
     app.get('/api/userName', isLoggedIn, function (req, res) {
 
-        //didnt find better way to make it work
+        // didn't find a better way to make it work
         var userStr = JSON.stringify(req.user);
         var userJson = JSON.parse(userStr);
 
@@ -49,7 +49,7 @@ module.exports = function (app, passport) {
             res.send(userJson.local.name);
         }
     });
-    /* TODO: Lior: what is this used for? */
+    /* TODO: Lior: this does not seem to work.. */
     app.get('/api/user', function (req, res) {
         if (req.user) {
             res.json(req.user);
@@ -94,6 +94,25 @@ module.exports = function (app, passport) {
                 else {
                     console.log("Flag count after=" + listing.flagCount);
                     res.json(listing.flagCount);
+                }
+            })
+    });
+
+    /* updates the renovated parameter of a certain listing */
+    app.put('/api/listing/changeCrowdRenovatedPercentage/:listingid/:plusOrMinus', function (req, res) {
+        var listing = req.params.listingid;
+        var plusOrMinus = req.params.plusOrMinus;
+        plusOrMinus = (plusOrMinus == 'plus' ? 1 : 0);
+
+        mongoose.model('Listing').update({
+                _id: ObjectId(listing)
+            }, {$inc: {crowd_renovated_total: 1, crowd_renovated: plusOrMinus}}
+            , function (err, listing) {
+                if (err) {
+                    res.send("There was a problem updating the renovated parameter: " + err);
+                }
+                else {
+                    res.json(listing.crowd_renovated_total);
                 }
             })
     });
@@ -231,29 +250,46 @@ module.exports = function (app, passport) {
     });
 
     app.post('/api/listing', function (req, res) {
-        var latitude=req.body.latitude;
-        var longitude=req.body.longitude;
-        var country=req.body.country;
-        var city=req.body.city;
-        var street=req.body.street;
-        var buildingNumber=req.body.buildingNumber;
-        var apartmentNumber=req.body.apartmentNumber;
-        var type=req.body.type;
-        var floor=req.body.floor;
-        var outOfFloors=req.body.outOfFloors;
-        var numberOfRooms=req.body.rooms;
-        var size=req.body.size;
-        var renovated=req.body.renovated;
-        var elevator=req.body.elevator;
-        var airConditioning=req.body.airConditioning;
-        var balcony=req.body.balcony;
-        var price=req.body.price;
-        var description=req.body.description;
+        var latitude = req.body.latitude;
+        var longitude = req.body.longitude;
+        var country = req.body.country;
+        var city = req.body.city;
+        var street = req.body.street;
+        var buildingNumber = req.body.buildingNumber;
+        var apartmentNumber = req.body.apartmentNumber;
+        var type = req.body.type;
+        var floor = req.body.floor;
+        var outOfFloors = req.body.outOfFloors;
+        var numberOfRooms = req.body.rooms;
+        var size = req.body.size;
+        var renovated = req.body.renovated;
+        var elevator = req.body.elevator;
+        var airConditioning = req.body.airConditioning;
+        var balcony = req.body.balcony;
+        var price = req.body.price;
+        var description = req.body.description;
         //var pictures=req.body.pictures;
 
-        var listing = new Listing({"latitude":latitude,"longitude":longitude,"country":country,"city":city,"street":street,"buildingNumber":buildingNumber,"apartmentNumber":apartmentNumber,"type":type,"floor":floor,"outOfFloors":outOfFloors,
-            "numberOfRooms":numberOfRooms,"size":size,
-            "renovated":renovated,"elevator":elevator,"airConditioning":airConditioning,"balcony":balcony,"price":price,"description":description});
+        var listing = new Listing({
+            "latitude": latitude,
+            "longitude": longitude,
+            "country": country,
+            "city": city,
+            "street": street,
+            "buildingNumber": buildingNumber,
+            "apartmentNumber": apartmentNumber,
+            "type": type,
+            "floor": floor,
+            "outOfFloors": outOfFloors,
+            "numberOfRooms": numberOfRooms,
+            "size": size,
+            "renovated": renovated,
+            "elevator": elevator,
+            "airConditioning": airConditioning,
+            "balcony": balcony,
+            "price": price,
+            "description": description
+        });
         listing.save(function (err) {
             if (err) throw err;
 
@@ -262,25 +298,25 @@ module.exports = function (app, passport) {
         });
     });
 
-    // server routes ===========================================================
-    // handle things like api calls
+// server routes ===========================================================
+// handle things like api calls
 
-    // frontend routes =========================================================
-    // route to handle all angular requests
+// frontend routes =========================================================
+// route to handle all angular requests
 
-    //=====================================================
-    // Home Page (welcome page for unrecognized users)
-    //=====================================================
+//=====================================================
+// Home Page (welcome page for unrecognized users)
+//=====================================================
 
-    //we add middleware function to let only signed in
-    // users to go to main page
+//we add middleware function to let only signed in
+// users to go to main page
     app.get('/', isLoggedIn, function (req, res) {
         console.log("Main Page is loading ...");
 
         res.sendfile('./public/views/main-page.html');
     });
 
-    //main page for users that are unrecognized
+//main page for users that are unrecognized
     app.get('/welcome', function (req, res) {
         if (req.user) {
             res.redirect('/');
@@ -293,30 +329,30 @@ module.exports = function (app, passport) {
     });
 
 
-    //======================================================
-    //Login(login form for local login(not facebook,google))
-    //======================================================
+//======================================================
+//Login(login form for local login(not facebook,google))
+//======================================================
 
-    // show the login form
+// show the login form
     app.get('/login', function (req, res) {
 
         // render the page and pass in any flash data if it exists
         res.render('Signup.ejs', {message: req.flash('loginMessage')});
     });
 
-    // process the login form
+// process the login form
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/',		// redirect to the home page
         failureRedirect: '/login', // redirect back to the login page if there is an error
         failureFlash: true			// allow flash messages
     }));
 
-    // =====================================================
-    // FACEBOOK Login
-    // =====================================================
+// =====================================================
+// FACEBOOK Login
+// =====================================================
     app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
 
-    // handle the callback after facebook has authenticated the user
+// handle the callback after facebook has authenticated the user
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
             successRedirect: '/',
@@ -324,15 +360,15 @@ module.exports = function (app, passport) {
         }));
 
 
-    // ====================================================
-    // GOOGLE ROUTES
-    // ====================================================
-    // send to google to do the authentication
-    // profile gets us their basic information including their name
-    // email gets their emails
+// ====================================================
+// GOOGLE ROUTES
+// ====================================================
+// send to google to do the authentication
+// profile gets us their basic information including their name
+// email gets their emails
     app.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
 
-    // the callback after google has authenticated the user
+// the callback after google has authenticated the user
     app.get('/auth/google/callback',
         passport.authenticate('google', {
             successRedirect: '/',
@@ -340,39 +376,39 @@ module.exports = function (app, passport) {
         }));
 
 
-    //======================================================
-    //Sign Up
-    //======================================================
+//======================================================
+//Sign Up
+//======================================================
 
-    // show the signup form
+// show the signup form
     app.get('/signup', function (req, res) {
 
         // render the page and pass in any flash data if it exists
         res.render('signup.ejs', {message: req.flash('signupMessage')});
     });
 
-    // process the signup form
+// process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect: '/',			// redirect to the secure profile section
         failureRedirect: 'signup',		// redirect back to the signup page if there is an error
         failureFlash: true				// allow flash messages - shows messege for failure
     }));
 
-    //======================================================
-    //Profile Section
-    //======================================================
+//======================================================
+//Profile Section
+//======================================================
 
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
+// we will want this protected so you have to be logged in to visit
+// we will use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function (req, res) {
         res.render('profile.ejs', {
             user: req.user // get the user out of session and pass to template
         });
     });
 
-    //======================================================
-    //Log Out
-    //======================================================
+//======================================================
+//Log Out
+//======================================================
 
     app.get('/logout', function (req, res) {
         req.logout();
@@ -380,9 +416,9 @@ module.exports = function (app, passport) {
     });
 
 
-    //======================================================
-    //Apartment listing
-    //======================================================
+//======================================================
+//Apartment listing
+//======================================================
 
     app.get('/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {
         res.sendfile('./public/views/single.html');
@@ -460,7 +496,8 @@ module.exports = function (app, passport) {
     });
 
 
-}; //end export
+}
+; //end export
 
 
 // route middleware to make sure a user is logged in

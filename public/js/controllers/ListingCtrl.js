@@ -48,6 +48,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
     var alertPrompt = function () {
        // var title = "";
        // var pic = "";
+        $scope.title = 'test';
         var questions = [];
         var questionsUserAlreadyAnswered = [];
 
@@ -66,10 +67,10 @@ app.controller('ListingController', function ($scope, $location, $http) {
         $http.get('/api/questions').success(function (qs) {
             questions = qs;
         });
-
-        $http.get('/api/listing/getQuestionsOfUserInListing/' + $scope.currentUser._id + '/' + $scope.listing._id).success(function (userqs) {
-            questionsUserAlreadyAnswered = userqs;
-        });
+        // TODO: user currently undefined because the call /api/user doesn't work - talk to Lior
+        //$http.get('/api/listing/getQuestionsOfUserInListing/' + $scope.currentUser._id + '/' + $scope.listing._id).success(function (userqs) {
+        //    questionsUserAlreadyAnswered = userqs;
+        //});
 
         function setQuestion() {
             var q; // question we will eventually ask the user
@@ -114,7 +115,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
                         sweetAlert("Thanks!", "Your input will help others", "success");
                     }
                 });
-        }, 5000); // 5 seconds
+        }, 50000); // 50 seconds
 
     };
 

@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 
 // define the schema for our user model
 var listingSchema = new Schema({
+        city            : String,
         street          : String,
         buildingNumber  : Number,
         apartmentNumber : Number,

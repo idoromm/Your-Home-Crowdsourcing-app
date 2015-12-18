@@ -14,23 +14,6 @@ app.controller('reviewCtrl',
             //$scope.error = "Could not fetch the listing";
         };
 
-        var componentForm = {
-            street_number: 'short_name',
-            route: 'long_name',
-            locality: 'long_name',
-            country: 'long_name',
-        };
-
-        var parsedGoogleDetails=function () {
-            for (var i = 0; i < $scope.googleMapsFormDetails.address_components.length; i++) {
-                var addressType = $scope.googleMapsFormDetails.address_components[i].types[0];
-                if (componentForm[addressType]) {
-                    var val = $scope.googleMapsFormDetails.address_components[i][componentForm[addressType]];
-                    $scope.editableReview.addressType = val;
-                }
-            }
-        }
-
 
         $scope.review = reviewService.review;
 
@@ -48,7 +31,7 @@ app.controller('reviewCtrl',
                 sweetAlert("Oops...", "Please fill all the missing details!", "error");
                 return;
             }
-            reviewService.insertReview($scope.editableReview)
+            reviewService.insertReview($scope.editableReview,$scope.googleMapsFormDetails)
                 .then(onListingComplete,onError);
 
 

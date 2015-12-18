@@ -18,36 +18,15 @@ app.controller('reviewCtrl',
             street_number: 'short_name',
             route: 'long_name',
             locality: 'long_name',
-            administrative_area_level_1: 'short_name',
             country: 'long_name',
         };
 
-        var  fillInAddress = function() {
-            // Get the place details from the autocomplete object.
-            var place = autocomplete.getPlace();
-
-            for (var component in componentForm) {
-                document.getElementById(component).value = '';
-                document.getElementById(component).disabled = false;
-            }
-
-            // Get each component of the address from the place details
-            // and fill the corresponding field on the form.
-            for (var i = 0; i < place.address_components.length; i++) {
-                var addressType = place.address_components[i].types[0];
+        var parsedGoogleDetails=function () {
+            for (var i = 0; i < $scope.googleMapsFormDetails.address_components.length; i++) {
+                var addressType = $scope.googleMapsFormDetails.address_components[i].types[0];
                 if (componentForm[addressType]) {
-                    var val = place.address_components[i][componentForm[addressType]];
-                    document.getElementById(addressType).value = val;
-                }
-            }
-        }
-
-        $scope.parsedGoogleDetails=function () {
-            for (var i = 0; i < googleMapsFormDetails.address_components.length; i++) {
-                var addressType = googleMapsFormDetails.address_components[i].types[0];
-                if (componentForm[addressType]) {
-                    var val = place.address_components[i][componentForm[addressType]];
-                    document.getElementById(addressType).value = val;
+                    var val = $scope.googleMapsFormDetails.address_components[i][componentForm[addressType]];
+                    $scope.editableReview.addressType = val;
                 }
             }
         }
@@ -57,13 +36,18 @@ app.controller('reviewCtrl',
 
         $scope.editableReview = angular.copy($scope.review);
 
-        $scope.submitForm = function () {
+        var isValidForm= function(){
+            //TODO:check that that the requested form is filled with all the details and return boolean
+            return true;
+        }
 
+        $scope.submitForm = function () {
             $scope.$broadcast('show-errors-event');
 
-            if ($scope.reviewForm.$invalid)
+            if (!isValidForm()){
+                sweetAlert("Oops...", "Please fill all the missing details!", "error");
                 return;
-
+            }
             reviewService.insertReview($scope.editableReview)
                 .then(onListingComplete,onError);
 

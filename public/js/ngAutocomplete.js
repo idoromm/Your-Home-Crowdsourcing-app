@@ -66,7 +66,26 @@ angular.module("ngAutocomplete", [])
 				}
 			}
 			initOpts()
-			
+
+			var componentForm = {
+				street_number: 'short_name',
+				route: 'long_name',
+				locality: 'long_name',
+				country: 'long_name',
+			};
+			var parsedGoogleDetails=function (details) {
+				for (var i = 0; i < details.address_components.length; i++) {
+					var addressType = details.address_components[i].types[0];
+					if (componentForm[addressType]) {
+						var val = details.address_components[i][componentForm[addressType]];
+						if (addressType=="street_number")	 {details.street_number = val;}
+						if (addressType=="route")			 {details.route= val;}
+						if (addressType=="locality") 			{details.locality= val;}
+						if (addressType=="country") {details.country= val;}
+					}
+				}
+			}
+
 			//create new autocomplete
 			//reinitializes on every change of the options provided
 			var newAutocomplete = function () {
@@ -77,6 +96,9 @@ angular.module("ngAutocomplete", [])
 						scope.details = scope.gPlace.getPlace();
 						//              }
 						scope.ngAutocomplete = element.val();
+						var googleDetails=scope.details;
+						if (scope.details){parsedGoogleDetails(googleDetails);}
+
 					});
 				})
 			}

@@ -19,8 +19,8 @@
                 <div class="col-xs-3">
                     <label for="city">City</label>
                         <input type="text" id="city"  name="city" class="form-control"
-                               ng-model="editableReview.city" placeholder={{googleMapsFormDetails.address_components[2]['long_name']}}
-                               ng-disabled=googleMapsFormDisable ng-required=true>
+                               ng-model="editableReview.city" placeholder={{googleMapsFormDetails.locality}}
+                               ng-required=true>
                         <span class="help-block hide">City is required</span>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="col-xs-3">
                     <label for="street">Street</label>
                     <input type="text" id="street"  name="street" class="form-control"
-                           ng-model="editableReview.street" placeholder={{googleMapsFormDetails.address_components[1]['long_name']}}
+                           ng-model="editableReview.street" placeholder={{googleMapsFormDetails.route}}
                            ng-required=true>
                     <span class="help-block hide">Street is required</span>
                 </div>
@@ -41,7 +41,7 @@
                 <div class="col-xs-3">
                     <label for="street">Building Number</label>
                     <input type="text" id="buildingNumber"  name="buildingNumber" class="form-control"
-                           ng-model="editableReview.buildingNumber" placeholder={{googleMapsFormDetails.address_components[0]['long_name']}}
+                           ng-model="editableReview.street_number" placeholder={{googleMapsFormDetails.street_number}}
                            ng-required=true>
                     <span class="help-block hide">Building Number is required</span>
                 </div>

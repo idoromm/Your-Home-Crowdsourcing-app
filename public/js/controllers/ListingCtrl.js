@@ -48,6 +48,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
     var alertPrompt = function () {
         var title = "";
         var pic = "";
+        var questions = [];
 
         //get title
         $http.get('/api/getrandomquestion').success(function (question) {
@@ -58,6 +59,14 @@ app.controller('ListingController', function ($scope, $location, $http) {
         $http.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getrandompic').success(function (picture) {
             //should be changed to JSON format
             pic = picture;
+        });
+
+        //function makeSureUserHavnentAnsweredThisQuestionAlready(){
+        //
+        //}
+
+        $http.get('/api/questions').success(function(qs){
+            questions = qs;
         });
 
         function chooseRandomPic() {

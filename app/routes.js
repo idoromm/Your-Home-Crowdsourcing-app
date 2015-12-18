@@ -98,8 +98,9 @@ module.exports = function (app, passport) {
             })
     });
 
+
     /* add current user ID to listing reporters */
-    app.put('/api/listing/:street/:buildingNumber/:apartmentNumber/addReportedUser/:userid/:listingid', function (req, res) {
+    app.put('/api/listing/addReportedUser/:userid/:listingid', function (req, res) {
         console.log("adding reported user now");
         var listingToUpdate = req.params.listingid;
         var idToAdd = req.params.userid;
@@ -117,7 +118,7 @@ module.exports = function (app, passport) {
     });
 
     /* adds a users' input (answer) of a certain question to a listing */
-    app.put('/api/listing/:street/:buildingNumber/:apartmentNumber/addUserInput/:userid/:listingid/:questionid', function (req, res) {
+    app.put('/api/listing/addUserAndQuestionToListing/:userid/:listingid/:questionid', function (req, res) {
         console.log("adding user and question he answered to listing schema");
         var listingToUpdate = req.params.listingid;
         var idToAdd = req.params.userid;
@@ -138,14 +139,38 @@ module.exports = function (app, passport) {
                             }
                         },
                         function (err, res) {
-                            res.send("Successful in adding a user and question to the questions' UsersAndQuestions!");
+                            // res.send("Successful in adding a user and question to the questions' UsersAndQuestions!");
+                            //res.json(result);
                         })
                 }
             });
     });
 
+    /* get the questions that a user was asked in a specific listing */
+    app.get('/api/listing/getQuestionsOfUserInListing/:userid/:listingid', function (req, res) {
+        var user = req.params.userid;
+        var listing = req.params.listingid;
+        Listing.findOne({_id: listing, 'UsersAndQuestions.userID': user},
+            {_id: 0, 'UsersAndQuestions.$': 1},
+            function (err, result) {
+                res.json(result.UsersAndQuestions[0].questionID);
+            });
+    });
+
+    /* get the questions that a user was asked in a specific listing */
+    app.get('/api/user/getQuestionsOfUserInListing/:userid/:listingid', function (req, res) {
+        var user = req.params.userid;
+        var listing = req.params.listingid;
+        User.findOne({_id: user, 'ApartmentsAndQuestions.apartmentID': listing},
+            {_id: 0, 'ApartmentAndQuestions.$': 1},
+            function (err, result) {
+                res.json(result.ApartmentsAndQuestions[0].questionID);
+            });
+    });
+
+
     /* adds a listing and a question answered by the user to the users' schema */
-    app.put('/api/user/addUserInput/:listingid/:userid/:questionid', function (req, res) {
+    app.put('/api/user/addListingAndQuestionToUser/:userid/:listingid/:questionid', function (req, res) {
         console.log("adding listing and question answered to user schema");
 
         var listingToAdd = req.params.listingid;
@@ -167,8 +192,8 @@ module.exports = function (app, passport) {
                             }
                         },
                         function (err, res) {
-                          //  res.send("Successful in adding a listing and question to the users ApartmentsAndQuestions!");
-                            console.log("yay");
+                            //   res.send("Successful in adding a listing and question to the users ApartmentsAndQuestions!");
+                            // res.json(result);
                         })
                 }
             });

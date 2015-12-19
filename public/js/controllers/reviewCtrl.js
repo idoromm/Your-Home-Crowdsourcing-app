@@ -19,15 +19,11 @@ app.controller('reviewCtrl',
 
         $scope.editableReview = angular.copy($scope.review);
 
-        var isValidForm= function(){
-            //TODO:check that that the requested form is filled with all the details and return boolean
-            return true;
-        }
 
         $scope.submitForm = function () {
             $scope.$broadcast('show-errors-event');
 
-            if (!isValidForm()){
+            if ($scope.reviewForm.$invalid) {
                 sweetAlert("Oops...", "Please fill all the missing details!", "error");
                 return;
 			}

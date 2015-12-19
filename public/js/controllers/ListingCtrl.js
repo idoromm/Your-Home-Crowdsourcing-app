@@ -3,6 +3,7 @@ var app = angular.module('Crowdsourcing', ['ngRoute'], function ($locationProvid
     $locationProvider.html5Mode(true);
 });
 
+/* a function that returns -1 if object is NOT in array, and the objects' index if it IS in the array */
 var indexOf = function (needle) {
     if (typeof Array.prototype.indexOf === 'function') {
         indexOf = Array.prototype.indexOf;
@@ -20,7 +21,6 @@ var indexOf = function (needle) {
             return index;
         };
     }
-
     return indexOf.call(this, needle);
 };
 
@@ -51,12 +51,12 @@ app.controller('ListingController', function ($scope, $location, $http) {
      /  the formula we use is: ((number of people that replied YES) / (number of people that answered at all)) * 100
      */
     setTimeout(function () {
-            $scope.listing.crowdFurnishedPercentage = ($scope.listing.crowd_furnished / $scope.listing.crowd_furnished_total) * 100; // "Is this room furnished?"
-            $scope.listing.crowdWindowsPercentage = ($scope.listing.crowd_windows / $scope.listing.crowd_windows_total) * 100; // "Is there a window in this room?"
-            $scope.listing.crowdRenovatedPercentage = ($scope.listing.crowd_renovated / $scope.listing.crowd_renovated_total) * 100; // "Does this room look renovated?"
-            $scope.listing.crowdLightPercentage = ($scope.listing.crowd_light / $scope.listing.crowd_light_total) * 100;
-        } // "Is this room well-lit?"
-        , 1000);
+            $scope.listing.crowd_furnished = ($scope.listing.crowd_furnished / $scope.listing.crowd_furnished_total) * 100; // "Is this room furnished?"
+            $scope.listing.crowd_windows = ($scope.listing.crowd_windows / $scope.listing.crowd_windows_total) * 100; // "Is there a window in this room?"
+            $scope.listing.crowd_renovated = ($scope.listing.crowd_renovated / $scope.listing.crowd_renovated_total) * 100; // "Does this room look renovated?"
+            $scope.listing.crowd_light = ($scope.listing.crowd_light / $scope.listing.crowd_light_total) * 100; // "Is this room well-lit?"
+        }
+        , 1000); // this 1 second timeout is to avoid binding failure in listing page, because when listing loads the $scope takes a second to "refresh"
 
 
     var alertPrompt = function () {
@@ -71,7 +71,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
         //    title = question.description;
         //});
 
-        //get picture
+        // gets random picture of the listing picture TODO: this obviously doesn't work yet
         $http.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getrandompic').success(function (picture) {
             //should be changed to JSON format
             $scope.pic = picture;
@@ -81,11 +81,14 @@ app.controller('ListingController', function ($scope, $location, $http) {
         $http.get('/api/questions').success(function (qs) {
             questions = qs;
         });
+
         // TODO: user currently undefined because the call /api/user doesn't work - talk to Lior
         //$http.get('/api/listing/getQuestionsOfUserInListing/' + $scope.currentUser._id + '/' + $scope.listing._id).success(function (userqs) {
         //    questionsUserAlreadyAnswered = userqs;
         //});
 
+
+        /* function that sets the question that the user will be asked (only a question he wasn't asked before!) */
         function setQuestion() {
             var q; // question we will eventually ask the user
             for (q in questions) {
@@ -95,9 +98,10 @@ app.controller('ListingController', function ($scope, $location, $http) {
                     $scope.questionToAsk = q;
                 }
             }
+            $scope.title = 'None';
+            $scope.questionToAsk = 'None';
             // we have already asked this user ALL our questions in this specific listing
         }
-
         setQuestion();
 
         function chooseRandomPic() {
@@ -106,44 +110,64 @@ app.controller('ListingController', function ($scope, $location, $http) {
             return myPix[randomNum];
         }
 
-        setTimeout(function () {
-            sweetAlert({
-                    //	title: "Is this room furnished?",
-                    title: $scope.title,
-                    imageUrl: $scope.pic,
-                    //imageUrl: chooseRandomPic(),
-                    imageSize: '600x600',
-                    showCancelButton: true,
-                    cancelButtonText: "No",
-                    confirmButtonColor: "#00ff00", // green
-                    confirmButtonText: "Yes",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    $http.put('/api/user/addListingAndQuestionToUser/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
-                    $http.put('/api/listing/addUserAndQuestionToListing/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
-                    if (isConfirm) {
-                        sweetAlert("Thanks!", "Your input will help others", "success");
-                        if ($scope.questionToAsk._id == '5661da7e716f675817f9d68b') { // Furnished
-                            $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/plus');
+        /* if the user was asked all the questions already we don't want to ask him again, so we just don't ask him anything */
+        if($scope.title.localeCompare('None') != 0) {
+            setTimeout(function () {
+                sweetAlert({
+                        //	title: "Is this room furnished?",
+                        title: $scope.title,
+                        imageUrl: $scope.pic,
+                        //imageUrl: chooseRandomPic(),
+                        imageSize: '600x600',
+                        showCancelButton: true,
+                        cancelButtonText: "No",
+                        confirmButtonColor: "#00ff00", // green
+                        confirmButtonText: "Yes",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function (isConfirm) {
+                        $http.put('/api/user/addListingAndQuestionToUser/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
+                        $http.put('/api/listing/addUserAndQuestionToListing/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
+                        if (isConfirm) {
+                            sweetAlert("Thanks!", "Your input will help others", "success");
+                            if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
+                                $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/plus');
+                            }
+                            else if (!($scope.questionToAsk._id.localeCompare('5661db59b0b1b91c1d63643d'))) { // Windows
+                                $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/plus');
+                            }
+                            else if (!($scope.questionToAsk._id.localeCompare('5661db6cb0b1b91c1d63643e'))) { // Renovated
+                                $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/plus');
+                            }
+                            else if (!($scope.questionToAsk._id.localeCompare('5669d90a058ceddc158e97e2'))) { // Light
+                                $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/plus');
+                            }
+                            else {
+                                console.log("The ID of the question didn't match any known ID, we go the following ID: " + $scope.questionToAsk._id);
+                            }
                         }
-                        else if ($scope.questionToAsk._id == '5661db59b0b1b91c1d63643d') { // Windows
-                            $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/plus');
+                        else {
+                            sweetAlert("Thanks!", "Your input will help others", "success");
+                            if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
+                                $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/minus');
+                            }
+                            else if (!($scope.questionToAsk._id.localeCompare('5661db59b0b1b91c1d63643d'))) { // Windows
+                                $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/minus');
+                            }
+                            else if (!($scope.questionToAsk._id.localeCompare('5661db6cb0b1b91c1d63643e'))) { // Renovated
+                                $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/minus');
+                            }
+                            else if (!($scope.questionToAsk._id.localeCompare('5669d90a058ceddc158e97e2'))) { // Light
+                                $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/minus');
+                            }
+                            else {
+                                console.log("The ID of the question didn't match any known ID, we go the following ID: " + $scope.questionToAsk._id);
+                            }
                         }
-                        else if ($scope.questionToAsk._id == '5661db6cb0b1b91c1d63643e') { // Renovated
-                            $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/plus');
-                        }
-                        else if ($scope.questionToAsk._id == '5669d90a058ceddc158e97e2') { // Light
-                            $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/plus');
-                        }
-                    }
-                    else {
-                        sweetAlert("Thanks!", "Your input will help others", "success");
-                    }
-                });
-        }, 50000); // 50 seconds
-
+                    });
+            }, 50000); // 50 seconds TODO: change to 5 seconds after we actually get images from the db
+        }
     };
 
     $scope.hide = false;

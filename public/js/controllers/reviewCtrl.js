@@ -6,8 +6,14 @@ app.controller('reviewCtrl',
 		$scope.details1 = '';
 
         var onListingComplete = function(response) {
-            swal("Your listing has been submitted!", "Thank you for your time!", "success")
-            //$scope.listing = response;
+			//edited by Lior:: swal message now is in fileUploadService which means that
+			//once images uploads succseeded the correct message will be shown.
+			//the data is uploaded in 2 phases=> first : json with all text data
+			//second=> using the id of the response=> uploading the files with that id
+			//upload images once listing uploading was succssful    
+			fileUpload.uploadFileToUrl(fileService, "/api/images/"+response._id);
+			fileService = [];
+
         };
 
         var onError = function(reason) {
@@ -36,12 +42,8 @@ app.controller('reviewCtrl',
 			reviewService.insertReview($scope.editableReview,$scope.googleMapsFormDetails)
 				.then(onListingComplete, onError);
 		
-		//upload images
-			console.log('go here')
-		var uploadUrl = "/api/images";
-		fileUpload.uploadFileToUrl(fileService, uploadUrl);
-		fileService = []
-		console.log('got after');
+
+		
 				
 
 

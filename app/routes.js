@@ -116,6 +116,60 @@ module.exports = function (app, passport) {
                 }
             })
     });
+    /* updates the furnished parameter of a certain listing */
+    app.put('/api/listing/changeCrowdFurnishedPercentage/:listingid/:plusOrMinus', function (req, res) {
+        var listing = req.params.listingid;
+        var plusOrMinus = req.params.plusOrMinus;
+        plusOrMinus = (plusOrMinus == 'plus' ? 1 : 0);
+
+        mongoose.model('Listing').update({
+                _id: ObjectId(listing)
+            }, {$inc: {crowd_furnished_total: 1, crowd_furnished: plusOrMinus}}
+            , function (err, listing) {
+                if (err) {
+                    res.send("There was a problem updating the furnished parameter: " + err);
+                }
+                else {
+                    res.json(listing.crowd_furnished_total);
+                }
+            })
+    });
+    /* updates the windows parameter of a certain listing */
+    app.put('/api/listing/changeCrowdWindowsPercentage/:listingid/:plusOrMinus', function (req, res) {
+        var listing = req.params.listingid;
+        var plusOrMinus = req.params.plusOrMinus;
+        plusOrMinus = (plusOrMinus == 'plus' ? 1 : 0);
+
+        mongoose.model('Listing').update({
+                _id: ObjectId(listing)
+            }, {$inc: {crowd_windows_total: 1, crowd_windows: plusOrMinus}}
+            , function (err, listing) {
+                if (err) {
+                    res.send("There was a problem updating the windows parameter: " + err);
+                }
+                else {
+                    res.json(listing.crowd_windows_total);
+                }
+            })
+    });
+    /* updates the light parameter of a certain listing */
+    app.put('/api/listing/changeCrowdLightPercentage/:listingid/:plusOrMinus', function (req, res) {
+        var listing = req.params.listingid;
+        var plusOrMinus = req.params.plusOrMinus;
+        plusOrMinus = (plusOrMinus == 'plus' ? 1 : 0);
+
+        mongoose.model('Listing').update({
+                _id: ObjectId(listing)
+            }, {$inc: {crowd_light_total: 1, crowd_light: plusOrMinus}}
+            , function (err, listing) {
+                if (err) {
+                    res.send("There was a problem updating the light parameter: " + err);
+                }
+                else {
+                    res.json(listing.crowd_light_total);
+                }
+            })
+    });
 
 
     /* add current user ID to listing reporters */

@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var User = require('./user');
 var Schema = mongoose.Schema;
 
-// define the schema for our user model
+/* define the schema for our listing model */
 var listingSchema = new Schema({
         latitude        : Number,
         longitude       : Number,

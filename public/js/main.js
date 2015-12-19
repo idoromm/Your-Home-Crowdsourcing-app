@@ -4,6 +4,19 @@ jQuery(document).ready(function($){
 		longitude = 34.775082,
 		map_zoom = 15;
 
+	$.ajax({
+		url: '/api/listings',
+		type: 'GET',
+		success: function(data) {
+			fillListingOnMap(data);
+			console.log(data);
+		},
+		error: function(e) {
+			//called when there is an error
+			//console.log(e.message);
+		}
+	});
+
 	//google map custom marker icon - .png fallback for IE11
 	var is_internetExplorer11= navigator.userAgent.toLowerCase().indexOf('trident') > -1;
 	var marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
@@ -194,17 +207,69 @@ jQuery(document).ready(function($){
       	streetViewControl: false,
       	mapTypeId: google.maps.MapTypeId.ROADMAP,
       	scrollwheel: true,
-      	styles: style,
-    }
+      	styles: style
+    };
     //inizialize the map
 	var map = new google.maps.Map(document.getElementById('google-container'), map_options);
-	//add a custom marker to the map				
-	var marker = new google.maps.Marker({
-	  	position: new google.maps.LatLng(latitude, longitude),
-	    map: map,
-	    visible: true,
-	 	icon: marker_url,
-	});
+	//add a custom marker to the map
+
+	function fillListingOnMap(data) {
+		for (i=0;i<data.length;i++){
+			var lat=data[i]["latitude"];
+			var lng=data[i]["longitude"];
+			if ( lat && lng){
+				addMarker(data[i],true);
+			}
+		}
+	}
+
+	function addMarker(data,isListing){
+		var latitude=data["latitude"];
+		var longitude=data["longitude"];
+		var marker_url;
+		if(isListing){
+			marker_url=( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
+		}
+		else {
+			marker_url=( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg'; //TODO change it to blue/black
+		}
+
+		var city=data["city"];
+		var street=data["street"];
+		var buildingNumber=data["buildingNumber"]
+		var apartmentNumber=data["apartmentNumber"]
+
+		var marker = new google.maps.Marker({
+			position: new google.maps.LatLng(latitude, longitude),
+			map: map,
+			visible: true,
+			icon: marker_url,
+			title: city + " " + street + " " + buildingNumber,
+			url: "/listing/"+street +"/"+buildingNumber +"/" + apartmentNumber
+		});
+
+
+		var infowindow = new google.maps.InfoWindow({
+			content: city + " " + street + " " + buildingNumber
+		});
+
+		marker.addListener('mouseover', function() {
+			infowindow.open(map, marker);
+		});
+		marker.addListener('mouseout', function(){
+			infowindow.close();
+		});
+
+		marker.addListener('click', function(){
+			window.location.href = marker.url;
+		});
+
+	}
+
+	addMarker(latitude,longitude,true);
+
+
+
 
 	//add custom buttons for the zoom-in/zoom-out on the map
 	function CustomZoomControl(controlDiv, map) {
@@ -226,28 +291,39 @@ jQuery(document).ready(function($){
 	var zoomControlDiv = document.createElement('div');
  	var zoomControl = new CustomZoomControl(zoomControlDiv, map);
 
-  	//insert the zoom div on the top left of the map
-  	map.controls[google.maps.ControlPosition.LEFT_TOP].push(zoomControlDiv);
+
 	google.maps.event.addDomListener(window, 'load', function initialize() {
+		
+		var emptyDiv = document.createElement('div');
+		emptyDiv.className = 'empty';
+		map.controls[google.maps.ControlPosition.LEFT_TOP].push(emptyDiv);
 
-		var input = document.getElementById('searchTextField');
-		map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+		var searchTextField = document.getElementById('searchTextField');
+		map.controls[google.maps.ControlPosition.LEFT_TOP].push(searchTextField);
 
-		console.log("input: "+input);
-		var autocomplete = new google.maps.places.Autocomplete(input);
+  		//insert the zoom div on the top left of the map
+  		map.controls[google.maps.ControlPosition.LEFT_TOP].push(zoomControlDiv);
+
+		var addNewReviewButton = document.getElementById('addNewReviewButton');
+		map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(addNewReviewButton);
+
+
+
+
+
+		console.log("input: "+searchTextField);
+		var autocompleteMap = new google.maps.places.Autocomplete(searchTextField);
 
 
 		var infowindow = new google.maps.InfoWindow();
-		var marker = new google.maps.Marker({
-			map: map,
-			anchorPoint: new google.maps.Point(0, -29)
-		});
+		var listingInfo = new google.maps.InfoWindow();
 
 
-		autocomplete.addListener('place_changed', function() {
+		
+
+		autocompleteMap.addListener('place_changed', function() {
 			infowindow.close();
-			marker.setVisible(false);
-			var place = autocomplete.getPlace();
+			var place = autocompleteMap.getPlace();
 			if (!place.geometry) {
 				window.alert("Autocomplete's returned place contains no geometry");
 				return;
@@ -260,15 +336,7 @@ jQuery(document).ready(function($){
 				map.setCenter(place.geometry.location);
 				map.setZoom(17);  // Why 17? Because it looks good.
 			}
-			marker.setIcon(/** @type {google.maps.Icon} */({
-				url: place.icon,
-				size: new google.maps.Size(71, 71),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(35, 35)
-			}));
-			marker.setPosition(place.geometry.location);
-			marker.setVisible(true);
+
 
 			var address = '';
 			if (place.address_components) {
@@ -279,12 +347,12 @@ jQuery(document).ready(function($){
 				].join(' ');
 			}
 
-			infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
-			infowindow.open(map, marker);
+
+
+
+			//infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+			//infowindow.open(map, marker);
 		});
-
-
-
 	});
 });
 

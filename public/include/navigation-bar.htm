@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand topnav" href="/">{{message}}, {{User}}</a>
+            <p class="navbar-brand topnav" href="/">{{message}} {{User}}. You have {{points}} points</p>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -22,6 +22,9 @@
                 </li>
                 <li>
                     <a href="\logout">Log Out</a>
+                </li>
+                <li class="navbar-btn">
+                    <input type="button" class="btn btn-primary" value="Ask For Review" ng-click="askForReview()" />
                 </li>
             </ul>
         </div>

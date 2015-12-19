@@ -7,26 +7,29 @@ var userSchema = mongoose.Schema({
 
     local            : {
         email        : String,
-		password     : String,
-		name		 : String
+		password     : String
     },
     facebook         : {
         id           : String,
         token        : String,
-		firstName    : String,
 		familyName	 : String
     },
     google           : {
         id           : String,
         token        : String,
-		firstName    : String,
 		familyName	 : String
-    },
-
- /*   ApartmentsAndQuestions: [{
-        apartmentID: String,
-        questionID: Schema.Types.Mixed
-    }] */
+	},
+	reputation		 : {
+		type: Number,
+		default: 0
+	},
+	name			 : String,
+    /* every entry in the array is an apartment ID and the questionsIDs (array) of the questions that the user ALREADY answered in that *specific* apartment */
+    ApartmentsAndQuestions: [{
+        apartmentID : { type: String, unique: true},
+        questionID: [String],
+        _id : false
+    }]
 });
 
 // generating a hash
@@ -41,3 +44,5 @@ userSchema.methods.validPassword = function(password) {
 
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
+//module.exports = userSchema;
+module.exports.schema = userSchema;

@@ -2,6 +2,7 @@
   "name": "CrowdSourcing",
   "version": "0.0.2",
   "dependencies": {
+    "async": "1.5.0",
     "bcrypt-nodejs": "latest",
     "body-parser": "~1.4.2",
     "connect-flash": "~0.1.1",
@@ -14,7 +15,7 @@
     "json-parser": "^1.1.5",
     "jsonparser": "^0.2.0",
     "method-override": "~2.0.2",
-    "mongoose": "~3.8.1",
+    "mongoose": "^4.3.1",
     "morgan": "~1.0.0",
     "passport": "~0.1.17",
     "passport-facebook": "~1.0.2",

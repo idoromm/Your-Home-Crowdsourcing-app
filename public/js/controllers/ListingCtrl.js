@@ -45,9 +45,23 @@ app.controller('ListingController', function ($scope, $location, $http) {
     $http.get("/api/user").success(function (data) {
         $scope.currentUser = data;
     });
+
+
+    /* We find what question the user was asked, and updated the listing parameters accordingly *
+     /  the formula we use is: ((number of people that replied YES) / (number of people that answered at all)) * 100
+     */
+    setTimeout(function () {
+            $scope.listing.crowdFurnishedPercentage = ($scope.listing.crowd_furnished / $scope.listing.crowd_furnished_total) * 100; // "Is this room furnished?"
+            $scope.listing.crowdWindowsPercentage = ($scope.listing.crowd_windows / $scope.listing.crowd_windows_total) * 100; // "Is there a window in this room?"
+            $scope.listing.crowdRenovatedPercentage = ($scope.listing.crowd_renovated / $scope.listing.crowd_renovated_total) * 100; // "Does this room look renovated?"
+            $scope.listing.crowdLightPercentage = ($scope.listing.crowd_light / $scope.listing.crowd_light_total) * 100;
+        } // "Is this room well-lit?"
+        , 1000);
+
+
     var alertPrompt = function () {
-       // var title = "";
-       // var pic = "";
+        // var title = "";
+        // var pic = "";
         $scope.title = 'test';
         var questions = [];
         var questionsUserAlreadyAnswered = [];
@@ -83,6 +97,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
             }
             // we have already asked this user ALL our questions in this specific listing
         }
+
         setQuestion();
 
         function chooseRandomPic() {
@@ -110,6 +125,18 @@ app.controller('ListingController', function ($scope, $location, $http) {
                     $http.put('/api/listing/addUserAndQuestionToListing/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
                     if (isConfirm) {
                         sweetAlert("Thanks!", "Your input will help others", "success");
+                        if ($scope.questionToAsk._id == '5661da7e716f675817f9d68b') { // Furnished
+                            $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/plus');
+                        }
+                        else if ($scope.questionToAsk._id == '5661db59b0b1b91c1d63643d') { // Windows
+                            $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/plus');
+                        }
+                        else if ($scope.questionToAsk._id == '5661db6cb0b1b91c1d63643e') { // Renovated
+                            $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/plus');
+                        }
+                        else if ($scope.questionToAsk._id == '5669d90a058ceddc158e97e2') { // Light
+                            $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/plus');
+                        }
                     }
                     else {
                         sweetAlert("Thanks!", "Your input will help others", "success");

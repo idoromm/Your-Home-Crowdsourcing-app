@@ -4,6 +4,8 @@ var Question = require('./models/question');
 var QuestionHandler = require('./QuestionHandler');
 var mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectID;
+var multer = require('multer');
+var upload = multer();
 
 module.exports = function (app, passport) {
 
@@ -113,6 +115,60 @@ module.exports = function (app, passport) {
                 }
                 else {
                     res.json(listing.crowd_renovated_total);
+                }
+            })
+    });
+    /* updates the furnished parameter of a certain listing */
+    app.put('/api/listing/changeCrowdFurnishedPercentage/:listingid/:plusOrMinus', function (req, res) {
+        var listing = req.params.listingid;
+        var plusOrMinus = req.params.plusOrMinus;
+        plusOrMinus = (plusOrMinus == 'plus' ? 1 : 0);
+
+        mongoose.model('Listing').update({
+                _id: ObjectId(listing)
+            }, {$inc: {crowd_furnished_total: 1, crowd_furnished: plusOrMinus}}
+            , function (err, listing) {
+                if (err) {
+                    res.send("There was a problem updating the furnished parameter: " + err);
+                }
+                else {
+                    res.json(listing.crowd_furnished_total);
+                }
+            })
+    });
+    /* updates the windows parameter of a certain listing */
+    app.put('/api/listing/changeCrowdWindowsPercentage/:listingid/:plusOrMinus', function (req, res) {
+        var listing = req.params.listingid;
+        var plusOrMinus = req.params.plusOrMinus;
+        plusOrMinus = (plusOrMinus == 'plus' ? 1 : 0);
+
+        mongoose.model('Listing').update({
+                _id: ObjectId(listing)
+            }, {$inc: {crowd_windows_total: 1, crowd_windows: plusOrMinus}}
+            , function (err, listing) {
+                if (err) {
+                    res.send("There was a problem updating the windows parameter: " + err);
+                }
+                else {
+                    res.json(listing.crowd_windows_total);
+                }
+            })
+    });
+    /* updates the light parameter of a certain listing */
+    app.put('/api/listing/changeCrowdLightPercentage/:listingid/:plusOrMinus', function (req, res) {
+        var listing = req.params.listingid;
+        var plusOrMinus = req.params.plusOrMinus;
+        plusOrMinus = (plusOrMinus == 'plus' ? 1 : 0);
+
+        mongoose.model('Listing').update({
+                _id: ObjectId(listing)
+            }, {$inc: {crowd_light_total: 1, crowd_light: plusOrMinus}}
+            , function (err, listing) {
+                if (err) {
+                    res.send("There was a problem updating the light parameter: " + err);
+                }
+                else {
+                    res.json(listing.crowd_light_total);
                 }
             })
     });
@@ -418,7 +474,11 @@ module.exports = function (app, passport) {
 
 //======================================================
 //Apartment listing
-//======================================================
+    //======================================================
+
+    app.post('/api/images', upload.array('file'), function (req, res) {
+        console.log(req.files);
+    });
 
     app.get('/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {
         res.sendfile('./public/views/single.html');

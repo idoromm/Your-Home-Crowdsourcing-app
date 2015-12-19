@@ -1,12 +1,12 @@
 app.controller('reviewCtrl',
-    function reviewCtrl($scope, $modalInstance, reviewService) {
+    function reviewCtrl($scope, $modalInstance, fileService, reviewService,fileUpload) {
 	
 		$scope.result1 = '';
 		$scope.options1 = null;
 		$scope.details1 = '';
 
         var onListingComplete = function(response) {
-            swal("Your listing has been submited!", "Thank you for your time!", "success")
+            swal("Your listing has been submitted!", "Thank you for your time!", "success")
             //$scope.listing = response;
         };
 
@@ -30,10 +30,19 @@ app.controller('reviewCtrl',
             if (!isValidForm()){
                 sweetAlert("Oops...", "Please fill all the missing details!", "error");
                 return;
-            }
-            reviewService.insertReview($scope.editableReview,$scope.googleMapsFormDetails)
-                .then(onListingComplete,onError);
-
+			}
+		
+			//upload details
+			reviewService.insertReview($scope.editableReview,$scope.googleMapsFormDetails)
+				.then(onListingComplete, onError);
+		
+		//upload images
+			console.log('go here')
+		var uploadUrl = "/api/images";
+		fileUpload.uploadFileToUrl(fileService, uploadUrl);
+		fileService = []
+		console.log('got after');
+				
 
 
             $scope.review = angular.copy($scope.editableReview);

@@ -7,6 +7,8 @@ app.controller('reviewCtrl',
 
         var onListingComplete = function(response) {
             swal("Your listing has been submited!", "Thank you for your time!", "success")
+            
+
             //$scope.listing = response;
         };
 

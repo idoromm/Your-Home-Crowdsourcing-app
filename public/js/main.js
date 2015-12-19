@@ -318,16 +318,11 @@ jQuery(document).ready(function($){
 		var infowindow = new google.maps.InfoWindow();
 		var listingInfo = new google.maps.InfoWindow();
 
-		var marker = new google.maps.Marker({
-			map: map,
-			anchorPoint: new google.maps.Point(0, -29),
-			url:'views/single.html'
-		});
+
 		
 
 		autocompleteMap.addListener('place_changed', function() {
 			infowindow.close();
-			marker.setVisible(false);
 			var place = autocompleteMap.getPlace();
 			if (!place.geometry) {
 				window.alert("Autocomplete's returned place contains no geometry");
@@ -341,15 +336,7 @@ jQuery(document).ready(function($){
 				map.setCenter(place.geometry.location);
 				map.setZoom(17);  // Why 17? Because it looks good.
 			}
-			marker.setIcon(/** @type {google.maps.Icon} */({
-				url: place.icon,
-				size: new google.maps.Size(71, 71),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(35, 35)
-			}));
-			marker.setPosition(place.geometry.location);
-			marker.setVisible(true);
+
 
 			var address = '';
 			if (place.address_components) {

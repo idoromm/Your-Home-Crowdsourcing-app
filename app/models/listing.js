@@ -5,6 +5,9 @@ var Schema = mongoose.Schema;
 
 // define the schema for our user model
 var listingSchema = new Schema({
+        latitude        : Number,
+        longitude       : Number,
+        country         : String,
         city            : String,
         street          : String,
         buildingNumber  : Number,
@@ -15,15 +18,19 @@ var listingSchema = new Schema({
         numberOfRooms   : Number,
         size            : Number,
         renovated       : Boolean,
-        crowd_renovated : Boolean,
-        crowd_windows   : Boolean,
-        crowd_light     : Boolean,
-        crowd_furnished : Boolean,
         elevator        : Boolean,
         airConditioning : Boolean,
         balcony         : Boolean,
         price           : Number,
         description     : String,
+        crowd_renovated : {type: Number, default: 0},
+        crowd_renovated_total : {type: Number, default: 0},
+        crowd_windows   : {type: Number, default: 0},
+        crowd_windows_total : {type: Number, default: 0},
+        crowd_light     : {type: Number, default: 0},
+        crowd_light_total : {type: Number, default: 0},
+        crowd_furnished : {type: Number, default: 0},
+        crowd_furnished_total : {type: Number, default: 0},
         flagCount       : Number,
         /* every entry is the ID of a User that reported the listing */
         reportedUsersIDs: [String],

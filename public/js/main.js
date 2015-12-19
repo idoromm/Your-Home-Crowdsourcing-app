@@ -4,18 +4,18 @@ jQuery(document).ready(function($){
 		longitude = 34.775082,
 		map_zoom = 15;
 
-//	$.ajax({
-//		url: '/api/getrandomquestion',
-//		type: 'GET',
-//		success: function(data) {
-//			//called when successful
-//			console.log(data);
-//		},
-//		error: function(e) {
-//			//called when there is an error
-//			//console.log(e.message);
-//		}
-//	});
+	$.ajax({
+		url: '/api/listings',
+		type: 'GET',
+		success: function(data) {
+			fillListingOnMap(data);
+			console.log(data);
+		},
+		error: function(e) {
+			//called when there is an error
+			//console.log(e.message);
+		}
+	});
 
 	//google map custom marker icon - .png fallback for IE11
 	var is_internetExplorer11= navigator.userAgent.toLowerCase().indexOf('trident') > -1;
@@ -213,7 +213,19 @@ jQuery(document).ready(function($){
 	var map = new google.maps.Map(document.getElementById('google-container'), map_options);
 	//add a custom marker to the map
 
-	function addMarker(latitude,longitude,isListing){
+	function fillListingOnMap(data) {
+		for (i=0;i<data.length;i++){
+			var lat=data[i]["latitude"];
+			var lng=data[i]["longitude"];
+			if ( lat && lng){
+				addMarker(data[i],true);
+			}
+		}
+	}
+
+	function addMarker(data,isListing){
+		var latitude=data["latitude"];
+		var longitude=data["longitude"];
 		var marker_url;
 		if(isListing){
 			marker_url=( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
@@ -222,23 +234,42 @@ jQuery(document).ready(function($){
 			marker_url=( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg'; //TODO change it to blue/black
 		}
 
+		var city=data["city"];
+		var street=data["street"];
+		var buildingNumber=data["buildingNumber"]
+		var apartmentNumber=data["apartmentNumber"]
+
 		var marker = new google.maps.Marker({
 			position: new google.maps.LatLng(latitude, longitude),
 			map: map,
 			visible: true,
-			icon: marker_url
+			icon: marker_url,
+			title: city + " " + street + " " + buildingNumber,
+			url: "/listing/"+street +"/"+buildingNumber +"/" + apartmentNumber
+		});
+
+
+		var infowindow = new google.maps.InfoWindow({
+			content: city + " " + street + " " + buildingNumber
+		});
+
+		marker.addListener('mouseover', function() {
+			infowindow.open(map, marker);
+		});
+		marker.addListener('mouseout', function(){
+			infowindow.close();
+		});
+
+		marker.addListener('click', function(){
+			window.location.href = marker.url;
 		});
 
 	}
+
 	addMarker(latitude,longitude,true);
 
 
-	//var marker = new google.maps.Marker({
-	//  	position: new google.maps.LatLng(latitude, longitude),
-	//    map: map,
-	//    visible: true,
-	// 	icon: marker_url,
-	//});
+
 
 	//add custom buttons for the zoom-in/zoom-out on the map
 	function CustomZoomControl(controlDiv, map) {
@@ -287,56 +318,11 @@ jQuery(document).ready(function($){
 		var infowindow = new google.maps.InfoWindow();
 		var listingInfo = new google.maps.InfoWindow();
 
-		var marker = new google.maps.Marker({
-			map: map,
-			anchorPoint: new google.maps.Point(0, -29),
-			url:'views/single.html'
-		});
 
-
-		//autocompleteForm.addListener('place_changed', function() {
-		//	infowindow.close();
-		//	marker.setVisible(false);
-		//	var place = autocompleteMap.getPlace();
-		//	if (!place.geometry) {
-		//		window.alert("Autocomplete's returned place contains no geometry");
-		//		return;
-		//	}
-        //
-		//	// If the place has a geometry, then present it on a map.
-		//	if (place.geometry.viewport) {
-		//		map.fitBounds(place.geometry.viewport);
-		//	} else {
-		//		map.setCenter(place.geometry.location);
-		//		map.setZoom(17);  // Why 17? Because it looks good.
-		//	}
-		//	marker.setIcon(/** @type {google.maps.Icon} */({
-		//		url: place.icon,
-		//		size: new google.maps.Size(71, 71),
-		//		origin: new google.maps.Point(0, 0),
-		//		anchor: new google.maps.Point(17, 34),
-		//		scaledSize: new google.maps.Size(35, 35)
-		//	}));
-		//	marker.setPosition(place.geometry.location);
-		//	marker.setVisible(true);
-        //
-		//	var address = '';
-		//	if (place.address_components) {
-		//		address = [
-		//			(place.address_components[0] && place.address_components[0].short_name || ''),
-		//			(place.address_components[1] && place.address_components[1].short_name || ''),
-		//			(place.address_components[2] && place.address_components[2].short_name || '')
-		//		].join(' ');
-		//	}
-        //
-		//	infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
-		//	infowindow.open(map, marker);
-		//});
-
+		
 
 		autocompleteMap.addListener('place_changed', function() {
 			infowindow.close();
-			marker.setVisible(false);
 			var place = autocompleteMap.getPlace();
 			if (!place.geometry) {
 				window.alert("Autocomplete's returned place contains no geometry");
@@ -350,15 +336,7 @@ jQuery(document).ready(function($){
 				map.setCenter(place.geometry.location);
 				map.setZoom(17);  // Why 17? Because it looks good.
 			}
-			marker.setIcon(/** @type {google.maps.Icon} */({
-				url: place.icon,
-				size: new google.maps.Size(71, 71),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(35, 35)
-			}));
-			marker.setPosition(place.geometry.location);
-			marker.setVisible(true);
+
 
 			var address = '';
 			if (place.address_components) {
@@ -369,18 +347,7 @@ jQuery(document).ready(function($){
 				].join(' ');
 			}
 
-			marker.addListener('mouseover', function(){
-				listingInfo.setContent('<div><strong>' + place.name + '</strong><br>' + address + '<br>' + 'apt. number and floor');
-				listingInfo.open(map, marker);
-			});
 
-			marker.addListener('mouseout', function(){
-				listingInfo.close();
-			});
-
-			marker.addListener('click', function(){
-				window.location.href = marker.url;
-			});
 
 
 			//infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);

@@ -6,9 +6,7 @@ app.controller('reviewCtrl',
 		$scope.details1 = '';
 
         var onListingComplete = function(response) {
-            swal("Your listing has been submited!", "Thank you for your time!", "success")
-            
-
+            swal("Your listing has been submitted!", "Thank you for your time!", "success")
             //$scope.listing = response;
         };
 

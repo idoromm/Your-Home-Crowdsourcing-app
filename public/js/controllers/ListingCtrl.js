@@ -42,6 +42,8 @@ app.controller('ListingController', function ($scope, $location, $http) {
             // or server returns response with an error status.
             $scope.error = "Could not fetch the listing";
         });
+
+    /* TODO: we need to get the current user -> this doesn't work yet from here */
     $http.get("/api/user").success(function (data) {
         $scope.currentUser = data;
     });
@@ -58,7 +60,10 @@ app.controller('ListingController', function ($scope, $location, $http) {
         }
         , 1000); // this 1 second timeout is to avoid binding failure in listing page, because when listing loads the $scope takes a second to "refresh"
 
-
+    /* implements the functionality of the crowd-sourcing aspect of the listing:
+    * 1. prompts the user with a random image of the listing
+    * 2. asks the user a question about that image
+    * 3. updates the DB with the users' input */
     var alertPrompt = function () {
         // var title = "";
         // var pic = "";
@@ -77,7 +82,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
             $scope.pic = picture;
         });
 
-
+        /* get all the questions available in the DB */
         $http.get('/api/questions').success(function (qs) {
             questions = qs;
         });
@@ -101,7 +106,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
             }
             $scope.title = 'None';
             $scope.questionToAsk = 'None';
-            // we have already asked this user ALL our questions in this specific listing
+            // TODO: what happens when we have already asked this user ALL our questions in this specific listing? need to decide!
         }
         setQuestion();
 
@@ -128,6 +133,10 @@ app.controller('ListingController', function ($scope, $location, $http) {
                         closeOnCancel: false
                     },
                     function (isConfirm) {
+                        /* here we update the DB -> we update 2 different Schemas ->
+                        * 1. the userSchema -> we update the ApartmentsAndQuestions field and add this listing and the question that was asked
+                        * 2. the listingSchema -> we update the UsersAndQuestions field and add this user and the question that was asked
+                        * This way we are "fully updated" and we can access the information through the listing OR the user (or both..) */
                         $http.put('/api/user/addListingAndQuestionToUser/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
                         $http.put('/api/listing/addUserAndQuestionToListing/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
                         if (isConfirm) {
@@ -172,6 +181,9 @@ app.controller('ListingController', function ($scope, $location, $http) {
     };
 
     $scope.hide = false;
+
+    /* report the listing functionality
+    * TODO: need to add functionality to what actually happens if the listing gets reported X number of times */
     $scope.reportListing = function () {
 
         console.log($scope.listing);
@@ -193,9 +205,8 @@ app.controller('ListingController', function ($scope, $location, $http) {
             $http.put("/api" + path + "/addReportedUser/" + $scope.currentUser._id + "/" + $scope.listing._id);
         } // TODO: user currently undefined because the call /api/user doesn't work - talk to Lior
     };
-    // $scope.hasReportedListing = true;
 
-    alertPrompt();
+    alertPrompt(); // activate the timer (wait a few seconds until the user is prompted)
 });
 
 

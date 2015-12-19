@@ -4,8 +4,32 @@ var Question = require('./models/question');
 var QuestionHandler = require('./QuestionHandler');
 var mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectID;
+var fs = require('fs');
 var multer = require('multer');
-var upload = multer();
+
+//handling storage of files
+var storage = multer.diskStorage( {
+	destination: function (req, file, cb) {
+		var destFolder =__dirname + '/../uploads/' + req.params.id;
+		//create folder if does not exists
+		if (!fs.existsSync(destFolder)) {
+			fs.mkdirSync(destFolder);
+		}
+		
+		//set folder where files will be populated
+		cb(null, destFolder)
+	},
+	filename: function (req, file, cb) {
+		//set the names file within the folder
+		//as the original name of the file
+		cb(null,file.originalname);
+	}
+})
+
+
+var upload = multer({ storage: storage });
+
+
 
 module.exports = function (app, passport) {
 
@@ -303,7 +327,12 @@ module.exports = function (app, passport) {
             console.log(listings);
             res.json(listings); // return all nerds in JSON format
         });
-    });
+	});
+	
+	app.post('/api/images/:id', upload.array('file'), function (req, res) {
+		//storage is handles by multer in middleware function => 'upload'
+		res.send(req.params.id);
+	});
 
     app.post('/api/listing', function (req, res) {
         var latitude = req.body.latitude;
@@ -476,9 +505,7 @@ module.exports = function (app, passport) {
 //Apartment listing
     //======================================================
 
-    app.post('/api/images', upload.array('file'), function (req, res) {
-        console.log(req.files);
-    });
+
 
     app.get('/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {
         res.sendfile('./public/views/single.html');

@@ -50,11 +50,14 @@ app.controller('ListingController', function ($scope, $location, $http) {
     /* We find what question the user was asked, and updated the listing parameters accordingly *
      /  the formula we use is: ((number of people that replied YES) / (number of people that answered at all)) * 100
      */
+    setTimeout(function () {
+            $scope.listing.crowdFurnishedPercentage = ($scope.listing.crowd_furnished / $scope.listing.crowd_furnished_total) * 100; // "Is this room furnished?"
+            $scope.listing.crowdWindowsPercentage = ($scope.listing.crowd_windows / $scope.listing.crowd_windows_total) * 100; // "Is there a window in this room?"
+            $scope.listing.crowdRenovatedPercentage = ($scope.listing.crowd_renovated / $scope.listing.crowd_renovated_total) * 100; // "Does this room look renovated?"
+            $scope.listing.crowdLightPercentage = ($scope.listing.crowd_light / $scope.listing.crowd_light_total) * 100;
+        } // "Is this room well-lit?"
+        , 1000);
 
-    $scope.listing.crowdFurnishedPercentage = ($scope.listing.crowd_furnished / $scope.listing.crowd_furnished_total) * 100; // "Is this room furnished?"
-    $scope.listing.crowdWindowsPercentage = ($scope.listing.crowd_windows / $scope.listing.crowd_windows_total) * 100; // "Is there a window in this room?"
-    $scope.listing.crowdRenovatedPercentage = ($scope.listing.crowd_renovated / $scope.listing.crowd_renovated_total) * 100; // "Does this room look renovated?"
-    $scope.listing.crowdLightPercentage = ($scope.listing.crowd_light / $scope.listing.crowd_light_total) * 100; // "Is this room well-lit?"
 
     var alertPrompt = function () {
         // var title = "";

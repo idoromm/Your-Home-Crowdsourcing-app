@@ -49,3 +49,8 @@ app.controller('NavCtrl', function ($scope, $http, $modal) {
     };
 });
 
+app.factory('fileService', function() {
+	var files = [];
+	return files;
+})
+

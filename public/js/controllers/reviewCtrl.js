@@ -14,6 +14,8 @@ app.controller('reviewCtrl',
 			fileUpload.uploadFileToUrl(fileService, "/api/images/"+response._id);
 			fileService = [];
 
+			
+
         };
 
         var onError = function(reason) {

@@ -7,10 +7,12 @@ var ObjectId = require('mongodb').ObjectID;
 var fs = require('fs');
 var multer = require('multer');
 
+var uploadfFolder = __dirname + '/../public/uploads' ;
+
 //handling storage of files
-var storage = multer.diskStorage( {
+var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		var destFolder =__dirname + '/../uploads/' + req.params.id;
+		var destFolder = uploadfFolder +'/'+ req.params.id;
 		//create folder if does not exists
 		if (!fs.existsSync(destFolder)) {
 			fs.mkdirSync(destFolder);
@@ -22,9 +24,9 @@ var storage = multer.diskStorage( {
 	filename: function (req, file, cb) {
 		//set the names file within the folder
 		//as the original name of the file
-		cb(null,file.originalname);
+		cb(null, file.originalname);
 	}
-})
+});
 
 
 var upload = multer({ storage: storage });
@@ -333,6 +335,17 @@ module.exports = function (app, passport) {
 		//storage is handles by multer in middleware function => 'upload'
 		res.send(req.params.id);
 	});
+	
+	app.get('/api/images/:id', function (req, res) {
+		var imagesList = [];
+		var files = fs.readdirSync(uploadfFolder + '/' + req.params.id);
+		for (var i in files) {
+			imagesList.push('/uploads/' + files[i]);
+		}
+		res.json(imagesList);
+	});
+		
+
 
     app.post('/api/listing', function (req, res) {
         var latitude = req.body.latitude;

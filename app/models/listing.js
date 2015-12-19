@@ -31,7 +31,7 @@ var listingSchema = new Schema({
         crowd_light_total : {type: Number, default: 0},
         crowd_furnished : {type: Number, default: 0},
         crowd_furnished_total : {type: Number, default: 0},
-        flagCount       : Number,
+        flagCount       : {type:Number, default: 0},
         /* every entry is the ID of a User that reported the listing */
         reportedUsersIDs: [String],
         owner           : User.schema,

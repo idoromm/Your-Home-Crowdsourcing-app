@@ -48,5 +48,5 @@ var self = module.exports = {
 			});
 		});
 	}
-}; //end moudle export
+}; //end module export
 

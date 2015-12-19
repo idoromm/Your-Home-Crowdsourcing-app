@@ -96,6 +96,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
                     /* the user has NOT answered this question yet -> so we can ask him now! */
                     $scope.title = q.description;
                     $scope.questionToAsk = q;
+                    return;
                 }
             }
             $scope.title = 'None';

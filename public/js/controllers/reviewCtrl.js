@@ -7,10 +7,10 @@ app.controller('reviewCtrl',
 
         var onListingComplete = function(response) {
 			//edited by Lior:: swal message now is in fileUploadService which means that
-			//once images uploads succseeded the correct message will be shown.
+			//once images uploads succeeded the correct message will be shown.
 			//the data is uploaded in 2 phases=> first : json with all text data
 			//second=> using the id of the response=> uploading the files with that id
-			//upload images once listing uploading was succssful    
+			//upload images once listing uploading was successful
 			fileUpload.uploadFileToUrl(fileService, "/api/images/"+response._id);
 			fileService = [];
 
@@ -28,7 +28,7 @@ app.controller('reviewCtrl',
         var isValidForm= function(){
             //TODO:check that that the requested form is filled with all the details and return boolean
             return true;
-        }
+        };
 
         $scope.submitForm = function () {
             $scope.$broadcast('show-errors-event');
@@ -41,11 +41,6 @@ app.controller('reviewCtrl',
 			//upload details
 			reviewService.insertReview($scope.editableReview,$scope.googleMapsFormDetails)
 				.then(onListingComplete, onError);
-		
-
-		
-				
-
 
             $scope.review = angular.copy($scope.editableReview);
             $modalInstance.close();

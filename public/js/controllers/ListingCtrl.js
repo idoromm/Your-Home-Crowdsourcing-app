@@ -24,7 +24,17 @@ var indexOf = function (needle) {
     return indexOf.call(this, needle);
 };
 
-app.controller('ListingController', function ($scope, $location, $http) {
+app.controller('ListingController', function ($scope, $location, $http, fileUpload) {
+	
+	//************************************************************************
+	/// TO IDO FROM LIOR => Firstly have a great time!!
+	//SECONDLY => To get the image urls array
+	//use the function fileUpload.getUploadedFiles({Listing_Object_ID})
+	//you will get a list like that:
+	//['/uploads/{Listing_Object_ID}/image1.jpg', /uploads/ { Listing_Object_ID }/image2.jpg']
+	//************************************************************************	
+	
+
 
     //get current url to get relevant listing
     //returns relative path => /listing/

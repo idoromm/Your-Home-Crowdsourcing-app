@@ -118,7 +118,8 @@ app.controller('ListingController', function ($scope, $location, $http, fileUplo
         //});
 
 
-        /* function that sets the question that the user will be asked (only a question he wasn't asked before!) */
+        /* function that sets the question that the user will be asked (only a question he wasn't asked before!)
+         * TODO: need to test if this actually works -> does it return a question really? */
         function setQuestion() {
             var q; // question we will eventually ask the user
             for (q in questions) {
@@ -148,8 +149,8 @@ app.controller('ListingController', function ($scope, $location, $http, fileUplo
                 sweetAlert({
                         //	title: "Is this room furnished?",
                         title: $scope.title,
-                        imageUrl: $scope.pic,
-                        imageUrl: chooseRandomPic(),
+                        imageUrl: $scope.images[0], // hard coded for now
+                 //       imageUrl: chooseRandomPic(),
                         imageSize: '600x600',
                         showCancelButton: true,
                         cancelButtonText: "No",

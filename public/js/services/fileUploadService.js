@@ -21,7 +21,7 @@
 			});
 
 
-		}
+		};
 
 		this.getUploadedFiles = function (listingId){
 			$http.get('/api/images/' + listingId)

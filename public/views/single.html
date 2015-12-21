@@ -32,6 +32,7 @@
     } </script>
 
     <script src="../../../js/controllers/ListingCtrl.js"></script>
+    <script src="../../../js/services/fileUploadService.js"></script>
 
 </head>
 <body ng-controller="ListingController">
@@ -194,7 +195,7 @@
             <div class=" buying-top" >
                 <div class="flexslider">
                     <ul class="slides">
-                        <li data-thumb="../../../images/ss.jpg">
+                   <!--     <li data-thumb="../../../images/ss.jpg">
                             <img src="../../../images/ss.jpg"/>
                         </li>
                         <li data-thumb="../../../images/ss1.jpg">
@@ -205,6 +206,13 @@
                         </li>
                         <li data-thumb="../../../images/ss3.jpg">
                             <img src="../../../images/ss3.jpg"/>
+                        </li>
+
+                        -->
+
+                        <!-- This should iterate through all the listings' pictures and display all of them-->
+                        <li data-thumb="{{ image }}" ng-repeat="image in images track by $index">
+                            <img ng-src="{{ image }}"/>
                         </li>
                     </ul>
                 </div>

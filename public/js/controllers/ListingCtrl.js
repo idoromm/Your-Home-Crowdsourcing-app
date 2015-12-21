@@ -24,7 +24,16 @@ var indexOf = function (needle) {
     return indexOf.call(this, needle);
 };
 
-app.controller('ListingController', function ($scope, $location, $http) {
+app.controller('ListingController', function ($scope, $location, $http, fileUpload) {
+
+    //************************************************************************
+    /// TO IDO FROM LIOR => Firstly have a great time!!
+    //SECONDLY => To get the image urls array
+    //use the function fileUpload.getUploadedFiles({Listing_Object_ID})
+    //you will get a list like that:
+    //['/uploads/{Listing_Object_ID}/image1.jpg', /uploads/ { Listing_Object_ID }/image2.jpg']
+    //************************************************************************
+
 
     //get current url to get relevant listing
     //returns relative path => /listing/
@@ -48,6 +57,22 @@ app.controller('ListingController', function ($scope, $location, $http) {
         $scope.currentUser = data;
     });
 
+    /* this was hard-coded to check if it works -> and it worked! */
+   /* $scope.images = [
+        '../../../uploads/5676dc870fea15240aa53637/ddddd.png',
+        '../../../uploads/5676dc870fea15240aa53637/eeedddccc.jpg',
+        '../../../uploads/5676dc870fea15240aa53637/fdd.jpg',
+        '../../../uploads/5676dc870fea15240aa53637/fdfdfdfd.jpg'
+    ]; */
+
+    /* This should get us all the listings' images and put them inside $scope.images so we
+     * can easily access them in the single.html page by doing {{ images }} or similarly ..*/
+    var listing_images = fileUpload.getUploadedFiles($scope.listing._id);
+    for(var i = 0 ; i < images.length(); i++){
+        listing_images[i] = '../../../'.concat(listing_images[i]); // we want something like this: '../../../uploads/5676dc870fea15240aa53637/fdfdfdfd.jpg'
+    }
+    $scope.images = listing_images;
+
 
     /* We find what question the user was asked, and updated the listing parameters accordingly *
      /  the formula we use is: ((number of people that replied YES) / (number of people that answered at all)) * 100
@@ -61,9 +86,9 @@ app.controller('ListingController', function ($scope, $location, $http) {
         , 1000); // this 1 second timeout is to avoid binding failure in listing page, because when listing loads the $scope takes a second to "refresh"
 
     /* implements the functionality of the crowd-sourcing aspect of the listing:
-    * 1. prompts the user with a random image of the listing
-    * 2. asks the user a question about that image
-    * 3. updates the DB with the users' input */
+     * 1. prompts the user with a random image of the listing
+     * 2. asks the user a question about that image
+     * 3. updates the DB with the users' input */
     var alertPrompt = function () {
         // var title = "";
         // var pic = "";
@@ -76,11 +101,11 @@ app.controller('ListingController', function ($scope, $location, $http) {
         //    title = question.description;
         //});
 
-        // gets random picture of the listing picture TODO: this obviously doesn't work yet
-        $http.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getrandompic').success(function (picture) {
-            //should be changed to JSON format
-            $scope.pic = picture;
-        });
+        /*  // gets random picture of the listing picture - don't need this anymore (i think, still don't delete this yet)
+         $http.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getrandompic').success(function (picture) {
+         //should be changed to JSON format
+         $scope.pic = picture;
+         }); */
 
         /* get all the questions available in the DB */
         $http.get('/api/questions').success(function (qs) {
@@ -93,7 +118,8 @@ app.controller('ListingController', function ($scope, $location, $http) {
         //});
 
 
-        /* function that sets the question that the user will be asked (only a question he wasn't asked before!) */
+        /* function that sets the question that the user will be asked (only a question he wasn't asked before!)
+         * TODO: need to test if this actually works -> does it return a question really? */
         function setQuestion() {
             var q; // question we will eventually ask the user
             for (q in questions) {
@@ -108,22 +134,23 @@ app.controller('ListingController', function ($scope, $location, $http) {
             $scope.questionToAsk = 'None';
             // TODO: what happens when we have already asked this user ALL our questions in this specific listing? need to decide!
         }
+
         setQuestion();
 
         function chooseRandomPic() {
-            var myPix = ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"];
-            var randomNum = Math.floor(Math.random() * myPix.length);
-            return myPix[randomNum];
+            // var myPix = ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"];
+            var randomNum = Math.floor(Math.random() * $scope.images.length);
+            return $scope.images[randomNum];
         }
 
         /* if the user was asked all the questions already we don't want to ask him again, so we just don't ask him anything */
-        if($scope.title.localeCompare('None') != 0) {
+        if ($scope.title.localeCompare('None') != 0) {
             setTimeout(function () {
                 sweetAlert({
                         //	title: "Is this room furnished?",
                         title: $scope.title,
-                        imageUrl: $scope.pic,
-                        //imageUrl: chooseRandomPic(),
+                        imageUrl: $scope.images[0], // hard coded for now
+                 //       imageUrl: chooseRandomPic(),
                         imageSize: '600x600',
                         showCancelButton: true,
                         cancelButtonText: "No",
@@ -134,9 +161,9 @@ app.controller('ListingController', function ($scope, $location, $http) {
                     },
                     function (isConfirm) {
                         /* here we update the DB -> we update 2 different Schemas ->
-                        * 1. the userSchema -> we update the ApartmentsAndQuestions field and add this listing and the question that was asked
-                        * 2. the listingSchema -> we update the UsersAndQuestions field and add this user and the question that was asked
-                        * This way we are "fully updated" and we can access the information through the listing OR the user (or both..) */
+                         * 1. the userSchema -> we update the ApartmentsAndQuestions field and add this listing and the question that was asked
+                         * 2. the listingSchema -> we update the UsersAndQuestions field and add this user and the question that was asked
+                         * This way we are "fully updated" and we can access the information through the listing OR the user (or both..) */
                         $http.put('/api/user/addListingAndQuestionToUser/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
                         $http.put('/api/listing/addUserAndQuestionToListing/' + $scope.currentUser._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
                         if (isConfirm) {
@@ -183,7 +210,7 @@ app.controller('ListingController', function ($scope, $location, $http) {
     $scope.hide = false;
 
     /* report the listing functionality
-    * TODO: need to add functionality to what actually happens if the listing gets reported X number of times */
+     * TODO: need to add functionality to what actually happens if the listing gets reported X number of times */
     $scope.reportListing = function () {
 
         console.log($scope.listing);

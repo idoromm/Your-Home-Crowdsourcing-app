@@ -25,15 +25,7 @@ var indexOf = function (needle) {
 };
 
 app.controller('ListingController', function ($scope, $location, $http, fileUpload) {
-
-    //************************************************************************
-    /// TO IDO FROM LIOR => Firstly have a great time!!
-    //SECONDLY => To get the image urls array
-    //use the function fileUpload.getUploadedFiles({Listing_Object_ID})
-    //you will get a list like that:
-    //['/uploads/{Listing_Object_ID}/image1.jpg', /uploads/ { Listing_Object_ID }/image2.jpg']
-    //************************************************************************
-
+	
 
     //get current url to get relevant listing
     //returns relative path => /listing/
@@ -43,19 +35,35 @@ app.controller('ListingController', function ($scope, $location, $http, fileUplo
         function success(listing_info) {
             // this callback will be called asynchronously
             // when the response is available
-            $scope.listing = listing_info.data;
+			$scope.listing = listing_info.data;
 
-            console.log($scope.listing);
+			 //This should get us all the listings' images and put them inside $scope.images so we
+			//can easily access them in the single.html page by doing {{ images }} or similarly ..
+			//Edited By Lior: as  $http.get is Async function we can be sure only here that listing_info 
+			//is defined.  
+			fileUpload.getUploadedFilesAsync($scope.listing._id).then(function (images) {
+				var listing_images = [];
+				for (var i = 0; i < images.length; i++) {
+					listing_images[i] = '../../../'+ images[i]; 
+				}
+				$scope.images = listing_images;
+			});
+
         }, function error(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
             $scope.error = "Could not fetch the listing";
-        });
-
+		});
+	
+	var user = null;
     /* TODO: we need to get the current user -> this doesn't work yet from here */
-    $http.get("/api/user").success(function (data) {
-        $scope.currentUser = data;
-    });
+	$http.get("/api/user").success(function (data) {
+		$scope.currentUser = data;
+		console.log($scope.currentUser);
+
+	});
+
+	
 
     /* this was hard-coded to check if it works -> and it worked! */
    /* $scope.images = [
@@ -65,13 +73,7 @@ app.controller('ListingController', function ($scope, $location, $http, fileUplo
         '../../../uploads/5676dc870fea15240aa53637/fdfdfdfd.jpg'
     ]; */
 
-    /* This should get us all the listings' images and put them inside $scope.images so we
-     * can easily access them in the single.html page by doing {{ images }} or similarly ..*/
-    var listing_images = fileUpload.getUploadedFiles($scope.listing._id);
-    for(var i = 0 ; i < images.length(); i++){
-        listing_images[i] = '../../../'.concat(listing_images[i]); // we want something like this: '../../../uploads/5676dc870fea15240aa53637/fdfdfdfd.jpg'
-    }
-    $scope.images = listing_images;
+
 
 
     /* We find what question the user was asked, and updated the listing parameters accordingly *
@@ -111,7 +113,7 @@ app.controller('ListingController', function ($scope, $location, $http, fileUplo
         $http.get('/api/questions').success(function (qs) {
             questions = qs;
         });
-
+		
         // TODO: user currently undefined because the call /api/user doesn't work - talk to Lior
         //$http.get('/api/listing/getQuestionsOfUserInListing/' + $scope.currentUser._id + '/' + $scope.listing._id).success(function (userqs) {
         //    questionsUserAlreadyAnswered = userqs;

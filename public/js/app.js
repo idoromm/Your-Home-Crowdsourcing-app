@@ -11,25 +11,24 @@ app.config(function ($routeProvider) {
 		});
 });
 
-app.controller('NavCtrl', function ($scope, $http, $modal) {
-
-	$http.get('/api/user').success(function (user) {
-						
-		$scope.points = user.reputation;
-		$scope.message = 'Hi';
+app.controller('NavCtrl', function ($scope, $http, $modal, UserService) {
+	
+	//set the user if was not ser previously
+	//this function should be called only from 
+	//NavCtrl
+	var userPromise = UserService.setUser();
+	
+	userPromise.then(function (userObj) {
 		
-		if (user.facebook) {
-			$scope.User = user.facebook.firstName;
-		} else if (user.google) {
-			if (user.google.firstName) {
-				$scope.User = user.google.firstName;
-			} else {
-				$scope.User = user.google.name;
-			}
-		} else {
-			$scope.User = user.local.name;
-		}
+		//get all user details
+		$scope.points = UserService.getUserPoints();
+		$scope.message = 'Hi';
+		$scope.User = UserService.getUserName();
+	}, function (error) {
+
 	});
+
+
 
 
 	$scope.addNewReview = function () {

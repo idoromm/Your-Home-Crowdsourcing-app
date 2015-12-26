@@ -338,9 +338,11 @@ module.exports = function (app, passport) {
 	
 	app.get('/api/images/:id', function (req, res) {
 		var imagesList = [];
-		var files = fs.readdirSync(uploadfFolder + '/' + req.params.id);
-		for (var i in files) {
-			imagesList.push('/uploads/' + files[i]);
+		if (fs.existsSync(uploadfFolder + '/' + req.params.id)) {
+			var files = fs.readdirSync(uploadfFolder + '/' + req.params.id);
+			for (var i in files) {
+				imagesList.push('/uploads/' + req.params.id + '/' + files[i]);
+			}
 		}
 		res.json(imagesList);
 	});

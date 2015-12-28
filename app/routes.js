@@ -7,30 +7,29 @@ var ObjectId = require('mongodb').ObjectID;
 var fs = require('fs');
 var multer = require('multer');
 
-var uploadfFolder = __dirname + '/../public/uploads' ;
+var uploadfFolder = __dirname + '/../public/uploads';
 
 //handling storage of files
 var storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		var destFolder = uploadfFolder +'/'+ req.params.id;
-		//create folder if does not exists
-		if (!fs.existsSync(destFolder)) {
-			fs.mkdirSync(destFolder);
-		}
-		
-		//set folder where files will be populated
-		cb(null, destFolder)
-	},
-	filename: function (req, file, cb) {
-		//set the names file within the folder
-		//as the original name of the file
-		cb(null, file.originalname);
-	}
+    destination: function (req, file, cb) {
+        var destFolder = uploadfFolder + '/' + req.params.id;
+        //create folder if does not exists
+        if (!fs.existsSync(destFolder)) {
+            fs.mkdirSync(destFolder);
+        }
+
+        //set folder where files will be populated
+        cb(null, destFolder)
+    },
+    filename: function (req, file, cb) {
+        //set the names file within the folder
+        //as the original name of the file
+        cb(null, file.originalname);
+    }
 });
 
 
-var upload = multer({ storage: storage });
-
+var upload = multer({storage: storage});
 
 
 module.exports = function (app, passport) {
@@ -105,6 +104,22 @@ module.exports = function (app, passport) {
             if (err) return handleError(err);
             res.json({description: question.description});
         });
+    });
+
+    /* changing a users' reputation by user id in amount = :amount */
+    app.post('/api/user/:userid/:amount', function (req, res) {
+        console.log("changing reputation of user now");
+        mongoose.model('User').findOneAndUpdate({
+                _id: req.params.userid
+            }, {$inc: {reputation: req.params.amount}}
+            , function (err, user) {
+                if (err) {
+                    res.send("There was a problem changing the reputation of this  user: " + err);
+                }
+                else {
+                    res.send("Successful changing users' reputation!")
+                }
+            })
     });
 
     /* increment flagCount of a certain listing by  1 */
@@ -329,24 +344,23 @@ module.exports = function (app, passport) {
             console.log(listings);
             res.json(listings); // return all nerds in JSON format
         });
-	});
-	
-	app.post('/api/images/:id', upload.array('file'), function (req, res) {
-		//storage is handles by multer in middleware function => 'upload'
-		res.send(req.params.id);
-	});
-	
-	app.get('/api/images/:id', function (req, res) {
-		var imagesList = [];
-		if (fs.existsSync(uploadfFolder + '/' + req.params.id)) {
-			var files = fs.readdirSync(uploadfFolder + '/' + req.params.id);
-			for (var i in files) {
-				imagesList.push('/uploads/' + req.params.id + '/' + files[i]);
-			}
-		}
-		res.json(imagesList);
-	});
-		
+    });
+
+    app.post('/api/images/:id', upload.array('file'), function (req, res) {
+        //storage is handles by multer in middleware function => 'upload'
+        res.send(req.params.id);
+    });
+
+    app.get('/api/images/:id', function (req, res) {
+        var imagesList = [];
+        if (fs.existsSync(uploadfFolder + '/' + req.params.id)) {
+            var files = fs.readdirSync(uploadfFolder + '/' + req.params.id);
+            for (var i in files) {
+                imagesList.push('/uploads/' + req.params.id + '/' + files[i]);
+            }
+        }
+        res.json(imagesList);
+    });
 
 
     app.post('/api/listing', function (req, res) {
@@ -519,7 +533,6 @@ module.exports = function (app, passport) {
 //======================================================
 //Apartment listing
     //======================================================
-
 
 
     app.get('/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {

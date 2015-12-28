@@ -56,14 +56,13 @@ app.controller('ListingController', function ($scope, $location, $http, fileUplo
 		});
 	
 	var user = null;
-    /* TODO: we need to get the current user -> this doesn't work yet from here */
+
+    /* TODO: LIOR: it would be great if we just got the user here and then used it from here on if that is possible */
 	$http.get("/api/user").success(function (data) {
 		$scope.currentUser = data;
 		console.log($scope.currentUser);
-
 	});
 
-	
 
     /* this was hard-coded to check if it works -> and it worked! */
    /* $scope.images = [
@@ -114,7 +113,7 @@ app.controller('ListingController', function ($scope, $location, $http, fileUplo
             questions = qs;
         });
 		
-        // TODO: user currently undefined because the call /api/user doesn't work - talk to Lior
+        // TODO: LIOR: i need the user here to get the question he already answered on this listing
         //$http.get('/api/listing/getQuestionsOfUserInListing/' + $scope.currentUser._id + '/' + $scope.listing._id).success(function (userqs) {
         //    questionsUserAlreadyAnswered = userqs;
         //});

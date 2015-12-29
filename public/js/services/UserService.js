@@ -34,27 +34,35 @@ app.service('UserService', ['$http','$q', function ($http,$q) {
 		//in navCtrl, listingCtrl, etc..
 		this.setUser = function () {
 			var deferred = $q.defer();
-			
-			$http.get('/api/user').success(function (user) {
-				_userObj = user;
-				_points = user.reputation;
-				if (user.facebook) {
-					_name = user.facebook.firstName;
-				} else if (user.google) {
-					if (user.google.firstName) {
-						_name = user.google.firstName;
-					} else {
-						_name = user.google.name;
-					}
-				} else {
-					_name = user.local.name;
-				}
+			console.log(isInitialized);
+			if (_userObj == null) {
+				console.log("inside not inited");
 				
-				deferred.resolve(user);
-			}).
+				$http.get('/api/user').success(function (user) {
+					_userObj = user;
+					_points = user.reputation;
+					if (user.facebook) {
+						_name = user.facebook.firstName;
+					} else if (user.google) {
+						if (user.google.firstName) {
+							_name = user.google.firstName;
+						} else {
+							_name = user.google.name;
+						}
+					} else {
+						_name = user.local.name;
+					}
+					
+					deferred.resolve(user);
+				}).
 			error(function (response) {
-				deferred.reject(status);
-			});
+					deferred.reject(status);
+				});
+			} else {
+				console.log(_userObj);
+				deferred.resolve(_userObj);
+			}
+
 			
 			return deferred.promise;
 		};

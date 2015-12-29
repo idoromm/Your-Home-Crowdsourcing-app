@@ -320,7 +320,7 @@ module.exports = function (app, passport) {
         Question.find(function (err, questions) {
             if (err)
                 res.send(err);
-            console.log(questions);
+            //console.log(questions);
             res.json(questions);
         });
     });
@@ -341,7 +341,7 @@ module.exports = function (app, passport) {
             // nothing after res.send(err) will execute
             if (err)
                 res.send(err);
-            console.log(listings);
+            //console.log(listings);
             res.json(listings); // return all nerds in JSON format
         });
     });
@@ -585,7 +585,7 @@ module.exports = function (app, passport) {
             }
             , function (err, listing) {
                 //if (err) { return next(err); }
-                console.log("Listing: " + listing);
+                //console.log("Listing: " + listing);
                 res.json(listing);
             });
     });
@@ -600,15 +600,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/testAngular5', function (req, res) {
-        console.log("new post is loading ...");
-        res.sendfile('./public/views/testAngular5/index.html');
-    });
 
-    app.get('/testAngular3', function (req, res) {
-        console.log("new post is loading ...");
-        res.sendfile('./public/views/testAngular3/index.html');
-    });
 
 
 }

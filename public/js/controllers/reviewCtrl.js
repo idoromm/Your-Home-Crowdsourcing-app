@@ -47,6 +47,16 @@ app.controller('reviewCtrl',
             $scope.review = angular.copy($scope.editableReview);
             $modalInstance.close();
         };
+        $scope.submitAskForm = function () {
+            console.log("submitAskForm")
+            $scope.$broadcast('show-errors-event');
+
+            if ($scope.reviewForm.$invalid) {
+                sweetAlert("Oops...", "Please fill all the missing details!", "error");
+                return;
+            }
+            reviewService.insertAskReview($scope.editableReview,$scope.googleMapsFormDetails).then(onListingComplete, onError);
+        };
 
         $scope.cancelForm = function () {
             $modalInstance.dismiss();

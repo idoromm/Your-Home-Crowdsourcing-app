@@ -28,7 +28,25 @@ app.factory('reviewService',
                 });
         };
 
+        var insertAskReview=function (listing, googleMapsAddress){
+            console.log("insertAskReview service");
+            var data = JSON.stringify(({
+                "latitude": googleMapsAddress.geometry.location.lat(),
+                "longitude": googleMapsAddress.geometry.location.lng(),
+                "country": googleMapsAddress.country,
+                "city": googleMapsAddress.locality,
+                "street": googleMapsAddress.route,
+                "buildingNumber": googleMapsAddress.street_number,
+                "apartmentNumber": listing.apartmentNumber
+            }));
+            return $http.post("/api/askListing", data)
+                .then(function (response) {
+                    return response.data;
+                });
+        };
+
         return {
-            insertReview: insertReview
+            insertReview: insertReview,
+            insertAskReview: insertAskReview
         };
     });

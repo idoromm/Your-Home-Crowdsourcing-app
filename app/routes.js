@@ -1,5 +1,7 @@
 var User = require('./models/user');
 var Listing = require('./models/listing');
+var askListing = require('./models/askListing');
+
 var Question = require('./models/question');
 var QuestionHandler = require('./QuestionHandler');
 var mongoose = require('mongoose');
@@ -409,6 +411,34 @@ module.exports = function (app, passport) {
 
             console.log(listing + ' has been saved successfully!');
             res.json(listing);
+        });
+    });
+
+
+    app.post('/api/askListing', function (req, res) {
+        var latitude = req.body.latitude;
+        var longitude = req.body.longitude;
+        var country = req.body.country;
+        var city = req.body.city;
+        var street = req.body.street;
+        var buildingNumber = req.body.buildingNumber;
+        var apartmentNumber = req.body.apartmentNumber;
+
+
+        var askListing = new askListing({
+            "latitude": latitude,
+            "longitude": longitude,
+            "country": country,
+            "city": city,
+            "street": street,
+            "buildingNumber": buildingNumber,
+            "apartmentNumber": apartmentNumber
+        });
+        askListing.save(function (err) {
+            if (err) throw err;
+
+            console.log(askListing + ' has been saved successfully!');
+            res.json(askListing);
         });
     });
 

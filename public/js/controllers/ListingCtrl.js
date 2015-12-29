@@ -147,7 +147,21 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
         /* function that sets the question that the user will be asked (only a question he wasn't asked before!)
          * TODO: need to test if this actually works -> does it return a question really? */
         function setQuestion() {
-				var q; // question we will eventually ask the user
+			//var unansweredQuestions = questions.filter(function(q){
+			//    return !~questionsUserAlreadyAnswered.indexOf(q);
+			//});
+			//
+			//// if unanswered questions is empty, all is answered
+			//if (unansweredQuestions.length != 0) {
+			//    $scope.title = unansweredQuestions[0].description;
+			//    $scope.questionToAsk = unansweredQuestions[0];
+			//}
+			//else {
+			//    $scope.title = 'None';
+			//    $scope.questionToAsk = 'None';
+			//}
+
+			var q; // question we will eventually ask the user
 				for (q in values[0]) {
 					if (!(q._id in values[1])) {
 						/* the user has NOT answered this question yet -> so we can ask him now! */

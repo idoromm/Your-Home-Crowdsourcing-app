@@ -1,6 +1,6 @@
 var User = require('./models/user');
 var Listing = require('./models/listing');
-var askListing = require('./models/askListing');
+var AskListing = require('./models/askListing');
 
 var Question = require('./models/question');
 var QuestionHandler = require('./QuestionHandler');
@@ -425,7 +425,7 @@ module.exports = function (app, passport) {
         var apartmentNumber = req.body.apartmentNumber;
 
 
-        var askListing = new askListing({
+        var askListing = new AskListing({
             "latitude": latitude,
             "longitude": longitude,
             "country": country,

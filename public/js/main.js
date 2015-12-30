@@ -219,6 +219,9 @@ jQuery(document).ready(function ($) {
             var lng = data[i]["longitude"];
             if (lat && lng) {
                 addMarker(data[i], true);
+                if (i%15==0){
+                    addMarker(data[i], false);
+                }
             }
         }
     }
@@ -231,7 +234,7 @@ jQuery(document).ready(function ($) {
             marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
         }
         else {
-            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg'; //TODO change it to blue/black
+            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location-blue.png' : 'img/cd-icon-location-blue.svg'; //TODO change it to blue/black
         }
 
         var city = data["city"];

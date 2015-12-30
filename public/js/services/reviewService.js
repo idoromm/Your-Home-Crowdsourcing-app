@@ -39,7 +39,7 @@ app.factory('reviewService',
                 "buildingNumber": googleMapsAddress.street_number,
                 "apartmentNumber": listing.apartmentNumber
             }));
-            return $http.post("/api/askListing", data)
+            return $http.post("/api/AskListing", data)
                 .then(function (response) {
                     return response.data;
                 });

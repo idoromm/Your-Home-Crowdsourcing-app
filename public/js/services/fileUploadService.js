@@ -12,7 +12,8 @@
 			})
 			.success(function (listingId) {
 				console.log("images files upload success");
-				swal("Your listing has been submitted!", "Thank you for your time!", "success");
+				swal({title : "Your listing has been submitted!",text: "Thank you for your time!", type: "success"},function(){
+					location.reload();});
 
 
 			})

@@ -414,6 +414,18 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.get('/api/askListings', function (req, res) {
+        // use mongoose to get all listings in the database
+        AskListing.find(function (err, askListings) {
+            // if there is an error retrieving, send the error.
+            // nothing after res.send(err) will execute
+            if (err)
+                res.send(err);
+            //console.log(listings);
+            res.json(askListings); // return all nerds in JSON format
+        });
+    });
+
 
     app.post('/api/askListing', function (req, res) {
         var latitude = req.body.latitude;

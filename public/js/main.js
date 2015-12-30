@@ -8,7 +8,20 @@ jQuery(document).ready(function ($) {
         url: '/api/listings',
         type: 'GET',
         success: function (data) {
-            fillListingOnMap(data);
+            fillListingOnMap(data,true);
+        },
+        error: function (e) {
+            //called when there is an error
+            //console.log(e.message);
+        }
+    });
+
+
+    $.ajax({
+        url: '/api/askListings',
+        type: 'GET',
+        success: function (data) {
+            fillListingOnMap(data,false);
             console.log(data);
         },
         error: function (e) {
@@ -19,7 +32,6 @@ jQuery(document).ready(function ($) {
 
     //google map custom marker icon - .png fallback for IE11
     var is_internetExplorer11 = navigator.userAgent.toLowerCase().indexOf('trident') > -1;
-    var marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
 
     //define the basic color of your map, plus a value for saturation and brightness
     var main_color = '#2d313f',
@@ -213,15 +225,12 @@ jQuery(document).ready(function ($) {
     var map = new google.maps.Map(document.getElementById('google-container'), map_options);
     //add a custom marker to the map
 
-    function fillListingOnMap(data) {
+    function fillListingOnMap(data,isListing) {
         for (i = 0; i < data.length; i++) {
             var lat = data[i]["latitude"];
             var lng = data[i]["longitude"];
             if (lat && lng) {
-                addMarker(data[i], true);
-                if (i%15==0){
-                    addMarker(data[i], false);
-                }
+                addMarker(data[i], isListing);
             }
         }
     }
@@ -234,21 +243,23 @@ jQuery(document).ready(function ($) {
             marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
         }
         else {
-            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location-blue.png' : 'img/cd-icon-location-blue.svg'; //TODO change it to blue/black
+            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location-blue.png' : 'img/cd-icon-location-custom.svg'; //TODO change it to blue/black
         }
 
         var city = data["city"];
         var street = data["street"];
         var buildingNumber = data["buildingNumber"]
         var apartmentNumber = data["apartmentNumber"]
-
+        var url;
+        if (isListing){url="/listing/" + street + "/" + buildingNumber + "/" + apartmentNumber;}
+        else {url="/";}
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(latitude, longitude),
             map: map,
             visible: true,
             icon: marker_url,
             title: city + " " + street + " " + buildingNumber,
-            url: "/listing/" + street + "/" + buildingNumber + "/" + apartmentNumber
+            url: url
         });
 
 

@@ -26,6 +26,9 @@ var indexOf = function (needle) {
 
 app.controller('ListingController', function ($scope, $location, $http, $q, fileUpload, UserService) {
 	
+	$scope.handle_comment = function (comment) {
+		console.log(comment);	
+		};
 	
 	//user getter async
 	//every time you need to get the user, inorder to be sure the async

@@ -288,6 +288,18 @@ module.exports = function (app, passport) {
     });
 
 
+    /* deletes a listing from the database */
+    app.delete('/api/listing/:listingid', function (req, res) {
+        var listingToDelete = req.params.listingid;
+        Listing.remove(
+            {_id: ObjectId(listingToDelete)},
+            function (err, result) {
+                console.log("successfully deleted listing");
+                res.json("success!");
+            }
+        );
+    });
+
     /* adds a listing and a question answered by the user to the users' schema */
     app.put('/api/user/addListingAndQuestionToUser/:userid/:listingid/:questionid', function (req, res) {
         console.log("adding listing and question answered to user schema");
@@ -345,7 +357,7 @@ module.exports = function (app, passport) {
             if (err)
                 res.send(err);
             //console.log(listings);
-            res.json(listings); // return all nerds in JSON format
+            res.json(listings); // return all in JSON format
         });
     });
 

@@ -125,8 +125,9 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                     return $scope.images[randomNum];
                 }
 
-                /* if the user was asked all the questions already we don't want to ask him again, so we just don't ask him anything */
-                if ($scope.title.localeCompare('None') != 0) {
+                /* if the user was asked all the questions already we don't want to ask him again, so we just don't ask him anything
+                * also if the listing doesn't have any images attached to it */
+                if ($scope.title.localeCompare('None') != 0 && $scope.images.length != 0) {
                     setTimeout(function () {
                         sweetAlert({
                                 //	title: "Is this room furnished?",
@@ -143,6 +144,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                             },
                             function (isConfirm) {
                                 userPromise.then(function (userObj) {
+                                    $http.post("/api/user/" + userObj._id + "/" + "3"); // add 3 reputation points to the user for answering a question
 
                                     /* here we update the DB -> we update 2 different Schemas ->
                                      * 1. the userSchema -> we update the ApartmentsAndQuestions field and add this listing and the question that was asked
@@ -215,6 +217,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
 
                 /* add this user to the reportUsers for this listing */
                 $http.put("/api/listing/addReportedUser/" + userObj._id + "/" + $scope.listing._id);
+                $http.post("/api/user/" + userObj._id + "/" + "1"); // add 1 reputation to the user for reporting a listing
             }
         });
     };

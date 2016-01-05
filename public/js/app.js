@@ -21,7 +21,7 @@ app.controller('NavCtrl', function ($scope, $http, $modal, UserService) {
 	userPromise.then(function (userObj) {
 		
 		//get all user details
-		$scope.points = UserService.getUserPoints();
+		$scope.points = UserService.getUserPoints() == 1 ? UserService.getUserPoints() + " point" : UserService.getUserPoints() + " points";
 		$scope.message = 'Hi';
 		$scope.User = UserService.getUserName();
 	}, function (error) {

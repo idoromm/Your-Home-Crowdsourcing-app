@@ -130,9 +130,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 if ($scope.title.localeCompare('None') != 0 && $scope.images.length != 0) {
                     setTimeout(function () {
                         sweetAlert({
-                                //	title: "Is this room furnished?",
                                 title: $scope.title,
-                                //imageUrl: $scope.images[0],
                                 imageUrl: chooseRandomPic(),
                                 imageSize: '600x600',
                                 showCancelButton: true,

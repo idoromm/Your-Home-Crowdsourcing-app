@@ -216,6 +216,11 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 /* add this user to the reportUsers for this listing */
                 $http.put("/api/listing/addReportedUser/" + userObj._id + "/" + $scope.listing._id);
                 $http.post("/api/user/" + userObj._id + "/" + "1"); // add 1 reputation to the user for reporting a listing
+
+                /* delete a listing if it was flagged more than 4 times */
+                if(($scope.listing.flagCount + 1) > 4){
+                    $http.delete("/api/listing/" + $scope.listing._id);
+                }
             }
         });
     };

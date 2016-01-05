@@ -385,6 +385,7 @@ module.exports = function (app, passport) {
         var balcony = req.body.balcony;
         var price = req.body.price;
         var description = req.body.description;
+        //var owner =  req.body.owner;
         //var pictures=req.body.pictures;
 
         var listing = new Listing({
@@ -405,7 +406,8 @@ module.exports = function (app, passport) {
             "airConditioning": airConditioning,
             "balcony": balcony,
             "price": price,
-            "description": description
+            "description": description,
+           // "ownerID": owner
         });
         listing.save(function (err) {
             if (err) throw err;

@@ -34,7 +34,7 @@ var listingSchema = new Schema({
         flagCount       : {type:Number, default: 0},
         /* every entry is the ID of a User that reported the listing */
         reportedUsersIDs: [String],
-        owner           : User.schema,
+        ownerID         : String,
         /* every entry in the array is a userID and the questionsIDs (array) of the questions that the user ALREADY answered in that *specific* apartment */
         UsersAndQuestions: [{
             userID: { type: String, unique: true},

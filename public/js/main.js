@@ -248,8 +248,8 @@ jQuery(document).ready(function ($) {
 
         var city = data["city"];
         var street = data["street"];
-        var buildingNumber = data["buildingNumber"]
-        var apartmentNumber = data["apartmentNumber"]
+        var buildingNumber = data["buildingNumber"];
+        var apartmentNumber = data["apartmentNumber"];
         var url;
         if (isListing){url="/listing/" + street + "/" + buildingNumber + "/" + apartmentNumber;}
         else {url="/";}

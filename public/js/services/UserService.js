@@ -36,7 +36,7 @@ app.service('UserService', ['$http','$q', function ($http,$q) {
 			var deferred = $q.defer();
 			console.log(isInitialized);
 			if (_userObj == null) {
-				console.log("inside not inited");
+				console.log("inside not initiated");
 				
 				$http.get('/api/user').success(function (user) {
 					_userObj = user;

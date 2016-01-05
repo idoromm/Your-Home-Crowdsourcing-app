@@ -294,8 +294,7 @@ module.exports = function (app, passport) {
         Listing.remove(
             {_id: ObjectId(listingToDelete)},
             function (err, result) {
-                console.log("successfully deleted listing");
-                res.json("success!");
+                res.send("successful in deleting the listing!")
             }
         );
     });

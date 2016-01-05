@@ -26,13 +26,17 @@ var indexOf = function (needle) {
 
 app.controller('ListingController', function ($scope, $location, $http, $q, fileUpload, UserService) {
 
+    var userPromise = UserService.setUser();
+
     $scope.handle_comment = function (comment) {
-        console.log(comment);
+        userPromise.then(function (userObj) {
+            $http.post("/api/user/" + userObj._id + "/" + "1"); // add 1 to the users' reputation for commenting on a listing
+        });
     };
 
-    $scope.changeRoute = function(url, forceReload) {
+    $scope.changeRoute = function (url, forceReload) {
         $scope = $scope || angular.element(document).scope();
-        if(forceReload || $scope.$$phase) { // that's right TWO dollar signs: $$phase
+        if (forceReload || $scope.$$phase) { // that's right TWO dollar signs: $$phase
             window.location = url;
         } else {
             $location.path(url);
@@ -51,7 +55,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
     //	UserService.getUserPoints(); => returns user reputation( int)
     //	UserService.getUserName(); => returns user name(string)
     //}
-    var userPromise = UserService.setUser();
+
 
     //get current url to get relevant listing
     //returns relative path => /listing/
@@ -136,7 +140,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 }
 
                 /* if the user was asked all the questions already we don't want to ask him again, so we just don't ask him anything
-                * also if the listing doesn't have any images attached to it */
+                 * also if the listing doesn't have any images attached to it */
                 if ($scope.title.localeCompare('None') != 0 && $scope.images.length != 0) {
                     setTimeout(function () {
                         sweetAlert({
@@ -223,12 +227,16 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 $http.post("/api/user/" + userObj._id + "/" + "1"); // add 1 reputation to the user for reporting a listing
 
                 $http.put("/api" + path + "/incrementFlagCount").success(function () {
-                    sweetAlert({title: "Thank you!", text: "This listing has been reported", type: "success"}, function () {
+                    sweetAlert({
+                        title: "Thank you!",
+                        text: "This listing has been reported",
+                        type: "success"
+                    }, function () {
                         $scope.hide = true;
                         sweetAlert("Listing deleted", "You are being redirected");
                     });
                     /* delete a listing if it was flagged more than 4 times */
-                    if(($scope.listing.flagCount + 1) > 4){
+                    if (($scope.listing.flagCount + 1) > 4) {
                         $http.delete("/api/listing/" + $scope.listing._id);
                         $scope.changeRoute('/');
                     }

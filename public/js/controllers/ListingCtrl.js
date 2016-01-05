@@ -215,6 +215,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
 
                 /* add this user to the reportUsers for this listing */
                 $http.put("/api/listing/addReportedUser/" + userObj._id + "/" + $scope.listing._id);
+                $http.post("/api/user/" + userObj._id + "/" + "1");
             }
         });
     };

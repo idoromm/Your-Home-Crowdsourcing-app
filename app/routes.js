@@ -272,7 +272,7 @@ module.exports = function (app, passport) {
             {_id: 0, 'UsersAndQuestions.$': 1},
             function (err, result) {
                 res.json(result === null ? [] : result.UsersAndQuestions[0].questionID);
-             //   res.json(result.UsersAndQuestions[0].questionID);
+                //   res.json(result.UsersAndQuestions[0].questionID);
             });
     });
 
@@ -384,10 +384,9 @@ module.exports = function (app, passport) {
         var airConditioning = req.body.airConditioning;
         var balcony = req.body.balcony;
         var price = req.body.price;
-		var description = req.body.description;
-		var ownerID = req.body.ownerID;
-        //var owner =  req.body.owner;
-        //var pictures=req.body.pictures;
+        var description = req.body.description;
+        var ownerID = req.body.ownerID;
+
 
         var listing = new Listing({
             "latitude": latitude,
@@ -408,10 +407,16 @@ module.exports = function (app, passport) {
             "balcony": balcony,
             "price": price,
             "description": description,
-			"ownerID": ownerID
+            "ownerID": ownerID
         });
         listing.save(function (err) {
             if (err) throw err;
+
+            mongoose.model('User').findOneAndUpdate({
+                    _id: ownerID
+                }, {$inc: {reputation: 10}}
+                , function () {
+                });
 
             console.log(listing + ' has been saved successfully!');
             res.json(listing);
@@ -645,8 +650,6 @@ module.exports = function (app, passport) {
             res.json(listings);
         });
     });
-
-
 
 
 }

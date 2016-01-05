@@ -30,6 +30,16 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
         console.log(comment);
     };
 
+    $scope.changeRoute = function(url, forceReload) {
+        $scope = $scope || angular.element(document).scope();
+        if(forceReload || $scope.$$phase) { // that's right TWO dollar signs: $$phase
+            window.location = url;
+        } else {
+            $location.path(url);
+            $scope.$apply();
+        }
+    };
+
     //user getter async
     //every time you need to get the user, inorder to be sure the async
     //function return wrap it like that:
@@ -208,19 +218,21 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
 
             /* the user has not reported this listing yet -> report it*/
             else {
-                $http.put("/api" + path + "/incrementFlagCount").success(function () {
-                    sweetAlert("Thank you!", "This listing has been reported", "success");
-                    $scope.hide = true;
-                });
-
                 /* add this user to the reportUsers for this listing */
                 $http.put("/api/listing/addReportedUser/" + userObj._id + "/" + $scope.listing._id);
                 $http.post("/api/user/" + userObj._id + "/" + "1"); // add 1 reputation to the user for reporting a listing
 
-                /* delete a listing if it was flagged more than 4 times */
-                if(($scope.listing.flagCount + 1) > 4){
-                    $http.delete("/api/listing/" + $scope.listing._id);
-                }
+                $http.put("/api" + path + "/incrementFlagCount").success(function () {
+                    sweetAlert({title: "Thank you!", text: "This listing has been reported", type: "success"}, function () {
+                        $scope.hide = true;
+                        sweetAlert("Listing deleted", "You are being redirected");
+                    });
+                    /* delete a listing if it was flagged more than 4 times */
+                    if(($scope.listing.flagCount + 1) > 4){
+                        $http.delete("/api/listing/" + $scope.listing._id);
+                        $scope.changeRoute('/');
+                    }
+                });
             }
         });
     };

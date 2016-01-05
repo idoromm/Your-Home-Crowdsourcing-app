@@ -294,11 +294,7 @@ module.exports = function (app, passport) {
         Listing.remove(
             {_id: ObjectId(listingToDelete)},
             function (err, result) {
-               // res.statusCode = 302;
-               // res.setHeader("Location", "/");
-               // res.end();
-               // res.redirect('/');
-                res.redirect('/');
+                res.send("successful in deleting the listing!")
             }
         );
     });

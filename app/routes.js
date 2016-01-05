@@ -385,7 +385,8 @@ module.exports = function (app, passport) {
         var balcony = req.body.balcony;
         var price = req.body.price;
         var description = req.body.description;
-        var ownerID = req.body.ownerID;
+		var ownerID = req.body.ownerID;
+		var ownerName = req.body.ownerName;
 
 
         var listing = new Listing({
@@ -407,7 +408,8 @@ module.exports = function (app, passport) {
             "balcony": balcony,
             "price": price,
             "description": description,
-            "ownerID": ownerID
+			"ownerID": ownerID,
+			"ownerName":ownerName
         });
         listing.save(function (err) {
             if (err) throw err;

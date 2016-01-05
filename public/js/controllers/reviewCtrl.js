@@ -44,9 +44,11 @@ app.controller('reviewCtrl',
 		
 		//upload details
 		userPromise.then(function (userObj) {
-			reviewService.insertReview($scope.editableReview, $scope.googleMapsFormDetails,userObj._id)
-				.then(onListingComplete, onError);
+			reviewService.insertReview($scope.editableReview, $scope.googleMapsFormDetails, userObj._id, UserService.getUserName())
+			.then(onListingComplete, onError);
 		});
+
+
 
             $scope.review = angular.copy($scope.editableReview);
             $modalInstance.close();

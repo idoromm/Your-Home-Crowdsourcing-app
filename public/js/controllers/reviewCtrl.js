@@ -1,9 +1,11 @@
 app.controller('reviewCtrl',
-    function reviewCtrl($scope, $modalInstance, fileService, reviewService,fileUpload) {
-	
+    function reviewCtrl($scope, $modalInstance, fileService, reviewService,fileUpload, UserService) {
+		
 		$scope.result1 = '';
 		$scope.options1 = null;
-		$scope.details1 = '';
+	$scope.details1 = '';
+	
+		var userPromise = UserService.setUser();
 
         var onListingComplete = function(response) {
 			//edited by Lior:: swal message now is in fileUploadService which means that
@@ -54,8 +56,10 @@ app.controller('reviewCtrl',
             if ($scope.reviewForm.$invalid) {
                 sweetAlert("Oops...", "Please fill all the missing details!", "error");
                 return;
-            }
-            reviewService.insertAskReview($scope.editableReview,$scope.googleMapsFormDetails).then(onListingComplete, onError);
+			}
+			userPromise.then(function (userObj) {
+				reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails,userObj._id).then(onListingComplete, onError);
+			});
         };
 
         $scope.cancelForm = function () {

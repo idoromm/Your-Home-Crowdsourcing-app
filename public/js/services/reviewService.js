@@ -1,7 +1,7 @@
 app.factory('reviewService',
     function ($http) {
 
-        var insertReview = function (listing, googleMapsAddress) {
+        var insertReview = function (listing, googleMapsAddress,user_id) {
             var data = JSON.stringify(({
                 "latitude": googleMapsAddress.geometry.location.lat(),
                 "longitude": googleMapsAddress.geometry.location.lng(),

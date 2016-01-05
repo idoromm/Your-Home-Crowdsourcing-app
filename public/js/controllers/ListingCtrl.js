@@ -28,7 +28,11 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
 	
 	$scope.handle_comment = function (comment) {
 		console.log(comment);	
-		};
+	};
+	
+	$scope.vote_up = function () {
+		console.log("vote- up");
+	};
 	
 	//user getter async
 	//every time you need to get the user, inorder to be sure the async

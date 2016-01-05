@@ -384,7 +384,8 @@ module.exports = function (app, passport) {
         var airConditioning = req.body.airConditioning;
         var balcony = req.body.balcony;
         var price = req.body.price;
-        var description = req.body.description;
+		var description = req.body.description;
+		var ownerID = req.body.ownerID;
         //var owner =  req.body.owner;
         //var pictures=req.body.pictures;
 
@@ -407,7 +408,7 @@ module.exports = function (app, passport) {
             "balcony": balcony,
             "price": price,
             "description": description,
-           // "ownerID": owner
+			"ownerID": ownerID
         });
         listing.save(function (err) {
             if (err) throw err;

@@ -42,9 +42,11 @@ app.controller('reviewCtrl',
                 return;
 			}
 		
-			//upload details
-			reviewService.insertReview($scope.editableReview,$scope.googleMapsFormDetails)
+		//upload details
+		userPromise.then(function (userObj) {
+			reviewService.insertReview($scope.editableReview, $scope.googleMapsFormDetails,userObj._id)
 				.then(onListingComplete, onError);
+		});
 
             $scope.review = angular.copy($scope.editableReview);
             $modalInstance.close();
@@ -57,9 +59,9 @@ app.controller('reviewCtrl',
                 sweetAlert("Oops...", "Please fill all the missing details!", "error");
                 return;
 			}
-			userPromise.then(function (userObj) {
-				reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails,userObj._id).then(onListingComplete, onError);
-			});
+				
+			reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails,userObj._id).then(onListingComplete, onError);
+
         };
 
         $scope.cancelForm = function () {

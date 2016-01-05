@@ -1,7 +1,9 @@
 app.factory('reviewService',
     function ($http) {
 
-        var insertReview = function (listing, googleMapsAddress,user_id) {
+	var insertReview = function (listing, googleMapsAddress, user_id) {
+		console.log(user_id);
+
             var data = JSON.stringify(({
                 "latitude": googleMapsAddress.geometry.location.lat(),
                 "longitude": googleMapsAddress.geometry.location.lng(),
@@ -20,7 +22,8 @@ app.factory('reviewService',
                 "airConditioning": listing.airConditioning,
                 "balcony": listing.balcony,
                 "price": listing.price,
-                "description": listing.description
+				"description": listing.description,
+				"ownerID": user_id
             }));
             return $http.post("/api/listing", data)
                 .then(function (response) {

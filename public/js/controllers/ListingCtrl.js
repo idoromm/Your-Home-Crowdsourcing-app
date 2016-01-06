@@ -69,6 +69,10 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
             // when the response is available
             $scope.listing = listing_info.data;
 
+            $scope.renovated = $scope.listing.renovated == true ? "Yes" : "No";
+            $scope.airConditioning = $scope.listing.airConditioning == true ? "Yes" : "No";
+            $scope.elevator = $scope.listing.elevator == true ? "Yes" : "No";
+            $scope.balcony = $scope.listing.balcony == true ? "Yes" : "No";
             //This should get us all the listings' images and put them inside $scope.images so we
             //can easily access them in the single.html page by doing {{ images }} or similarly ..
             //Edited By Lior: as  $http.get is Async function we can be sure only here that listing_info

@@ -2,7 +2,6 @@ app.factory('reviewService',
     function ($http) {
 
 	var insertReview = function (listing, googleMapsAddress,user_id,user_name) {
-		
 
 			var data = JSON.stringify(({
 				"latitude": googleMapsAddress.geometry.location.lat(),
@@ -16,7 +15,7 @@ app.factory('reviewService',
 				"floor": listing.floor,
 				"outOfFloors": listing.outOfFloors,
 				"size": listing.size,
-				"numberOfRooms": listing.rooms,
+				"numberOfRooms": listing.numberOfRooms,
 				"renovated": listing.renovated,
 				"elevator": listing.elevator,
 				"airConditioning": listing.airConditioning,

@@ -1641,6 +1641,7 @@ option.rm{
 	font-size: 1.5em;
   	color: #000;
   	font-family: 'Montserrat-Regular';
+
 }
 .buy-single {
   padding: 3em 0 5em;
@@ -1776,7 +1777,11 @@ font-family: 'Montserrat-Regular';
 	color: #a3a3a3;
 	font-size: 0.9em;
 	line-height: 2em;
-	  padding-top: 1em;
+	padding-top: 1em;
+    width: 200px;
+    display:inline-block;
+    word-break: break-all;
+
 }
 .immediate {
   padding: 0em 4em 0 0;
@@ -1790,6 +1795,7 @@ font-family: 'Montserrat-Regular';
 }
 .buy-sin {
   padding: 0;
+  
 }
 .video-pre h4 {
   font-size: 1.5em;

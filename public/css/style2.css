@@ -1668,39 +1668,12 @@ option.rm{
 	line-height:1.8em;
 	padding: 0.4em 0;
 }
-.middle-side p span.bath{
-	color:#000;
-	margin: 0 51% 0 0;
-	font-weight: bold;
+
+.immediate p span:first-child{
+    display:inline-block;
+    width:65%;
 }
-.middle-side p span.bath1{
-	color:#000;
-	margin: 0 47% 0 0;
-	font-weight: bold;
-}
-.middle-side p span.bath2{
-	color:#000;
-	margin: 0 32% 0 0;
-	font-weight: bold;
-}
-.middle-side p span.bath3{
-	color:#000;
-	margin: 0 40% 0 0;
-	font-weight: bold;
-}
-.middle-side p span.bath4{
-	color:#000;
-	margin: 0 26% 0 0;
-	font-weight: bold;
-}
-.middle-side p span.bath5{
-	color:#000;
-	margin: 0 50% 0 0;
-	font-weight: bold;
-}
-.middle-side p span.two{
-	margin: 0 0em 0 1em;
-}
+
 .right-side{
   padding: 1em 0 0;
 }
@@ -1811,9 +1784,7 @@ font-family: 'Montserrat-Regular';
 .right-immediate{
 	padding: 0;
 }
-.buy-sin-single {
-  padding: 1em 0 0;
-}
+
 .buy-single-single {
   padding: 5em 0 0;
 }
@@ -3149,24 +3120,7 @@ select.drop-select1 {
 .middle-side h4 {
   font-size: 1em;
 }
-.middle-side p span.bath4 {
-  margin: 0 6% 0 0;
-}
-.middle-side p span.bath5 {
-  margin: 0 37% 0 0;
-}
-.middle-side p span.bath3 {
-  margin: 0 24% 0 0;
-}
-.middle-side p span.bath2 {
-  margin: 0 14% 0 0;
-}
-.middle-side p span.bath1 {
-  margin: 0 32% 0 0;
-}
-.middle-side p span.bath {
-  margin: 0 37% 0 0;
-}
+
 .middle-side {
   padding: 0em 2em;
 }
@@ -4881,9 +4835,6 @@ select.drop-select1 {
 }
 .buy-single-single {
   padding: 1.5em 0 0;
-}
-.buy-sin-single {
-  padding: 0em 0 0;
 }
 .buy-sin h4 {
   font-size: 1.2em;

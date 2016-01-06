@@ -227,13 +227,14 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 $http.post("/api/user/" + userObj._id + "/" + "1"); // add 1 reputation to the user for reporting a listing
 
                 $http.put("/api" + path + "/incrementFlagCount").success(function () {
+                    $scope.hide = true;
                     sweetAlert({
                         title: "Thank you!",
                         text: "This listing has been reported",
                         type: "success"
                     }, function () {
                         $scope.hide = true;
-                        sweetAlert("Listing deleted", "You are being redirected");
+                        //sweetAlert("Listing deleted", "You are being redirected");
                     });
                     /* delete a listing if it was flagged more than 4 times */
                     if (($scope.listing.flagCount + 1) > 4) {

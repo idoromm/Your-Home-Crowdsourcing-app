@@ -37,21 +37,6 @@
 
 </head>
 <body id="ListingWrap" ng-controller="ListingController">
-<!--header-->
-<!--<div class="navigation">
-    <div class="container-fluid">
-        <nav class="pull">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="terms.html">Terms</a></li>
-                <li><a href="privacy.html">Privacy</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </div>
-</div> -->
 <div class="header">
     <div class="container">
         <!--logo-->
@@ -61,12 +46,11 @@
         <!--//logo-->
         <div class="top-nav">
             <ul class="right-icons">
-                <li><a href="/"><!-- link to owner's profile here (instead of "/" --><i class="glyphicon glyphicon-user"> </i>Owner: {{listing.ownerName}}</a></li>
+                <li><a href="/"><i class="glyphicon glyphicon-user"> </i>Owner: {{listing.ownerName}}</a></li>
 
             </ul>
 
             <div class="clearfix"></div>
-            <!---pop-up-box---->
 
             <link href="../../../css/popuo-box.css" rel="stylesheet" type="text/css" media="all"/>
             <script src="../../../js/jquery.magnific-popup.js" type="text/javascript"></script>
@@ -196,21 +180,6 @@
             <div class=" buying-top" >
                 <div class="flexslider">
                     <ul class="slides">
-                   <!--     <li data-thumb="../../../images/ss.jpg">
-                            <img src="../../../images/ss.jpg"/>
-                        </li>
-                        <li data-thumb="../../../images/ss1.jpg">
-                            <img src="../../../images/ss1.jpg"/>
-                        </li>
-                        <li data-thumb="../../../images/ss2.jpg">
-                            <img src="../../../images/ss2.jpg"/>
-                        </li>
-                        <li data-thumb="../../../images/ss3.jpg">
-                            <img src="../../../images/ss3.jpg"/>
-                        </li>
-
-                        -->
-
                         <!-- This should iterate through all the listings' pictures and display all of them-->
                         <li data-thumb="{{ image }}" ng-repeat="image in images track by $index">
                             <img ng-src="{{ image }}"/>

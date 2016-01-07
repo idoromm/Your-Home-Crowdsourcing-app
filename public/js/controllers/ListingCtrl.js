@@ -150,7 +150,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                         sweetAlert({
                                 title: $scope.title,
                                 imageUrl: chooseRandomPic(),
-                                imageSize: '600x600',
+                                imageSize: '450x650',
                                 showCancelButton: true,
                                 cancelButtonText: "No",
                                 confirmButtonColor: "#00ff00", // green

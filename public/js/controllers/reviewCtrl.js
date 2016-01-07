@@ -62,7 +62,7 @@ app.controller('reviewCtrl',
                 return;
 			}
 				
-			reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails,userObj._id).then(onListingComplete, onError);
+			reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails).then(onListingComplete, onError);
 
         };
 

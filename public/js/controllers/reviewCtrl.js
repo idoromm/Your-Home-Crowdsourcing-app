@@ -54,7 +54,7 @@ app.controller('reviewCtrl',
             $modalInstance.close();
         };
         $scope.submitAskForm = function () {
-            console.log("submitAskForm")
+            console.log("submitAskForm");
             $scope.$broadcast('show-errors-event');
 
             if ($scope.reviewForm.$invalid) {

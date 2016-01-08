@@ -258,13 +258,13 @@ jQuery(document).ready(function ($) {
             map: map,
             visible: true,
             icon: marker_url,
-            title: city + " " + street + " " + buildingNumber,
+			title: city + " " + street + " " + buildingNumber ,			
             url: url
         });
 
 
         var infowindow = new google.maps.InfoWindow({
-            content: city + " " + street + " " + buildingNumber
+            content: "<p style=\" padding-left: 10px; \">"+city + " " + street + " " + buildingNumber+"</p>"
         });
 
         marker.addListener('mouseover', function () {

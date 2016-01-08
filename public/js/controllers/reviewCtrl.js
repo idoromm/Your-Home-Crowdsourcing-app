@@ -1,9 +1,12 @@
 app.controller('reviewCtrl',
-    function reviewCtrl($scope, $modalInstance, fileService, reviewService,fileUpload, UserService) {
+    function reviewCtrl($scope, $modalInstance, fileService, reviewService,fileUpload, UserService,data) {
 		
 		$scope.result1 = '';
 		$scope.options1 = null;
-	    $scope.details1 = '';
+		$scope.details1 = '';
+	
+
+		
 	
 		var userPromise = UserService.setUser();
 
@@ -27,7 +30,15 @@ app.controller('reviewCtrl',
 
         $scope.review = reviewService.review;
 
-        $scope.editableReview = angular.copy($scope.review);
+		$scope.editableReview = angular.copy($scope.review);
+	
+	if (data != null) {
+
+			var city = data.city
+			var street = data.street;
+			var buildingNumber = data.buildingNumber;
+			var apartmentNumber = data.apartmentNumber;
+		}
 
         var isValidForm= function(){
             //TODO:check that that the requested form is filled with all the details and return boolean

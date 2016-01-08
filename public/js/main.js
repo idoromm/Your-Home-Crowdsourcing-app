@@ -278,7 +278,7 @@ jQuery(document).ready(function ($) {
 			if (isListing) {
 				window.location.href = marker.url;
 			} else {
-				angular.element(document.getElementById('addNewReviewButton')).scope().addNewReview();
+				angular.element(document.getElementById('addNewReviewButton')).scope().addNewReview(data);
 			}
         });
 

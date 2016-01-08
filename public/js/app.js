@@ -11,7 +11,7 @@ app.config(function ($routeProvider) {
 		});
 });
 
-app.controller('NavCtrl', function ($scope, $http, $modal, UserService) {
+app.controller('NavCtrl', function ($scope, $http, $uibModal, UserService) {
 	
 	//set the user if was not ser previously
 	//this function should be called only from 
@@ -31,16 +31,24 @@ app.controller('NavCtrl', function ($scope, $http, $modal, UserService) {
 
 
 
-	$scope.addNewReview = function () {
-		$modal.open({
+	$scope.addNewReview = function (data) {
+		$scope.data = data;
+		var modalInstance = $uibModal.open({
 			templateUrl: 'views/reviewTemplate.html',
 			controller: 'reviewCtrl',
-			backdrop: 'static'
+			backdrop: 'static',
+			resolve: {
+				data: function () {
+					return $scope.data;
+				}
+			}
 		});
+
+		
 	};
 
     $scope.askForReview = function () {
-        $modal.open({
+        $uibModal.open({
             templateUrl: 'views/askReviewTemplate.html',
             controller: 'reviewCtrl',
             backdrop: 'static'

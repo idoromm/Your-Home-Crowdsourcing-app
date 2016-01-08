@@ -243,7 +243,7 @@ jQuery(document).ready(function ($) {
             marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
         }
         else {
-            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location-blue.png' : 'img/cd-icon-location-custom.svg'; //TODO change it to blue/black
+            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location-blue.png' : 'img/cd-icon-location-blue.png'; //TODO change it to blue/black
         }
 
         var city = data["city"];
@@ -274,8 +274,12 @@ jQuery(document).ready(function ($) {
             infowindow.close();
         });
 
-        marker.addListener('click', function () {
-            window.location.href = marker.url;
+		marker.addListener('click', function () {
+			if (isListing) {
+				window.location.href = marker.url;
+			} else {
+				angular.element(document.getElementById('addNewReviewButton')).scope().addNewReview();
+			}
         });
 
     }

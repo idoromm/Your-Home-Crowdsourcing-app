@@ -243,7 +243,7 @@ jQuery(document).ready(function ($) {
             marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
         }
         else {
-            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location-blue.png' : 'img/cd-icon-location-blue.png'; //TODO change it to blue/black
+            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location-blue.png' : 'img/cd-icon-location-blue.png';
         }
 
         var city = data["city"];

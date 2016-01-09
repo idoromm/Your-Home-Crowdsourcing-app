@@ -390,15 +390,14 @@ module.exports = function (app, passport) {
         var outOfFloors = req.body.outOfFloors;
         var numberOfRooms = req.body.numberOfRooms;
         var size = req.body.size;
-        var renovated = req.body.renovated;
-        var elevator = req.body.elevator;
-        var airConditioning = req.body.airConditioning;
-        var balcony = req.body.balcony;
+        var renovated = req.body.renovated == undefined ? false : req.body.renovated;
+        var elevator = req.body.elevator == undefined ? false : req.body.elevator;
+        var airConditioning = req.body.airConditioning == undefined ? false : req.body.airConditioning;
+        var balcony = req.body.balcony == undefined ? false : req.body.balcony;
         var price = req.body.price;
         var description = req.body.description;
 		var ownerID = req.body.ownerID;
 		var ownerName = req.body.ownerName;
-
 
         var listing = new Listing({
             "latitude": latitude,

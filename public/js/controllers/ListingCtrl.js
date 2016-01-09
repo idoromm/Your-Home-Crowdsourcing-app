@@ -120,6 +120,11 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 $scope.crowd_windows_total = $scope.listing.crowd_windows_total == 0 ? 0 : $scope.listing.crowd_windows_total;
                 $scope.crowd_light_total = $scope.listing.crowd_light_total == 0 ? 0 : $scope.listing.crowd_light_total;
 
+                $scope.crowd_furnished_votes = $scope.crowd_furnished_total  == 1 ? 'vote' : 'votes';
+                $scope.crowd_renovated_votes = $scope.crowd_renovated_total  == 1 ? 'vote' : 'votes';
+                $scope.crowd_windows_votes = $scope.crowd_windows_total  == 1 ? 'vote' : 'votes';
+                $scope.crowd_light_votes = $scope.crowd_light_total  == 1 ? 'vote' : 'votes';
+
                 $scope.listing.crowd_furnished_total  = $scope.listing.crowd_furnished_total == 0 ? 1 : $scope.listing.crowd_furnished_total;
                 $scope.listing.crowd_windows_total = $scope.listing.crowd_windows_total == 0 ? 1 : $scope.listing.crowd_windows_total;
                 $scope.listing.crowd_renovated_total = $scope.listing.crowd_renovated_total == 0 ? 1 : $scope.listing.crowd_renovated_total;

@@ -3,8 +3,10 @@ jQuery(document).ready(function ($) {
     var latitude = 32.075530,
         longitude = 34.775082,
         map_zoom = 15;
+    
+    var markers_list = {};
 
-    $.ajax({
+    var listing_return = $.ajax({
         url: '/api/listings',
         type: 'GET',
         success: function (data) {
@@ -29,6 +31,8 @@ jQuery(document).ready(function ($) {
             //console.log(e.message);
         }
     });
+    
+
 
     //google map custom marker icon - .png fallback for IE11
     var is_internetExplorer11 = navigator.userAgent.toLowerCase().indexOf('trident') > -1;
@@ -234,6 +238,77 @@ jQuery(document).ready(function ($) {
             }
         }
     }
+    
+    $("#chkbx_0").on("change", updateMarkers);
+    $("#chkbx_1").on("change", updateMarkers);
+    $("#chkbx_2").on("change", updateMarkers);
+    $("#chkbx_3").on("change", updateMarkers);
+    
+    function updateMarkers() {
+        $.when(listing_return).then(function (data) {
+            var min_votes = 5;
+            var min_precentage = 80;
+
+            var is_furnished = document.getElementById("chkbx_0").checked;
+            var is_renovated = document.getElementById("chkbx_1").checked;
+            var is_well_lit = document.getElementById("chkbx_2").checked;
+            var has_windows = document.getElementById("chkbx_3").checked;
+            
+            for (var i in data) {
+                var lat = data[i]["latitude"];
+                var lng = data[i]["longitude"];
+                if (lat && lng) {
+                    if (markers_list.hasOwnProperty(data[i]._id)) {
+                        //init marker
+                        markers_list[data[i]._id].setMap(map);
+
+                        if (is_renovated) {
+                            if (data[i].crowd_renovated_total < min_votes ||
+                                 ((data[i].crowd_renovated * 100) / data[i].crowd_renovated_total) <=min_precentage) {
+                                markers_list[data[i]._id].setMap(null);
+                            }
+                        }
+
+                        if (is_furnished) {
+                            if (data[i].crowd_furnished_total < min_votes ||
+                                 ((data[i].crowd_furnished * 100) / data[i].crowd_furnished_total) <= min_precentage) {
+                                markers_list[data[i]._id].setMap(null);
+                            }
+                        }
+
+                        if (is_well_lit) {
+                            if (data[i].crowd_light_total < min_votes ||
+                                 ((data[i].crowd_light * 100) / data[i].crowd_light_total) <= min_precentage) {
+                                markers_list[data[i]._id].setMap(null);
+                            }
+                        }
+
+                        if (has_windows) {
+                            if (data[i].crowd_windows_total < min_votes ||
+                                 ((data[i].crowd_windows * 100) / data[i].crowd_windows_total) <= min_precentage) {
+                                markers_list[data[i]._id].setMap(null);
+                            }
+                        }
+
+                    }
+                }
+            }
+            
+            var i = 0;
+            for (var key in markers_list) {
+                if (markers_list.hasOwnProperty(key)) {
+                    console.log(markers_list[key]);
+                    i++;
+                }
+            }
+            console.log(i);
+
+
+            
+
+
+        });
+    }
 
     function addMarker(data, isListing) {
         var latitude = data["latitude"];
@@ -261,7 +336,11 @@ jQuery(document).ready(function ($) {
 			title: city + " " + street + " " + buildingNumber ,			
             url: url
         });
-
+        
+        //we can delete a marker only by accessing it
+        //so we want to have a reference to all markers 
+        //in order to control them later
+        markers_list[data._id] = marker;
 
         var infowindow = new google.maps.InfoWindow({
             content: "<p style=\" padding-left: 10px; \">"+city + " " + street + " " + buildingNumber+"</p>"
@@ -315,6 +394,9 @@ jQuery(document).ready(function ($) {
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(emptyDiv);
 
         var searchTextField = document.getElementById('searchTextField');
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(searchTextField);
+        
+        var searchTextField = document.getElementById('checkboxes');
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(searchTextField);
 
         //insert the zoom div on the top left of the map

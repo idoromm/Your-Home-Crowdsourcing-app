@@ -271,7 +271,7 @@ module.exports = function (app, passport) {
         Listing.findOne({_id: listing, 'UsersAndQuestions.userID': user},
             {_id: 0, 'UsersAndQuestions.$': 1},
             function (err, result) {
-                res.json(result === null ? [] : result.UsersAndQuestions[0].questionID);
+                res.json((result === null || result === undefined) ? [] : result.UsersAndQuestions[0].questionID);
                 //   res.json(result.UsersAndQuestions[0].questionID);
             });
     });
@@ -283,7 +283,7 @@ module.exports = function (app, passport) {
         User.findOne({_id: user, 'ApartmentsAndQuestions.apartmentID': listing},
             {_id: 0, 'ApartmentAndQuestions.$': 1},
             function (err, result) {
-                res.json(result === null ? [] : result.ApartmentsAndQuestions[0].questionID);
+                res.json((result === null || result === undefined) ? [] : result.ApartmentsAndQuestions[0].questionID);
             });
     });
 

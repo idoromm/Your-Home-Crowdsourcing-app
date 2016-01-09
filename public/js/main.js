@@ -400,7 +400,7 @@ jQuery(document).ready(function ($) {
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(searchTextField);
 
         //insert the zoom div on the top left of the map
-        map.controls[google.maps.ControlPosition.LEFT_TOP].push(zoomControlDiv);
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(zoomControlDiv);
 
         var addNewReviewButton = document.getElementById('addNewReviewButton');
         map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(addNewReviewButton);

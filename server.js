@@ -43,7 +43,7 @@ var port = process.env.PORT || 3000; //bind to port 3000
 //});
 
 //DB config ==========================================================================
-//mongoose.connect('mongodb://localhost:27017/test');
+//mongoose.connect('mongodb://localhost:27017/testFW');
 mongoose.connect('mongodb://admin:0@ds047474.mongolab.com:47474/crowdsourcing');
 var db = mongoose.connection;
 

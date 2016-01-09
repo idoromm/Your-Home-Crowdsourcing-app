@@ -136,6 +136,11 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 $scope.crowd_renovated = ($scope.listing.crowd_renovated / $scope.listing.crowd_renovated_total) * 100; // "Does this room look renovated?"
                 $scope.crowd_light = ($scope.listing.crowd_light / $scope.listing.crowd_light_total) * 100; // "Is this room well-lit?"
 
+                $scope.crowd_furnished = Math.round($scope.crowd_furnished * 100) / 100;
+                $scope.crowd_windows = Math.round($scope.crowd_renovated * 100) / 100;
+                $scope.crowd_light = Math.round($scope.crowd_light * 100) / 100;
+                $scope.crowd_windows = Math.round($scope.crowd_windows * 100) / 100;
+
                 /* function that sets the question that the user will be asked (only a question he wasn't asked before!)
                  * TODO: need to test if this actually works -> does it return a question really? */
                 function setQuestion() {

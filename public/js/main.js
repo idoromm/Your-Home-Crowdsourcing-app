@@ -293,20 +293,6 @@ jQuery(document).ready(function ($) {
                     }
                 }
             }
-            
-            var i = 0;
-            for (var key in markers_list) {
-                if (markers_list.hasOwnProperty(key)) {
-                    console.log(markers_list[key]);
-                    i++;
-                }
-            }
-            console.log(i);
-
-
-            
-
-
         });
     }
 
@@ -396,8 +382,8 @@ jQuery(document).ready(function ($) {
         var searchTextField = document.getElementById('searchTextField');
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(searchTextField);
         
-        var searchTextField = document.getElementById('checkboxes');
-        map.controls[google.maps.ControlPosition.LEFT_TOP].push(searchTextField);
+        var checkboxes = document.getElementById('checkboxes');
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(checkboxes);
 
         //insert the zoom div on the top left of the map
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(zoomControlDiv);

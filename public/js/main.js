@@ -5,6 +5,9 @@ jQuery(document).ready(function ($) {
         map_zoom = 15;
     
     var markers_list = {};
+    var factor = 3;
+    
+    var num_of_markers_in_screen = 20;
 
     var listing_return = $.ajax({
         url: '/api/listings',
@@ -228,7 +231,10 @@ jQuery(document).ready(function ($) {
     //inizialize the map
     var map = new google.maps.Map(document.getElementById('google-container'), map_options);
     //add a custom marker to the map
-
+    
+    google.maps.event.addListener(map, 'idle', function () {
+        updateMarkers();
+    });
     function fillListingOnMap(data,isListing) {
         for (i = 0; i < data.length; i++) {
             var lat = data[i]["latitude"];
@@ -244,68 +250,160 @@ jQuery(document).ready(function ($) {
     $("#chkbx_2").on("change", updateMarkers);
     $("#chkbx_3").on("change", updateMarkers);
     
+    var wilson = function (positiveScore, total) {
+        var CONFIDENCE_LEVEL = 1.96;
+        var phat;
+        
+        if (total === 0) {
+            return 0;
+        }
+        phat = positiveScore / total;
+        return (phat + CONFIDENCE_LEVEL * CONFIDENCE_LEVEL / (2 * total) - CONFIDENCE_LEVEL * Math.sqrt((phat * (1 - phat) + CONFIDENCE_LEVEL * CONFIDENCE_LEVEL / (4 * total)) / total)) / (1 + CONFIDENCE_LEVEL * CONFIDENCE_LEVEL / total);
+    };
+
+    
     function updateMarkers() {
         $.when(listing_return).then(function (data) {
-            var min_votes = 5;
-            var min_precentage = 80;
-
+            
+            //get all checkbox 
             var is_furnished = document.getElementById("chkbx_0").checked;
             var is_renovated = document.getElementById("chkbx_1").checked;
             var is_well_lit = document.getElementById("chkbx_2").checked;
             var has_windows = document.getElementById("chkbx_3").checked;
             
+            var current_map_bounds_data = {};
+            
+            //get all markers in map bound
             for (var i in data) {
                 var lat = data[i]["latitude"];
                 var lng = data[i]["longitude"];
                 if (lat && lng) {
-                    if (markers_list.hasOwnProperty(data[i]._id)) {
-                        //init marker
-                        markers_list[data[i]._id].setMap(map);
+                    if (markers_list.hasOwnProperty(data[i]._id)) {                      
+                        //calculate max votes rate
+                        if (map.getBounds().contains(markers_list[data[i]._id].getPosition())) {
+                            //set visible all markers that have no votes at all in order to promote them
+                            if (!(data[i].crowd_furnished_total||
+                                data[i].crowd_renovated_total ||
+                                data[i].crowd_light_total ||
+                                data[i].crowd_windows_total)) {
+                                markers_list[data[i]._id].setMap(map);
 
-                        if (is_renovated) {
-                            if (data[i].crowd_renovated_total < min_votes ||
-                                 ((data[i].crowd_renovated * 100) / data[i].crowd_renovated_total) <=min_precentage) {
-                                markers_list[data[i]._id].setMap(null);
-                            }
-                        }
+                            } else {
+                                //set diffault size
+                                var icon = {
+                                    url: markers_list[data[i]._id].getIcon().url,
+                                    scaledSize: new google.maps.Size(21, 34)
+                                }
 
-                        if (is_furnished) {
-                            if (data[i].crowd_furnished_total < min_votes ||
-                                 ((data[i].crowd_furnished * 100) / data[i].crowd_furnished_total) <= min_precentage) {
-                                markers_list[data[i]._id].setMap(null);
-                            }
-                        }
+                                markers_list[data[i]._id].setMap(map);
+                                markers_list[data[i]._id].setIcon(icon);
+                                //dont put them in dictionary also
+                                current_map_bounds_data[data[i]._id] = data[i];
 
-                        if (is_well_lit) {
-                            if (data[i].crowd_light_total < min_votes ||
-                                 ((data[i].crowd_light * 100) / data[i].crowd_light_total) <= min_precentage) {
-                                markers_list[data[i]._id].setMap(null);
                             }
-                        }
-
-                        if (has_windows) {
-                            if (data[i].crowd_windows_total < min_votes ||
-                                 ((data[i].crowd_windows * 100) / data[i].crowd_windows_total) <= min_precentage) {
-                                markers_list[data[i]._id].setMap(null);
-                            }
+                        } else {
+                            //remove all markers not in range
+                            markers_list[data[i]._id].setMap(null);
                         }
 
                     }
                 }
             }
+            if (Object.keys(current_map_bounds_data).length == 0) {
+                //all listings in current screen dont have any info
+                return;
+            }
+            
+                if (!(is_furnished || is_renovated || is_well_lit || has_windows)) {
+                    //all check boxes are unchecked
+                    return;
+                }
+
+            //calculate avarage and wilson
+            var markers_ratio = {};
+            var max_rating = 0;
+            for (var data in current_map_bounds_data) {
+                var total_votes =   (is_furnished * current_map_bounds_data[data].crowd_furnished_total) +
+                                    (is_renovated * current_map_bounds_data[data].crowd_renovated_total) +
+                                    (is_well_lit * current_map_bounds_data[data].crowd_light_total) +
+                                    (has_windows * current_map_bounds_data[data].crowd_windows_total);
+
+                
+                
+                var positive_votes =    (is_furnished * current_map_bounds_data[data].crowd_furnished) +
+                                        (is_renovated * current_map_bounds_data[data].crowd_renovated) +
+                                        (is_well_lit * current_map_bounds_data[data].crowd_light) +
+                                        (has_windows * current_map_bounds_data[data].crowd_windows);
+                
+                var rating = wilson(positive_votes, total_votes);
+                markers_ratio[data] = wilson(positive_votes,total_votes);
+                max_rating = Math.max(max_rating, rating);
+
+            }
+            
+
+            //normalize the votes by max_rating
+            //normlize according the markers in current bound
+            for (var dataId in current_map_bounds_data) {
+                markers_ratio[dataId] = markers_ratio[dataId]/ max_rating;
+            }
+
+            //once we get the right values we want to sort all the listings
+            var markers = []; for (var dataId in markers_ratio) markers.push(dataId);
+            markers.sort(function (a, b) { return markers_ratio[a] - markers_ratio[b] });
+
+            for (var i = 0; i < markers.length; i++) {
+                
+                if (i < num_of_markers_in_screen) {
+                    //set markers icon
+                    var icon = {
+                        url: markers_list[markers[i]].getIcon().url,
+                        scaledSize: new google.maps.Size((1 +(markers_ratio[markers[i]]*factor)) * 21, (1 + (markers_ratio[markers[i]] * factor)) * 34)
+                    }
+
+                    markers_list[markers[i]].setIcon(icon);
+                    markers_list[markers[i]].setMap(map);
+                } else {
+                    // show only part of listings
+                    markers_list[markers[i]].setMap(null);
+                }
+
+
+            }
+
+            
+
+            
+
         });
     }
 
     function addMarker(data, isListing) {
         var latitude = data["latitude"];
         var longitude = data["longitude"];
-        var marker_url;
+        var pinColor;
+        
+        //calculate marker color
         if (isListing) {
-            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location.png' : 'img/cd-icon-location.svg';
+            //one of the categories is missing
+            is_data_missing = !((data.crowd_furnished_total) &&
+                                (data.crowd_renovated_total) &&
+                                (data.crowd_light_total) &&
+                                (data.crowd_windows_total));
+
+            if (is_data_missing) {
+                pinColor = "FFFFFF";
+            } else {
+                pinColor = "FF0000";
+            }
         }
         else {
-            marker_url = ( is_internetExplorer11 ) ? 'img/cd-icon-location-blue.png' : 'img/cd-icon-location-blue.png';
+            pinColor = "2F4F4F";
         }
+        
+        var image = {
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor
+        };
 
         var city = data["city"];
         var street = data["street"];
@@ -318,7 +416,7 @@ jQuery(document).ready(function ($) {
             position: new google.maps.LatLng(latitude, longitude),
             map: map,
             visible: true,
-            icon: marker_url,
+            icon: image,
 			title: city + " " + street + " " + buildingNumber ,			
             url: url
         });

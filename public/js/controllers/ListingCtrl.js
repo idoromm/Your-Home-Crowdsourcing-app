@@ -24,7 +24,7 @@ var indexOf = function (needle) {
     return indexOf.call(this, needle);
 };
 
-app.controller('ListingController', function ($scope, $location, $http, $q, fileUpload, UserService) {
+app.controller('ListingController', function ($scope, $location, $http, $q, $timeout, fileUpload, UserService) {
 
     var userPromise = UserService.setUser();
 
@@ -104,7 +104,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
     var alertPrompt = function () {
 
         $q.all([userPromise, listingPromise]).then(function (values) {
-            console.log(values); // values[0] = user , values[1] = listing
+           // console.log(values); // values[0] = user , values[1] = listing
             var questions = $http.get('/api/questions');
             var questionsUserAlreadyAnswered = $http.get('/api/listing/getQuestionsOfUserInListing/' + values[0]._id + '/' + values[1].data._id);
             var user = values[0];
@@ -120,12 +120,12 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 $scope.crowd_windows_total = $scope.listing.crowd_windows_total == 0 ? 0 : $scope.listing.crowd_windows_total;
                 $scope.crowd_light_total = $scope.listing.crowd_light_total == 0 ? 0 : $scope.listing.crowd_light_total;
 
-                $scope.crowd_furnished_votes = $scope.crowd_furnished_total  == 1 ? 'vote' : 'votes';
-                $scope.crowd_renovated_votes = $scope.crowd_renovated_total  == 1 ? 'vote' : 'votes';
-                $scope.crowd_windows_votes = $scope.crowd_windows_total  == 1 ? 'vote' : 'votes';
-                $scope.crowd_light_votes = $scope.crowd_light_total  == 1 ? 'vote' : 'votes';
+                $scope.crowd_furnished_votes = $scope.crowd_furnished_total == 1 ? 'vote' : 'votes';
+                $scope.crowd_renovated_votes = $scope.crowd_renovated_total == 1 ? 'vote' : 'votes';
+                $scope.crowd_windows_votes = $scope.crowd_windows_total == 1 ? 'vote' : 'votes';
+                $scope.crowd_light_votes = $scope.crowd_light_total == 1 ? 'vote' : 'votes';
 
-                $scope.listing.crowd_furnished_total  = $scope.listing.crowd_furnished_total == 0 ? 1 : $scope.listing.crowd_furnished_total;
+                $scope.listing.crowd_furnished_total = $scope.listing.crowd_furnished_total == 0 ? 1 : $scope.listing.crowd_furnished_total;
                 $scope.listing.crowd_windows_total = $scope.listing.crowd_windows_total == 0 ? 1 : $scope.listing.crowd_windows_total;
                 $scope.listing.crowd_renovated_total = $scope.listing.crowd_renovated_total == 0 ? 1 : $scope.listing.crowd_renovated_total;
                 $scope.listing.crowd_light_total = $scope.listing.crowd_light_total == 0 ? 1 : $scope.listing.crowd_light_total;
@@ -141,8 +141,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 $scope.crowd_light = Math.round($scope.crowd_light * 100) / 100;
                 $scope.crowd_windows = Math.round($scope.crowd_windows * 100) / 100;
 
-                /* function that sets the question that the user will be asked (only a question he wasn't asked before!)
-                 * TODO: need to test if this actually works -> does it return a question really? */
+                /* function that sets the question that the user will be asked (only a question he wasn't asked before!) */
                 function setQuestion() {
                     var q; // index of the question we will eventually ask the user
                     for (q in values[0].data) {
@@ -160,7 +159,6 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
                 setQuestion();
 
                 function chooseRandomPic() {
-                    // var myPix = ["images/ss1.jpg", "images/ss2.jpg", "images/ss3.jpg"];
                     var randomNum = Math.floor(Math.random() * $scope.images.length);
                     return $scope.images[randomNum];
                 }
@@ -272,6 +270,106 @@ app.controller('ListingController', function ($scope, $location, $http, $q, file
         });
     };
     alertPrompt(); // activate the timer (wait a few seconds until the user is prompted)
+
+
+    var ask = function askCrowd() {
+
+        $q.all([userPromise, listingPromise]).then(function (values) {
+            var questions = $http.get('/api/questions');
+            var questionsUserAlreadyAnswered = $http.get('/api/listing/getQuestionsOfUserInListing/' + values[0]._id + '/' + values[1].data._id);
+            var user = values[0];
+
+            $q.all([questions, questionsUserAlreadyAnswered]).then(function (values) {
+                function setQuestion() {
+                    var q; // index of the question we will eventually ask the user
+                    for (q in values[0].data) {
+                        if (values[1].data.indexOf(values[0].data[q]._id) == -1) {
+                            /* the user has NOT answered this question yet -> so we can ask him now! */
+                            $scope.title = values[0].data[q].description;
+                            $scope.questionToAsk = values[0].data[q];
+                            return;
+                        }
+                    }
+                    $scope.title = 'None';
+                    $scope.questionToAsk = 'None';
+                }
+
+                setQuestion();
+
+                function chooseRandomPic() {
+                    var randomNum = Math.floor(Math.random() * $scope.images.length);
+                    return $scope.images[randomNum];
+                }
+
+                /* if the user was asked all the questions already we don't want to ask him again, so we just don't ask him anything
+                 * also if the listing doesn't have any images attached to it */
+                if ($scope.title.localeCompare('None') != 0 && $scope.images.length != 0) {
+                    sweetAlert({
+                            title: $scope.title,
+                            imageUrl: chooseRandomPic(),
+                            imageSize: '450x650',
+                            showCancelButton: true,
+                            cancelButtonText: "No",
+                            confirmButtonColor: "#00ff00", // green
+                            confirmButtonText: "Yes",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        },
+                        function (isConfirm) {
+                            userPromise.then(function (userObj) {
+                                $http.post("/api/user/" + userObj._id + "/" + "3"); // add 3 reputation points to the user for answering a question
+
+                                /* here we update the DB -> we update 2 different Schemas ->
+                                 * 1. the userSchema -> we update the ApartmentsAndQuestions field and add this listing and the question that was asked
+                                 * 2. the listingSchema -> we update the UsersAndQuestions field and add this user and the question that was asked
+                                 * This way we are "fully updated" and we can access the information through the listing OR the user (or both..) */
+                                $http.put('/api/user/addListingAndQuestionToUser/' + user._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
+                                $http.put('/api/listing/addUserAndQuestionToListing/' + user._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
+                                if (isConfirm) {
+                                    sweetAlert("Thanks!", "Your input will help others", "success");
+                                    if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
+                                        $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/plus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5661db59b0b1b91c1d63643d'))) { // Windows
+                                        $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/plus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5661db6cb0b1b91c1d63643e'))) { // Renovated
+                                        $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/plus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5669d90a058ceddc158e97e2'))) { // Light
+                                        $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/plus');
+                                    }
+                                    else {
+                                        console.log("The ID of the question didn't match any known ID, we go the following ID: " + $scope.questionToAsk._id);
+                                    }
+                                }
+                                else {
+                                    sweetAlert("Thanks!", "Your input will help others", "success");
+                                    if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
+                                        $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/minus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5661db59b0b1b91c1d63643d'))) { // Windows
+                                        $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/minus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5661db6cb0b1b91c1d63643e'))) { // Renovated
+                                        $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/minus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5669d90a058ceddc158e97e2'))) { // Light
+                                        $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/minus');
+                                    }
+                                    else {
+                                        console.log("The ID of the question didn't match any known ID, we go the following ID: " + $scope.questionToAsk._id);
+                                    }
+                                }
+                            });
+                        });
+                }
+            });
+
+        });
+    };
+    //$timeout(ask, 15000);
+
 });
 
 

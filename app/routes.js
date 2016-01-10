@@ -89,11 +89,11 @@ module.exports = function (app, passport) {
 
     /* gets a question with id = _id */
     app.get('/api/questions/:_id', function (req, res) {
-        console.log("Question API");
+        //console.log("Question API");
         Question.find(
             {"_id": req.params._id}
             , function (err, question) {
-                console.log("Question: " + question);
+                //console.log("Question: " + question);
                 res.json(question[0]);
             });
     });
@@ -110,7 +110,7 @@ module.exports = function (app, passport) {
 
     /* changing a users' reputation by user id in amount = :amount */
     app.post('/api/user/:userid/:amount', function (req, res) {
-        console.log("changing reputation of user now");
+        //console.log("changing reputation of user now");
         mongoose.model('User').findOneAndUpdate({
                 _id: req.params.userid
             }, {$inc: {reputation: req.params.amount}}
@@ -126,7 +126,7 @@ module.exports = function (app, passport) {
 
     /* increment flagCount of a certain listing by  1 */
     app.put('/api/listing/:street/:buildingNumber/:apartmentNumber/incrementFlagCount', function (req, res) {
-        console.log("incrementing flag count now");
+        //console.log("incrementing flag count now");
         mongoose.model('Listing').findOneAndUpdate({
                 street: req.params.street,
                 buildingNumber: req.params.buildingNumber,
@@ -137,7 +137,7 @@ module.exports = function (app, passport) {
                     res.send("There was a problem incrementing the flagCount of a listing: " + err);
                 }
                 else {
-                    console.log("Flag count after=" + listing.flagCount);
+                    //console.log("Flag count after=" + listing.flagCount);
                     res.json(listing.flagCount);
                 }
             })
@@ -219,7 +219,7 @@ module.exports = function (app, passport) {
 
     /* add current user ID to listing reporters */
     app.put('/api/listing/addReportedUser/:userid/:listingid', function (req, res) {
-        console.log("adding reported user now");
+        //console.log("adding reported user now");
         var listingToUpdate = req.params.listingid;
         var idToAdd = req.params.userid;
         Listing.update({_id: ObjectId(listingToUpdate)},
@@ -229,15 +229,16 @@ module.exports = function (app, passport) {
                     res.send("There was a problem adding the reportedUserID to the listing" + err);
                 }
                 else {
-                    console.log("Success adding reportedUserID to listing!");
+                    //console.log("Success adding reportedUserID to listing!");
                     //res.json(listing);
+                    ;
                 }
             })
     });
 
     /* adds a users' input (answer) of a certain question to a listing */
     app.put('/api/listing/addUserAndQuestionToListing/:userid/:listingid/:questionid', function (req, res) {
-        console.log("adding user and question he answered to listing schema");
+        //console.log("adding user and question he answered to listing schema");
         var listingToUpdate = req.params.listingid;
         var idToAdd = req.params.userid;
         var questionToAdd = req.params.questionid;
@@ -301,7 +302,7 @@ module.exports = function (app, passport) {
 
     /* adds a listing and a question answered by the user to the users' schema */
     app.put('/api/user/addListingAndQuestionToUser/:userid/:listingid/:questionid', function (req, res) {
-        console.log("adding listing and question answered to user schema");
+        //console.log("adding listing and question answered to user schema");
 
         var listingToAdd = req.params.listingid;
         var userToUpdate = req.params.userid;
@@ -430,7 +431,7 @@ module.exports = function (app, passport) {
                 , function () {
                 });
 
-            console.log(listing + ' has been saved successfully!');
+            //console.log(listing + ' has been saved successfully!');
             res.json(listing);
         });
     });
@@ -470,7 +471,7 @@ module.exports = function (app, passport) {
         askListing.save(function (err) {
             if (err) throw err;
 
-            console.log(askListing + ' has been saved successfully!');
+            //console.log(askListing + ' has been saved successfully!');
             res.json(askListing);
         });
     });
@@ -488,7 +489,7 @@ module.exports = function (app, passport) {
 //we add middleware function to let only signed in
 // users to go to main page
     app.get('/', isLoggedIn, function (req, res) {
-        console.log("Main Page is loading ...");
+        //console.log("Main Page is loading ...");
 
         res.sendfile('./public/views/main-page.html');
     });
@@ -498,7 +499,7 @@ module.exports = function (app, passport) {
         if (req.user) {
             res.redirect('/');
         }
-        console.log("Welcome Page is loading ...");
+        //console.log("Welcome Page is loading ...");
 
         //prevent caching to prevent from pressing back button and return to welcome page after log in
         res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
@@ -603,12 +604,12 @@ module.exports = function (app, passport) {
     });
 
     app.get('/single', function (req, res) {
-        console.log("listing page is loading ...");
+        //console.log("listing page is loading ...");
         res.sendfile('./public/views/single.html');
     });
 
     app.get('/new', function (req, res) {
-        console.log("new post is loading ...");
+        //console.log("new post is loading ...");
         res.sendfile('./public/views/new.html');
     });
 
@@ -625,7 +626,7 @@ module.exports = function (app, passport) {
     });
 
     app.get('/api/listing/:street/:buildingNumber/:apartmentNumber/getFlagCount', function (req, res) {
-        console.log("getting flag count now");
+        //console.log("getting flag count now");
         Listing.findOne(
             {
                 "street": req.params.street,
@@ -633,13 +634,13 @@ module.exports = function (app, passport) {
                 "apartmentNumber": req.params.apartmentNumber
             }
             , function (err, listing) {
-                console.log("Flag count=" + listing.flagCount);
+                //console.log("Flag count=" + listing.flagCount);
                 res.json(listing.flagCount);
             });
     });
 
     app.get('/api/listing/:street/:buildingNumber/:apartmentNumber', function (req, res) {
-        console.log("Listing API");
+        //console.log("Listing API");
         Listing.findOne(
             {
                 "street": req.params.street,

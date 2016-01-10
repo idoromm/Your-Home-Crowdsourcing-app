@@ -83,6 +83,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
                     listing_images[i] = '../../../' + images[i];
                 }
                 $scope.images = listing_images;
+                $scope.hideCrowd = $scope.images.length ? false : true;
             });
 
         }, function error(response) {
@@ -104,7 +105,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
     var alertPrompt = function () {
 
         $q.all([userPromise, listingPromise]).then(function (values) {
-           // console.log(values); // values[0] = user , values[1] = listing
+            // console.log(values); // values[0] = user , values[1] = listing
             var questions = $http.get('/api/questions');
             var questionsUserAlreadyAnswered = $http.get('/api/listing/getQuestionsOfUserInListing/' + values[0]._id + '/' + values[1].data._id);
             var user = values[0];
@@ -272,8 +273,8 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
     alertPrompt(); // activate the timer (wait a few seconds until the user is prompted)
 
 
-    var ask = function askCrowd() {
-
+    /* function to allow the user to answer more question if he wishes to do so */
+    function askCrowd() {
         $q.all([userPromise, listingPromise]).then(function (values) {
             var questions = $http.get('/api/questions');
             var questionsUserAlreadyAnswered = $http.get('/api/listing/getQuestionsOfUserInListing/' + values[0]._id + '/' + values[1].data._id);
@@ -301,9 +302,11 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
                     return $scope.images[randomNum];
                 }
 
-                /* if the user was asked all the questions already we don't want to ask him again, so we just don't ask him anything
-                 * also if the listing doesn't have any images attached to it */
-                if ($scope.title.localeCompare('None') != 0 && $scope.images.length != 0) {
+                /* if the user was asked all the questions already we don't want to ask him again, so we just don't ask him anything */
+                if ($scope.title.localeCompare('None') == 0) {
+                    sweetAlert("Error", "You have answered all the available questions for this listing", "error");
+                }
+                else {
                     sweetAlert({
                             title: $scope.title,
                             imageUrl: chooseRandomPic(),

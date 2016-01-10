@@ -40,18 +40,24 @@ app.service('UserService', ['$http','$q', function ($http,$q) {
 				
 				$http.get('/api/user').success(function (user) {
 					_userObj = user;
-					_points = user.reputation;
-					if (user.facebook) {
-						_name = user.facebook.firstName;
-					} else if (user.google) {
-						if (user.google.firstName) {
-							_name = user.google.firstName;
-						} else {
-							_name = user.google.name;
-						}
-					} else {
-						_name = user.local.name;
-					}
+                    _points = user.reputation;
+                    if (user.name) {
+                        _name = user.name;
+                    } else {
+					    if (user.facebook) {
+						    _name = user.facebook.firstName;
+					    } else if (user.google) {
+						    if (user.google.firstName) {
+							    _name = user.google.firstName;
+						    } else {
+							    _name = user.google.name;
+						    }
+					    } else {
+						    _name = user.local.name;
+					    }
+
+                    }
+
 					
 					deferred.resolve(user);
 				}).

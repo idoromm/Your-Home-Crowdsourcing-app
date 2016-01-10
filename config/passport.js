@@ -84,7 +84,6 @@ module.exports = function(passport) {
             if (!req.user) {
                 User.findOne({ 'local.email' :  email }, function(err, user) {
 					// if there are any errors, return the error
-					console.log(user);
                     if (err)
                         return done(err);
 
@@ -95,7 +94,7 @@ module.exports = function(passport) {
 
                         // create the user
                         var newUser				= new User();
-						newUser.name		= req.body.name;
+						newUser.name		    = req.body.name;
                         newUser.local.email		= email;
 						newUser.local.password = newUser.generateHash(password);
 

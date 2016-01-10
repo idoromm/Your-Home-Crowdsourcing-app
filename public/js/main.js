@@ -250,6 +250,18 @@ jQuery(document).ready(function ($) {
     $("#chkbx_2").on("change", updateMarkers);
     $("#chkbx_3").on("change", updateMarkers);
     
+    var wilson = function (positiveScore, total) {
+        var CONFIDENCE_LEVEL = 1.96;
+        var phat;
+        
+        if (total === 0) {
+            return 0;
+        }
+        phat = positiveScore / total;
+        return (phat + CONFIDENCE_LEVEL * CONFIDENCE_LEVEL / (2 * total) - CONFIDENCE_LEVEL * Math.sqrt((phat * (1 - phat) + CONFIDENCE_LEVEL * CONFIDENCE_LEVEL / (4 * total)) / total)) / (1 + CONFIDENCE_LEVEL * CONFIDENCE_LEVEL / total);
+    };
+
+    
     function updateMarkers() {
         $.when(listing_return).then(function (data) {
             
@@ -277,7 +289,14 @@ jQuery(document).ready(function ($) {
                                 markers_list[data[i]._id].setMap(map);
 
                             } else {
+                                //set diffault size
+                                var icon = {
+                                    url: markers_list[data[i]._id].getIcon().url,
+                                    scaledSize: new google.maps.Size(21, 34)
+                                }
+
                                 markers_list[data[i]._id].setMap(map);
+                                markers_list[data[i]._id].setIcon(icon);
                                 //dont put them in dictionary also
                                 current_map_bounds_data[data[i]._id] = data[i];
 
@@ -294,53 +313,39 @@ jQuery(document).ready(function ($) {
                 //all listings in current screen dont have any info
                 return;
             }
-            //get max votes
+            
+                if (!(is_furnished || is_renovated || is_well_lit || has_windows)) {
+                    //all check boxes are unchecked
+                    return;
+                }
+
+            //calculate avarage and wilson
             var markers_ratio = {};
-            var max_votes = 0;
+            var max_rating = 0;
             for (var data in current_map_bounds_data) {
-                var marker_votes =  (is_furnished * current_map_bounds_data[data].crowd_furnished_total) +
+                var total_votes =   (is_furnished * current_map_bounds_data[data].crowd_furnished_total) +
                                     (is_renovated * current_map_bounds_data[data].crowd_renovated_total) +
                                     (is_well_lit * current_map_bounds_data[data].crowd_light_total) +
                                     (has_windows * current_map_bounds_data[data].crowd_windows_total);
+
                 
-                markers_ratio[data] = marker_votes;
-                max_votes = Math.max(max_votes, marker_votes);
+                
+                var positive_votes =    (is_furnished * current_map_bounds_data[data].crowd_furnished) +
+                                        (is_renovated * current_map_bounds_data[data].crowd_renovated) +
+                                        (is_well_lit * current_map_bounds_data[data].crowd_light) +
+                                        (has_windows * current_map_bounds_data[data].crowd_windows);
+                
+                var rating = wilson(positive_votes, total_votes);
+                markers_ratio[data] = wilson(positive_votes,total_votes);
+                max_rating = Math.max(max_rating, rating);
 
             }
             
-            if (max_votes == 0) {
-                //no check box checked (we've deleted all the listing that were not visited yet)
-                //return the size to the original size
-                for (var data in current_map_bounds_data) {
-                    var icon = {
-                        url: markers_list[data].getIcon().url,
-                        scaledSize: new google.maps.Size(21, 34)
-                    }
-                    
-                    markers_list[data].setIcon(icon);
-                }
-                return;
-            }
 
-            //normalize the votes by max_votes
-            //here only the listing that have 100% in all checkboxes will get 1
-            var max_ratio = 0;
-            for (var dataId in current_map_bounds_data) {
-                var marker_votes_for = (is_furnished * current_map_bounds_data[dataId].crowd_furnished) +
-                                        (is_renovated * current_map_bounds_data[dataId].crowd_renovated) +
-                                        (is_well_lit * current_map_bounds_data[dataId].crowd_light) +
-                                        (has_windows * current_map_bounds_data[dataId].crowd_windows);
-                    
-                var marker_ratio = marker_votes_for /  max_votes;
-                max_ratio = Math.max(marker_ratio, max_ratio);
-                markers_ratio[dataId] = marker_ratio;
-            }
-
-
-            //normalize the votes by max_ratio
+            //normalize the votes by max_rating
             //normlize according the markers in current bound
             for (var dataId in current_map_bounds_data) {
-                markers_ratio[dataId] = markers_ratio[dataId]/ max_ratio;
+                markers_ratio[dataId] = markers_ratio[dataId]/ max_rating;
             }
 
             //once we get the right values we want to sort all the listings

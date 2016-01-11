@@ -77,7 +77,7 @@ app.controller('reviewCtrl',
                 return;
 			}
 				
-			reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails, $scope.updateReview).then(onListingComplete, onError);
+			reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails, $scope.askForReview).then(onListingComplete, onError);
 
         };
 

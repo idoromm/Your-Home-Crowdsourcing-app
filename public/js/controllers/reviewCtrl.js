@@ -26,8 +26,11 @@ app.controller('reviewCtrl',
         $scope.review = reviewService.review;
 
 		$scope.editableReview = angular.copy($scope.review);
+
+        $scope.askForReview = false;
 	
 	if (data != null) {
+            $scope.askForReview = true;
 
 			var city = data.city;
 			var street = data.street;
@@ -39,6 +42,7 @@ app.controller('reviewCtrl',
             $scope.googleMapsFormDetails.street_number = buildingNumber;
 
     }
+        console.log("askForReview: "+ $scope.askForReview );
 
         var isValidForm = function(){
             //TODO:check that that the requested form is filled with all the details and return boolean
@@ -73,7 +77,7 @@ app.controller('reviewCtrl',
                 return;
 			}
 				
-			reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails).then(onListingComplete, onError);
+			reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails, $scope.updateReview).then(onListingComplete, onError);
 
         };
 

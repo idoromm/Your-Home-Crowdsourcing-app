@@ -16,8 +16,8 @@
                        ng-autocomplete
                        details="googleMapsFormDetails"
                        options="googleMapsFormOptions"
-                       placeholder="Enter location"
-                       ng-required=true>
+                       ng-disabled="reviewForm.address.$invalid"
+                       ng-required='askForReview'>
                 <span class="help-block hide">Address is required</span>
             </div>
 
@@ -75,7 +75,8 @@
                            class="form-control"
                            ng-model="editableReview.apartmentNumber"
                            ng-disabled="reviewForm.address.$invalid"
-                           ng-required=true>
+                           placeholder={{googleMapsFormDetails.apartmentNumber}}
+                           ng-required='!googleMapsFormDetails.apartmentNumber'>
                     <span class="help-block hide">Required</span>
                 </div>
             </div>

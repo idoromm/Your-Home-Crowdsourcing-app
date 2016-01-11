@@ -34,8 +34,11 @@ app.controller('reviewCtrl',
 			var buildingNumber = data.buildingNumber;
 			var apartmentNumber = data.apartmentNumber;
             $scope.googleMapsFormDetails = data; // TODO: KOBI here
-            $scope.googleMapsFormDetails.route = city; // TODO: KOBI here
-		}
+            $scope.googleMapsFormDetails.route = street; // TODO: KOBI here
+            $scope.googleMapsFormDetails.locality=city;
+            $scope.googleMapsFormDetails.street_number=buildingNumber;
+
+    }
 
         var isValidForm = function(){
             //TODO:check that that the requested form is filled with all the details and return boolean

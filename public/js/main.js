@@ -351,7 +351,6 @@ jQuery(document).ready(function ($) {
             //once we get the right values we want to sort all the listings
             var markers = []; for (var dataId in markers_ratio) markers.push(dataId);
             markers.sort(function (a, b) { return markers_ratio[a] - markers_ratio[b] });
-
 			for (var i = 0; i < markers.length; i++) {
 				
 				if (i < num_of_markers_in_screen) {
@@ -360,7 +359,7 @@ jQuery(document).ready(function ($) {
 						url: markers_list[markers[i]].getIcon().url,
 						scaledSize: new google.maps.Size((1 + (markers_ratio[markers[i]] * factor)) * 25, (1 + (markers_ratio[markers[i]] * factor)) * 33)
 
-					}
+					};
 					
 					markers_list[markers[i]].setIcon(icon);
 					markers_list[markers[i]].setMap(map);

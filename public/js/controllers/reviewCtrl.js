@@ -59,7 +59,7 @@ app.controller('reviewCtrl',
 		
 		//upload details
 		userPromise.then(function (userObj) {
-			reviewService.insertReview($scope.editableReview, $scope.googleMapsFormDetails, userObj._id, UserService.getUserName())
+			reviewService.insertReview($scope.editableReview, $scope.googleMapsFormDetails, $scope.askForReview, userObj._id, UserService.getUserName())
 			.then(onListingComplete, onError);
 		});
 

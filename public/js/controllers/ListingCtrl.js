@@ -189,42 +189,57 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
                                      * This way we are "fully updated" and we can access the information through the listing OR the user (or both..) */
                                     $http.put('/api/user/addListingAndQuestionToUser/' + user._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
                                     $http.put('/api/listing/addUserAndQuestionToListing/' + user._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
-                                    if (isConfirm) {
-                                        sweetAlert("Thanks!", "Your input will help others", "success");
-                                        if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
-                                            $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/plus');
-                                        }
-                                        else if (!($scope.questionToAsk._id.localeCompare('5661db59b0b1b91c1d63643d'))) { // Windows
-                                            $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/plus');
-                                        }
-                                        else if (!($scope.questionToAsk._id.localeCompare('5661db6cb0b1b91c1d63643e'))) { // Renovated
-                                            $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/plus');
-                                        }
-                                        else if (!($scope.questionToAsk._id.localeCompare('5669d90a058ceddc158e97e2'))) { // Light
-                                            $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/plus');
-                                        }
-                                        else {
-                                            console.log("The ID of the question didn't match any known ID, we go the following ID: " + $scope.questionToAsk._id);
-                                        }
+                                if (isConfirm) {
+                                    if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
+                                        $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/plus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5661db59b0b1b91c1d63643d'))) { // Windows
+                                        $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/plus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5661db6cb0b1b91c1d63643e'))) { // Renovated
+                                        $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/plus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5669d90a058ceddc158e97e2'))) { // Light
+                                        $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/plus');
                                     }
                                     else {
-                                        sweetAlert("Thanks!", "Your input will help others", "success");
-                                        if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
-                                            $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/minus');
-                                        }
-                                        else if (!($scope.questionToAsk._id.localeCompare('5661db59b0b1b91c1d63643d'))) { // Windows
-                                            $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/minus');
-                                        }
-                                        else if (!($scope.questionToAsk._id.localeCompare('5661db6cb0b1b91c1d63643e'))) { // Renovated
-                                            $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/minus');
-                                        }
-                                        else if (!($scope.questionToAsk._id.localeCompare('5669d90a058ceddc158e97e2'))) { // Light
-                                            $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/minus');
-                                        }
-                                        else {
-                                            console.log("The ID of the question didn't match any known ID, we go the following ID: " + $scope.questionToAsk._id);
-                                        }
+                                        console.log("The ID of the question didn't match any known ID, we go the following ID: " + $scope.questionToAsk._id);
                                     }
+                                }
+                                else {
+                                    
+                                    if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
+                                        $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/minus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5661db59b0b1b91c1d63643d'))) { // Windows
+                                        $http.put('/api/listing/changeCrowdWindowsPercentage/' + $scope.listing._id + '/minus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5661db6cb0b1b91c1d63643e'))) { // Renovated
+                                        $http.put('/api/listing/changeCrowdRenovatedPercentage/' + $scope.listing._id + '/minus');
+                                    }
+                                    else if (!($scope.questionToAsk._id.localeCompare('5669d90a058ceddc158e97e2'))) { // Light
+                                        $http.put('/api/listing/changeCrowdLightPercentage/' + $scope.listing._id + '/minus');
+                                    }
+                                    else {
+                                        console.log("The ID of the question didn't match any known ID, we go the following ID: " + $scope.questionToAsk._id);
+                                    }
+                                }
+                                sweetAlert({
+                                    title: "Thanks!",
+                                    text: "Your input will help others\n Would you like continue helping us?",
+                                    showCancelButton: true,
+                                    cancelButtonText: "No",
+                                    confirmButtonColor: "#00ff00", // green
+                                    confirmButtonText: "Yes",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: true
+                                }, function (isConfirm) {
+                                    if (isConfirm) {
+                                        askCrowd();
+                                    }
+                                });
+
+
                                 });
                             });
                     }, 5000); // 5 seconds
@@ -271,6 +286,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
         });
     };
     alertPrompt(); // activate the timer (wait a few seconds until the user is prompted)
+
 
 
     /* function to allow the user to answer more question if he wishes to do so */
@@ -329,7 +345,6 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
                                 $http.put('/api/user/addListingAndQuestionToUser/' + user._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
                                 $http.put('/api/listing/addUserAndQuestionToListing/' + user._id + '/' + $scope.listing._id + '/' + $scope.questionToAsk._id);
                                 if (isConfirm) {
-                                    sweetAlert("Thanks!", "Your input will help others", "success");
                                     if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
                                         $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/plus');
                                     }
@@ -347,7 +362,6 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
                                     }
                                 }
                                 else {
-                                    sweetAlert("Thanks!", "Your input will help others", "success");
                                     if (!($scope.questionToAsk._id.localeCompare('5661da7e716f675817f9d68b'))) { // Furnished
                                         $http.put('/api/listing/changeCrowdFurnishedPercentage/' + $scope.listing._id + '/minus');
                                     }
@@ -364,6 +378,20 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
                                         console.log("The ID of the question didn't match any known ID, we go the following ID: " + $scope.questionToAsk._id);
                                     }
                                 }
+                                sweetAlert({
+                                    title: "Thanks!",
+                                    text: "Would you like continue helping us?",
+                                    showCancelButton: true,
+                                    cancelButtonText: "No",
+                                    confirmButtonColor: "#00ff00", // green
+                                    confirmButtonText: "Yes",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: true
+                                }, function (isConfirm) {
+                                    if (isConfirm) {
+                                        askCrowd();
+                                    }
+                                });
                             });
                         });
                 }

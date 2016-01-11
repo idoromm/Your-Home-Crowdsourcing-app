@@ -32,7 +32,7 @@ app.factory('reviewService',
 		
     };
 
-        var insertAskReview=function (listing, googleMapsAddress){
+        var insertAskReview = function (listing, googleMapsAddress){
             console.log("insertAskReview service");
             var data = JSON.stringify(({
                 "latitude": googleMapsAddress.geometry.location.lat(),

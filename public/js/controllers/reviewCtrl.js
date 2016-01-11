@@ -1,13 +1,10 @@
 app.controller('reviewCtrl',
-    function reviewCtrl($scope, $modalInstance, fileService, reviewService,fileUpload, UserService,data) {
+    function reviewCtrl($scope, $modalInstance, fileService, reviewService, fileUpload, UserService, data) {
 		
 		$scope.result1 = '';
 		$scope.options1 = null;
 		$scope.details1 = '';
-	
 
-		
-	
 		var userPromise = UserService.setUser();
 
         var onListingComplete = function(response) {
@@ -19,8 +16,6 @@ app.controller('reviewCtrl',
 			fileUpload.uploadFileToUrl(fileService, "/api/images/"+response._id);
 			fileService = [];
 
-			
-
         };
 
         var onError = function(reason) {
@@ -31,19 +26,28 @@ app.controller('reviewCtrl',
         $scope.review = reviewService.review;
 
 		$scope.editableReview = angular.copy($scope.review);
+
+        $scope.askForReview = false;
 	
 	if (data != null) {
+            $scope.askForReview = true;
 
-			var city = data.city
+			var city = data.city;
 			var street = data.street;
 			var buildingNumber = data.buildingNumber;
 			var apartmentNumber = data.apartmentNumber;
-		}
+            $scope.googleMapsFormDetails = data;
+            $scope.googleMapsFormDetails.route = street;
+            $scope.googleMapsFormDetails.locality = city;
+            $scope.googleMapsFormDetails.street_number = buildingNumber;
 
-        var isValidForm= function(){
+    }
+        console.log("askForReview: "+ $scope.askForReview );
+
+        var isValidForm = function(){
             //TODO:check that that the requested form is filled with all the details and return boolean
             return true;
-        }
+        };
 
         $scope.submitForm = function () {
             $scope.$broadcast('show-errors-event');
@@ -73,7 +77,7 @@ app.controller('reviewCtrl',
                 return;
 			}
 				
-			reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails).then(onListingComplete, onError);
+			reviewService.insertAskReview($scope.editableReview, $scope.googleMapsFormDetails, $scope.askForReview).then(onListingComplete, onError);
 
         };
 

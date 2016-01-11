@@ -51,7 +51,12 @@ app.controller('NavCtrl', function ($scope, $http, $uibModal, UserService) {
         $uibModal.open({
             templateUrl: 'views/askReviewTemplate.html',
             controller: 'reviewCtrl',
-            backdrop: 'static'
+            backdrop: 'static',
+            resolve: {
+                data: function () {
+                    return null;
+                }
+            }
         });
     };
 });

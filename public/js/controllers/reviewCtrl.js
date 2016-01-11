@@ -1,13 +1,10 @@
 app.controller('reviewCtrl',
-    function reviewCtrl($scope, $modalInstance, fileService, reviewService,fileUpload, UserService,data) {
+    function reviewCtrl($scope, $modalInstance, fileService, reviewService, fileUpload, UserService, data) {
 		
 		$scope.result1 = '';
 		$scope.options1 = null;
 		$scope.details1 = '';
-	
 
-		
-	
 		var userPromise = UserService.setUser();
 
         var onListingComplete = function(response) {
@@ -18,8 +15,6 @@ app.controller('reviewCtrl',
 			//upload images once listing uploading was successful
 			fileUpload.uploadFileToUrl(fileService, "/api/images/"+response._id);
 			fileService = [];
-
-			
 
         };
 
@@ -34,16 +29,18 @@ app.controller('reviewCtrl',
 	
 	if (data != null) {
 
-			var city = data.city
+			var city = data.city;
 			var street = data.street;
 			var buildingNumber = data.buildingNumber;
 			var apartmentNumber = data.apartmentNumber;
+            $scope.googleMapsFormDetails = data; // TODO: KOBI here
+            $scope.googleMapsFormDetails.route = city; // TODO: KOBI here
 		}
 
-        var isValidForm= function(){
+        var isValidForm = function(){
             //TODO:check that that the requested form is filled with all the details and return boolean
             return true;
-        }
+        };
 
         $scope.submitForm = function () {
             $scope.$broadcast('show-errors-event');

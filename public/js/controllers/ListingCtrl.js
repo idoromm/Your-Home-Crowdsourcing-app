@@ -138,7 +138,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
                 $scope.crowd_light = ($scope.listing.crowd_light / $scope.listing.crowd_light_total) * 100; // "Is this room well-lit?"
 
                 $scope.crowd_furnished = Math.round($scope.crowd_furnished * 100) / 100;
-                $scope.crowd_windows = Math.round($scope.crowd_renovated * 100) / 100;
+                $scope.crowd_renovated = Math.round($scope.crowd_renovated * 100) / 100;
                 $scope.crowd_light = Math.round($scope.crowd_light * 100) / 100;
                 $scope.crowd_windows = Math.round($scope.crowd_windows * 100) / 100;
 

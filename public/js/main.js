@@ -305,16 +305,19 @@ jQuery(document).ready(function ($) {
                 return;
             }
             
-                if (!(is_furnished || is_renovated || is_well_lit || has_windows)) {
+			if (!(is_furnished || is_renovated || is_well_lit || has_windows)) {
+				var scaled_size = new google.maps.Size(25, 33);
 					//return all listings to original size
 					for (dataId in current_map_bounds_data) {
-						var icon = {
-							url: markers_list[dataId].getIcon().url,
-							scaledSize: new google.maps.Size(25, 33)
+						if (!markers_list[dataId].getIcon().scaledSize.equals(scaled_size)) {
+							var icon = {
+								url: markers_list[dataId].getIcon().url,
+								scaledSize: scaled_size
+							}
+						
+							markers_list[dataId].setMap(map);
+							markers_list[dataId].setIcon(icon);
 						}
-					
-						markers_list[dataId].setMap(map);
-						markers_list[dataId].setIcon(icon);
 					}
                     return;
                 }

@@ -39,7 +39,8 @@ app.controller('reviewCtrl',
             $scope.googleMapsFormDetails = data;
             $scope.googleMapsFormDetails.route = street;
             $scope.googleMapsFormDetails.locality = city;
-            $scope.googleMapsFormDetails.street_number = buildingNumber;
+			$scope.googleMapsFormDetails.street_number = buildingNumber;
+			$scope.autocomplete = city;
 
     }
         console.log("askForReview: "+ $scope.askForReview );

@@ -231,10 +231,14 @@ jQuery(document).ready(function ($) {
     //inizialize the map
     var map = new google.maps.Map(document.getElementById('google-container'), map_options);
     //add a custom marker to the map
-    
-    google.maps.event.addListener(map, 'idle', function () {
+	
+	var is_map_loaded = false;
+	google.maps.event.addListener(map, 'idle', function () {
         updateMarkers();
-    });
+	});
+	
+	
+
     function fillListingOnMap(data,isListing) {
         for (i = 0; i < data.length; i++) {
             var lat = data[i]["latitude"];
@@ -456,8 +460,6 @@ jQuery(document).ready(function ($) {
 
     }
 
-    addMarker(latitude, longitude, true);
-
 
     //add custom buttons for the zoom-in/zoom-out on the map
     function CustomZoomControl(controlDiv, map) {
@@ -500,7 +502,10 @@ jQuery(document).ready(function ($) {
 		
 		var legend = document.getElementById('legend');
 		map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
-
+		
+		document.getElementById("checkboxes").style.display = "block";
+		document.getElementById("legend").style.display = "block";
+		
 
         console.log("input: " + searchTextField);
         var autocompleteMap = new google.maps.places.Autocomplete(searchTextField);

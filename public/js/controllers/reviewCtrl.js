@@ -29,19 +29,22 @@ app.controller('reviewCtrl',
 
         $scope.askForReview = false;
 	
-	if (data != null) {
-            $scope.askForReview = true;
+		if (data != null) {
+			$scope.askForReview = true;
 
 			var city = data.city;
 			var street = data.street;
 			var buildingNumber = data.buildingNumber;
 			var apartmentNumber = data.apartmentNumber;
-            $scope.googleMapsFormDetails = data;
-            $scope.googleMapsFormDetails.route = street;
-            $scope.googleMapsFormDetails.locality = city;
-            $scope.googleMapsFormDetails.street_number = buildingNumber;
+			$scope.googleMapsFormDetails = data;
+			$scope.googleMapsFormDetails.route = street;
+			$scope.googleMapsFormDetails.locality = city;
+			$scope.googleMapsFormDetails.street_number = buildingNumber;
+			$scope.googleMapsFormDetails.latitude = data.latitude;
+			$scope.googleMapsFormDetails.longitude = data.longitude;
+			$scope.autocomplete = city;
 
-    }
+		}
         console.log("askForReview: "+ $scope.askForReview );
 
         var isValidForm = function(){

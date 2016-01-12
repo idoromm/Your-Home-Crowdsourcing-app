@@ -451,6 +451,17 @@ module.exports = function (app, passport) {
     });
 
 
+
+    app.delete('/api/askListing/:latitude/:longitude', function (req, res) {
+        var lat = req.params.latitude;
+        var lng = req.params.longitude;
+        AskListing.remove(
+            {latitude: lat, longitude: lng },
+            function (err, result) {
+                res.send("successful in deleting the ask listing!")
+            }
+        );
+    });
     app.post('/api/askListing', function (req, res) {
         var latitude = req.body.latitude;
         var longitude = req.body.longitude;

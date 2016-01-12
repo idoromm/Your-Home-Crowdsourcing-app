@@ -1,11 +1,20 @@
 app.factory('reviewService',
     function ($http) {
 
-	var insertReview = function (listing, googleMapsAddress,user_id,user_name) {
+	var insertReview = function (listing, googleMapsAddress,askForReview,user_id,user_name) {
+		    var lat;
+		    var long;
+		    if (typeof(googleMapsAddress.geometry) != 'undefined') {
+			    lat = googleMapsAddress.geometry.location.lat();
+			    lng = googleMapsAddress.geometry.location.lng();
+		    } else {
+			    lat = googleMapsAddress.latitude;
+			    lng = googleMapsAddress.longitude;
+		    }
 
 			var data = JSON.stringify(({
-				"latitude": googleMapsAddress.geometry.location.lat(),
-				"longitude": googleMapsAddress.geometry.location.lng(),
+				"latitude": lat,
+				"longitude": lng,
 				"country": googleMapsAddress.country,
 				"city": googleMapsAddress.locality,
 				"street": googleMapsAddress.route,
@@ -25,6 +34,14 @@ app.factory('reviewService',
 				"ownerID": user_id,
 				"ownerName": user_name
 			}));
+
+			if (askForReview) {
+				var url = "/api/askListing/" + lat + '/' + lng;
+				$http.delete(url)
+						.then(function (response) {
+							console.log(response.data);
+						});
+			}
 			return $http.post("/api/listing", data)
                 .then(function (response) {
 				return response.data;

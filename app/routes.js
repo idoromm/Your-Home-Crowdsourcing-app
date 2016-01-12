@@ -399,6 +399,7 @@ module.exports = function (app, passport) {
         var description = req.body.description;
 		var ownerID = req.body.ownerID;
 		var ownerName = req.body.ownerName;
+        var askForReview = req.body.askForReview;
 
         var listing = new Listing({
             "latitude": latitude,
@@ -420,7 +421,8 @@ module.exports = function (app, passport) {
             "price": price,
             "description": description,
 			"ownerID": ownerID,
-			"ownerName":ownerName
+			"ownerName":ownerName,
+            "askForReview": askForReview
         });
         listing.save(function (err) {
             if (err) throw err;

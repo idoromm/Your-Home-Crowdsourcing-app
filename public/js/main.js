@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
         map_zoom = 15;
     
     var markers_list = {};
-    var factor = 3;
+    var factor = 2;
     
     var num_of_markers_in_screen = 20;
 
@@ -292,7 +292,7 @@ jQuery(document).ready(function ($) {
                                 //set diffault size
                                 var icon = {
                                     url: markers_list[data[i]._id].getIcon().url,
-                                    scaledSize: new google.maps.Size(21, 34)
+                                    scaledSize: new google.maps.Size(25, 33)
                                 }
 
                                 markers_list[data[i]._id].setMap(map);
@@ -351,29 +351,25 @@ jQuery(document).ready(function ($) {
             //once we get the right values we want to sort all the listings
             var markers = []; for (var dataId in markers_ratio) markers.push(dataId);
             markers.sort(function (a, b) { return markers_ratio[a] - markers_ratio[b] });
+			for (var i = 0; i < markers.length; i++) {
+				
+				if (i < num_of_markers_in_screen) {
+					//set markers icon
+					var icon = {
+						url: markers_list[markers[i]].getIcon().url,
+						scaledSize: new google.maps.Size((1 + (markers_ratio[markers[i]] * factor)) * 25, (1 + (markers_ratio[markers[i]] * factor)) * 33)
 
-            for (var i = 0; i < markers.length; i++) {
-                
-                if (i < num_of_markers_in_screen) {
-                    //set markers icon
-                    var icon = {
-                        url: markers_list[markers[i]].getIcon().url,
-                        scaledSize: new google.maps.Size((1 +(markers_ratio[markers[i]]*factor)) * 21, (1 + (markers_ratio[markers[i]] * factor)) * 34)
-                    }
-
-                    markers_list[markers[i]].setIcon(icon);
-                    markers_list[markers[i]].setMap(map);
-                } else {
-                    // show only part of listings
-                    markers_list[markers[i]].setMap(null);
-                }
+					};
+					
+					markers_list[markers[i]].setIcon(icon);
+					markers_list[markers[i]].setMap(map);
+				} else {
+					// show only part of listings
+					markers_list[markers[i]].setMap(null);
+				}
 
 
-            }
-
-            
-
-            
+			}        
 
         });
     }
@@ -381,7 +377,8 @@ jQuery(document).ready(function ($) {
     function addMarker(data, isListing) {
         var latitude = data["latitude"];
         var longitude = data["longitude"];
-        var pinColor;
+		var pinColor;
+		var name;
         
         //calculate marker color
         if (isListing) {
@@ -392,17 +389,20 @@ jQuery(document).ready(function ($) {
                                 (data.crowd_windows_total));
 
             if (is_data_missing) {
-                pinColor = "FFFFFF";
+				pinColor = "/img/green-marker.png";
             } else {
-                pinColor = "FF0000";
+				pinColor = "/img/red-marker.png";
             }
         }
         else {
-            pinColor = "2F4F4F";
+			pinColor = "/img/blue-marker.png";
         }
         
-        var image = {
-            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor
+		var image = {
+			url: pinColor,
+			scaledSize: new google.maps.Size(25, 33),
+			name: name
+
         };
 
         var city = data["city"];
@@ -487,7 +487,10 @@ jQuery(document).ready(function ($) {
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(zoomControlDiv);
 
         var addNewReviewButton = document.getElementById('addNewReviewButton');
-        map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(addNewReviewButton);
+		map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(addNewReviewButton);
+		
+		var legend = document.getElementById('legend');
+		map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 
 
         console.log("input: " + searchTextField);

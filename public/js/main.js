@@ -322,22 +322,26 @@ jQuery(document).ready(function ($) {
             //calculate avarage and wilson
             var markers_ratio = {};
             var max_rating = 0;
-            for (var data in current_map_bounds_data) {
-                var total_votes =   (is_furnished * current_map_bounds_data[data].crowd_furnished_total) +
-                                    (is_renovated * current_map_bounds_data[data].crowd_renovated_total) +
-                                    (is_well_lit * current_map_bounds_data[data].crowd_light_total) +
-                                    (has_windows * current_map_bounds_data[data].crowd_windows_total);
+			for (var data in current_map_bounds_data) {
+				
+				var is_furnished_wilson = wilson(is_furnished * current_map_bounds_data[data].crowd_furnished,
+					 is_furnished * current_map_bounds_data[data].crowd_furnished);
+				
+				var is_renovated_wilson = wilson(is_renovated * current_map_bounds_data[data].crowd_renovated,
+					is_renovated * current_map_bounds_data[data].crowd_renovated_total);
+				
+				var is_well_lit_wilson = wilson(is_well_lit * current_map_bounds_data[data].crowd_light, 
+					is_well_lit * current_map_bounds_data[data].crowd_light_total);
+				
+				var has_windows_wilson = wilson(has_windows * current_map_bounds_data[data].crowd_windows,
+					has_windows * current_map_bounds_data[data].crowd_windows_total);
+				
+				var average = ((is_furnished * is_furnished_wilson) + (is_renovated * is_renovated_wilson) +
+					(is_well_lit * is_well_lit_wilson) + (has_windows * has_windows_wilson)) / 
+					(is_furnished + is_well_lit + is_renovated + has_windows);
 
-                
-                
-                var positive_votes =    (is_furnished * current_map_bounds_data[data].crowd_furnished) +
-                                        (is_renovated * current_map_bounds_data[data].crowd_renovated) +
-                                        (is_well_lit * current_map_bounds_data[data].crowd_light) +
-                                        (has_windows * current_map_bounds_data[data].crowd_windows);
-                
-                var rating = wilson(positive_votes, total_votes);
-                markers_ratio[data] = wilson(positive_votes,total_votes);
-                max_rating = Math.max(max_rating, rating);
+                markers_ratio[data] = average;
+                max_rating = Math.max(max_rating, average);
 
             }
             

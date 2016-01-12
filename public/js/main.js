@@ -376,14 +376,19 @@ jQuery(document).ready(function ($) {
 				
 				if (i < num_of_markers_in_screen) {
 					//set markers icon
-					var icon = {
-						url: markers_list[markers[i]].getIcon().url,
-						scaledSize: new google.maps.Size((1 + (markers_ratio[markers[i]] * factor)) * 25, (1 + (markers_ratio[markers[i]] * factor)) * 33)
-
-					};
 					
-					markers_list[markers[i]].setIcon(icon);
-					markers_list[markers[i]].setMap(map);
+					var new_size = new google.maps.Size((1 + (markers_ratio[markers[i]] * factor)) * 25, (1 + (markers_ratio[markers[i]] * factor)) * 33);					
+					if (!markers_list[markers[i]].getIcon().scaledSize.equals(new_size)) {
+						var icon = {
+							url: markers_list[markers[i]].getIcon().url,
+							scaledSize: new_size
+
+						};
+					
+						markers_list[markers[i]].setIcon(icon);
+						markers_list[markers[i]].setMap(map);					
+					
+					}
 				} else {
 					// show only part of listings
 					markers_list[markers[i]].setMap(null);

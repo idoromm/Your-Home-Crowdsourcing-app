@@ -145,6 +145,7 @@ header h1 {
 }
 
 #checkboxes {
+    display: none;
     background-color: #fff;
     font-family: Roboto;
     font-size: 15px;
@@ -157,15 +158,21 @@ header h1 {
 }
 
   #legend {
-    background: white;
-    padding: 10px;
-    margin-top:70px;
+      display: none;
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    padding: 0 25px 10px 13px;
+    text-overflow: ellipsis;
+    width: 165px;
+    height: 180px;
+    margin:70px 0 20px 0;
     margin-right:15px;
-    border: 2px solid black;
   }
 
   #legend h3{
-      margin-left:5px;
+      margin-left:25px;
   }
 
   #legend > div{

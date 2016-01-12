@@ -231,10 +231,14 @@ jQuery(document).ready(function ($) {
     //inizialize the map
     var map = new google.maps.Map(document.getElementById('google-container'), map_options);
     //add a custom marker to the map
-    
-    google.maps.event.addListener(map, 'idle', function () {
+	
+	var is_map_loaded = false;
+	google.maps.event.addListener(map, 'idle', function () {
         updateMarkers();
-    });
+	});
+	
+	
+
     function fillListingOnMap(data,isListing) {
         for (i = 0; i < data.length; i++) {
             var lat = data[i]["latitude"];
@@ -322,24 +326,33 @@ jQuery(document).ready(function ($) {
             //calculate avarage and wilson
             var markers_ratio = {};
             var max_rating = 0;
-            for (var data in current_map_bounds_data) {
-                var total_votes =   (is_furnished * current_map_bounds_data[data].crowd_furnished_total) +
-                                    (is_renovated * current_map_bounds_data[data].crowd_renovated_total) +
-                                    (is_well_lit * current_map_bounds_data[data].crowd_light_total) +
-                                    (has_windows * current_map_bounds_data[data].crowd_windows_total);
+			for (var data in current_map_bounds_data) {
+				
+				var is_furnished_wilson = wilson(is_furnished * current_map_bounds_data[data].crowd_furnished,
+					 is_furnished * current_map_bounds_data[data].crowd_furnished);
+				
+				var is_renovated_wilson = wilson(is_renovated * current_map_bounds_data[data].crowd_renovated,
+					is_renovated * current_map_bounds_data[data].crowd_renovated_total);
+				
+				var is_well_lit_wilson = wilson(is_well_lit * current_map_bounds_data[data].crowd_light, 
+					is_well_lit * current_map_bounds_data[data].crowd_light_total);
+				
+				var has_windows_wilson = wilson(has_windows * current_map_bounds_data[data].crowd_windows,
+					has_windows * current_map_bounds_data[data].crowd_windows_total);
+				
+				var average = ((is_furnished * is_furnished_wilson) + (is_renovated * is_renovated_wilson) +
+					(is_well_lit * is_well_lit_wilson) + (has_windows * has_windows_wilson)) / 
+					(is_furnished + is_well_lit + is_renovated + has_windows);
 
-                
-                
-                var positive_votes =    (is_furnished * current_map_bounds_data[data].crowd_furnished) +
-                                        (is_renovated * current_map_bounds_data[data].crowd_renovated) +
-                                        (is_well_lit * current_map_bounds_data[data].crowd_light) +
-                                        (has_windows * current_map_bounds_data[data].crowd_windows);
-                
-                var rating = wilson(positive_votes, total_votes);
-                markers_ratio[data] = wilson(positive_votes,total_votes);
-                max_rating = Math.max(max_rating, rating);
+                markers_ratio[data] = average;
+                max_rating = Math.max(max_rating, average);
 
-            }
+			}
+			
+			if (max_rating == 0) {
+				//all icons on current map doesnt have ratings
+				return;
+			}
             
 
             //normalize the votes by max_rating
@@ -491,7 +504,10 @@ jQuery(document).ready(function ($) {
 		
 		var legend = document.getElementById('legend');
 		map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
-
+		
+		document.getElementById("checkboxes").style.display = "block";
+		document.getElementById("legend").style.display = "block";
+		
 
         console.log("input: " + searchTextField);
         var autocompleteMap = new google.maps.places.Autocomplete(searchTextField);

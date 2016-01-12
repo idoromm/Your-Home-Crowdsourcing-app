@@ -17,7 +17,8 @@
                        details="googleMapsFormDetails"
                        options="googleMapsFormOptions"
                        placeholder="Enter location"
-                       ng-required=true>
+                       ng-required=true
+                       ng-disabled=reviewForm.address.$valid>
                 <span class="help-block hide">Address is required</span>
             </div>
 

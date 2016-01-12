@@ -33,10 +33,11 @@ app.controller('reviewCtrl',
 			var street = data.street;
 			var buildingNumber = data.buildingNumber;
 			var apartmentNumber = data.apartmentNumber;
-            $scope.googleMapsFormDetails = data;
-            $scope.googleMapsFormDetails.route = street;
-            $scope.googleMapsFormDetails.locality = city;
-            $scope.googleMapsFormDetails.street_number = buildingNumber;
+            $scope.googleMapsFormDetails = data; // TODO: KOBI here
+
+            $scope.googleMapsFormDetails.route = street; // TODO: KOBI here
+            $scope.googleMapsFormDetails.locality=city;
+            $scope.googleMapsFormDetails.street_number=buildingNumber;
 
     }
 

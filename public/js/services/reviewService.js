@@ -2,10 +2,18 @@ app.factory('reviewService',
     function ($http) {
 
 	var insertReview = function (listing, googleMapsAddress,user_id,user_name) {
-
+		var lat;
+		var long;
+		if (typeof(googleMapsAddress.geometry) != 'undefined') {
+			lat = googleMapsAddress.geometry.location.lat();
+			long = googleMapsAddress.geometry.location.lng();
+		} else {
+			lat = googleMapsAddress.latitude;
+			long = googleMapsAddress.longitude;
+		}
 			var data = JSON.stringify(({
-				"latitude": googleMapsAddress.geometry.location.lat(),
-				"longitude": googleMapsAddress.geometry.location.lng(),
+				"latitude": lat,
+				"longitude": long,
 				"country": googleMapsAddress.country,
 				"city": googleMapsAddress.locality,
 				"street": googleMapsAddress.route,

@@ -460,8 +460,6 @@ jQuery(document).ready(function ($) {
 
     }
 
-    addMarker(latitude, longitude, true);
-
 
     //add custom buttons for the zoom-in/zoom-out on the map
     function CustomZoomControl(controlDiv, map) {

@@ -4,7 +4,8 @@ jQuery(document).ready(function ($) {
         longitude = 34.775082,
         map_zoom = 15;
     
-    var markers_list = {};
+	var markers_list = {};
+	var blue_markers_list = {};
     var factor = 2;
     
     var num_of_markers_in_screen = 20;
@@ -307,20 +308,32 @@ jQuery(document).ready(function ($) {
             
 			if (!(is_furnished || is_renovated || is_well_lit || has_windows)) {
 				var scaled_size = new google.maps.Size(25, 33);
-					//return all listings to original size
-					for (dataId in current_map_bounds_data) {
-						if (!markers_list[dataId].getIcon().scaledSize.equals(scaled_size)) {
-							var icon = {
-								url: markers_list[dataId].getIcon().url,
-								scaledSize: scaled_size
-							}
-						
-							markers_list[dataId].setMap(map);
-							markers_list[dataId].setIcon(icon);
+				//return all listings to original size
+				for (dataId in current_map_bounds_data) {
+					if (!markers_list[dataId].getIcon().scaledSize.equals(scaled_size)) {
+						var icon = {
+							url: markers_list[dataId].getIcon().url,
+							scaledSize: scaled_size
 						}
+						
+						markers_list[dataId].setMap(map);
+						markers_list[dataId].setIcon(icon);
 					}
-                    return;
-                }
+				}
+				
+				for (blue_marker in blue_markers_list) {
+					if (blue_markers_list[blue_marker].getMap() == null) {
+						blue_markers_list[blue_marker].setMap(map);
+					}
+				}
+                return;
+			}
+			
+			for (blue_marker in blue_markers_list) {
+				if (blue_markers_list[blue_marker].getMap() == map) {
+					blue_markers_list[blue_marker].setMap(null);
+				}
+			}
 
             //calculate avarage and wilson
             var markers_ratio = {};
@@ -450,7 +463,10 @@ jQuery(document).ready(function ($) {
         //we can delete a marker only by accessing it
         //so we want to have a reference to all markers 
         //in order to control them later
-        markers_list[data._id] = marker;
+		markers_list[data._id] = marker;
+		if (!isListing) {
+			blue_markers_list[data._id] = marker;
+		}
 
         var infowindow = new google.maps.InfoWindow({
             content: "<p style=\" padding-left: 10px; \">"+city + " " + street + " " + buildingNumber+"</p>"

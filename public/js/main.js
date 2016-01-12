@@ -286,28 +286,15 @@ jQuery(document).ready(function ($) {
                         //calculate max votes rate
                         if (map.getBounds().contains(markers_list[data[i]._id].getPosition())) {
                             //set visible all markers that have no votes at all in order to promote them
-                            if (!(data[i].crowd_furnished_total||
+							if ((data[i].crowd_furnished_total ||
                                 data[i].crowd_renovated_total ||
                                 data[i].crowd_light_total ||
                                 data[i].crowd_windows_total)) {
-                                markers_list[data[i]._id].setMap(map);
+								//markers_list[data[i]._id].setMap(map);
+								current_map_bounds_data[data[i]._id] = data[i];
+							}
 
-                            } else {
-                                //set diffault size
-                                var icon = {
-                                    url: markers_list[data[i]._id].getIcon().url,
-                                    scaledSize: new google.maps.Size(25, 33)
-                                }
 
-                                markers_list[data[i]._id].setMap(map);
-                                markers_list[data[i]._id].setIcon(icon);
-                                //dont put them in dictionary also
-                                current_map_bounds_data[data[i]._id] = data[i];
-
-                            }
-                        } else {
-                            //remove all markers not in range
-                            markers_list[data[i]._id].setMap(null);
                         }
 
                     }
@@ -319,7 +306,16 @@ jQuery(document).ready(function ($) {
             }
             
                 if (!(is_furnished || is_renovated || is_well_lit || has_windows)) {
-                    //all check boxes are unchecked
+					//return all listings to original size
+					for (dataId in current_map_bounds_data) {
+						var icon = {
+							url: markers_list[dataId].getIcon().url,
+							scaledSize: new google.maps.Size(25, 33)
+						}
+					
+						markers_list[dataId].setMap(map);
+						markers_list[dataId].setIcon(icon);
+					}
                     return;
                 }
 
@@ -350,7 +346,16 @@ jQuery(document).ready(function ($) {
 			}
 			
 			if (max_rating == 0) {
-				//all icons on current map doesnt have ratings
+				//return all listings to original size
+				for (dataId in current_map_bounds_data) {
+					var icon = {
+						url: markers_list[dataId].getIcon().url,
+						scaledSize: new google.maps.Size(25, 33)
+					}
+					
+					markers_list[dataId].setMap(map);
+					markers_list[dataId].setIcon(icon);
+				}
 				return;
 			}
             
@@ -396,7 +401,7 @@ jQuery(document).ready(function ($) {
         //calculate marker color
         if (isListing) {
             //one of the categories is missing
-            is_data_missing = !((data.crowd_furnished_total) &&
+            var is_data_missing = !((data.crowd_furnished_total) &&
                                 (data.crowd_renovated_total) &&
                                 (data.crowd_light_total) &&
                                 (data.crowd_windows_total));

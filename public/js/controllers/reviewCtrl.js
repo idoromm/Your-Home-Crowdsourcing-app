@@ -37,12 +37,15 @@ app.controller('reviewCtrl',
 			var buildingNumber = data.buildingNumber;
 			var apartmentNumber = data.apartmentNumber;
 			$scope.googleMapsFormDetails = data;
+            $scope.editableReview=data;
 			$scope.googleMapsFormDetails.route = street;
 			$scope.googleMapsFormDetails.locality = city;
 			$scope.googleMapsFormDetails.street_number = buildingNumber;
-			$scope.googleMapsFormDetails.latitude = data.latitude;
+            $scope.editableReview.apartmentNumber =apartmentNumber;
+            $scope.googleMapsFormDetails.latitude = data.latitude;
 			$scope.googleMapsFormDetails.longitude = data.longitude;
 			$scope.autocomplete = city;
+
 
 		}
         console.log("askForReview: "+ $scope.askForReview );

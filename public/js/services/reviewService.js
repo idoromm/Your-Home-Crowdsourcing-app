@@ -1,7 +1,7 @@
 app.factory('reviewService',
     function ($http) {
 
-	var insertReview = function (listing, googleMapsAddress,user_id,user_name) {
+	var insertReview = function (listing, googleMapsAddress,askForReview,user_id,user_name) {
 
 			var data = JSON.stringify(({
 				"latitude": googleMapsAddress.geometry.location.lat(),
@@ -25,6 +25,16 @@ app.factory('reviewService',
 				"ownerID": user_id,
 				"ownerName": user_name
 			}));
+
+			if (askForReview) {
+				var lat = googleMapsAddress.geometry.location.lat();
+				var lng = googleMapsAddress.geometry.location.lng();
+				var url = "/api/askListing/" + lat + '/' + lng;
+				$http.delete(url)
+						.then(function (response) {
+							console.log(response.data);
+						});
+			}
 			return $http.post("/api/listing", data)
                 .then(function (response) {
 				return response.data;

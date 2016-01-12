@@ -343,7 +343,12 @@ jQuery(document).ready(function ($) {
                 markers_ratio[data] = average;
                 max_rating = Math.max(max_rating, average);
 
-            }
+			}
+			
+			if (max_rating == 0) {
+				//all icons on current map doesnt have ratings
+				return;
+			}
             
 
             //normalize the votes by max_rating

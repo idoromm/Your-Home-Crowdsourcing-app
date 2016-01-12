@@ -36,7 +36,7 @@ h1,h2,h3,h4,h5,h6,label,p{
 }
 /*--header--*/
 .header{
-  	background-color: #27da93;
+  	background-color: rgba(0, 0, 0, 0.96);
   	  padding: 0.8em 0;
 }
 .bottom-head {

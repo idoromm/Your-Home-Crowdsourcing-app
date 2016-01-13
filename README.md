@@ -1,5 +1,5 @@
-# Apt-Crowdsourcing
-A project for Computer Science Workshop course in TAU. Members: Ido, Kobi, Julya, Lior.
+# Apt-Crowdsourcing - Your Home
+A crowdsourcing project for Computer Science Workshop course in TAU. Members: Ido, Kobi, Julya, Lior.
 
 In order to run the web app: 
 
@@ -13,8 +13,7 @@ In order to run the web app:
 Finally, navigate via your favorite browser (chrome is recommended) to http://localhost:3000/ 
 
 Note:
-Tel Aviv Univerisity blocks the mongo server[Our Database server], so you won't be able to
-Connect to Mongo server.
-A possible solution is using your phone's Wifi hot spot.
+Tel Aviv Univerisity blocks the mongo server (www.mongolab.com - our database server), so you won't be able to connect to the database using the university's wifi.
+A possible solution is using your phone's data == hot-spot (or using a wifi which isn't the university's).
 
 Ranking Algorithm Explained: http://1drv.ms/1KcNHVR

@@ -48,6 +48,7 @@ var listingSchema = new Schema({
             count: Number,
             _id : false
         }]
+
 });
 
 // create the model for users and expose it to our app

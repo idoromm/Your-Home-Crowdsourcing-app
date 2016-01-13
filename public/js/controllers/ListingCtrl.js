@@ -26,7 +26,8 @@ var indexOf = function (needle) {
 
 app.controller('ListingController', function ($scope, $location, $http, $q, $timeout, fileUpload, UserService) {
 
-    var userPromise = UserService.setUser();
+	var userPromise = UserService.setUser();
+	
 
     $scope.handle_comment = function (comment) {
         userPromise.then(function (userObj) {
@@ -76,11 +77,12 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
             //This should get us all the listings' images and put them inside $scope.images so we
             //can easily access them in the single.html page by doing {{ images }} or similarly ..
             //Edited By Lior: as  $http.get is Async function we can be sure only here that listing_info
-            //is defined.
-            fileUpload.getUploadedFilesAsync($scope.listing._id).then(function (images) {
+			//is defined.
+			$scope.images = [];
+            fileUpload.getUploadedFilesAsync($scope.listing._id).then(function (images_raw) {
                 var listing_images = [];
-                for (var i = 0; i < images.length; i++) {
-                    listing_images[i] = '../../../' + images[i];
+                for (var i = 0; i < images_raw.length; i++) {
+                    listing_images[i] = '../../..' + images_raw[i];
                 }
                 $scope.images = listing_images;
                 $scope.hideCrowd = $scope.images.length ? false : true;
@@ -170,8 +172,9 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
                     setTimeout(function () {
                         sweetAlert({
                                 title: $scope.title,
-                                imageUrl: chooseRandomPic(),
-                                imageSize: '450x650',
+								imageUrl: chooseRandomPic(),
+								allowOutsideClick: true,
+                                imageSize: '450x450',
                                 showCancelButton: true,
                                 cancelButtonText: "No",
                                 confirmButtonColor: "#00ff00", // green
@@ -326,7 +329,7 @@ app.controller('ListingController', function ($scope, $location, $http, $q, $tim
                     sweetAlert({
                             title: $scope.title,
                             imageUrl: chooseRandomPic(),
-                            imageSize: '450x650',
+                            imageSize: '450x450',
                             showCancelButton: true,
                             cancelButtonText: "No",
                             confirmButtonColor: "#00ff00", // green

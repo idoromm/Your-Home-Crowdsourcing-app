@@ -1,5 +1,5 @@
-# Apt-Crowdsourcing - Your Home
-A crowdsourcing project for Computer Science Workshop course in TAU. Members: Ido, Kobi, Julya, Lior.
+# Your Home
+A crowdsourcing project for Computer Science Workshop course in TAU. Members: Ido, Kobi, Lior, Julya.
 
 In order to run the web app: 
 

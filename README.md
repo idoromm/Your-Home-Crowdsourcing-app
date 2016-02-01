@@ -1,5 +1,5 @@
 # Your Home
-A crowdsourcing project for Computer Science Workshop course in TAU. Members: Ido, Kobi, Lior, Julya.
+A crowdsourcing project for Computer Science Workshop course in TAU. Members: Ido, Kobi, Lior.
 
 In order to run the web app: 
 
